@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "957359963001",
+    "project_id": "firebase-ieee-niec"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957359963001:android:1d68830bd9284093",
+        "android_client_info": {
+          "package_name": "com.sahni.rahul.ieee_niec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957359963001-ssn6me3hh9tvehql5878ludkksvaussn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sahni.rahul.ieee_niec",
+            "certificate_hash": "65d5f9c23b8505e3eecaebd4f1f4eca59e53009a"
+          }
+        },
+        {
+          "client_id": "957359963001-6so4o6qu8n6ocp5r0ofsnosam841qpk8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "957359963001-mo0tf0r88fr3t605c1v9f29tbnldn01o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sahni.rahul.ieee_niec",
+            "certificate_hash": "73cdfcdb769505fa10d1f8723b22485d4fe95544"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR8RQIS_9o2QxkVCm3_XkoKbePoCR_-ao"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

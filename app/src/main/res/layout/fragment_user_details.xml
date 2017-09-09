@@ -1,0 +1,64 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.sahni.rahul.ieee_niec.fragments.UserFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                app:layout_collapseMode="parallax"
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <ImageView
+                    android:background="@android:color/white"
+                    android:layout_margin="16dp"
+                    android:id="@+id/user_image_view"
+                    android:layout_centerInParent="true"
+                    android:padding="10dp"
+                    android:src="@drawable/user"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp" />
+                <TextView
+                    android:layout_marginBottom="16dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Rahul Sahni"
+                    android:textColor="@android:color/white"
+                    android:layout_below="@id/user_image_view"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/user_name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                app:layout_collapseMode="pin"
+                android:fitsSystemWindows="false"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:id="@+id/user_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"/>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_user_details"/>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

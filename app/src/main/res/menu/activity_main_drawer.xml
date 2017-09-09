@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_achieve"
+            android:icon="@drawable/ic_achieve"
+            android:title="Achievements" />
+        <item
+            android:id="@+id/nav_project"
+            android:icon="@drawable/ic_projectt"
+            android:title="Projects" />
+        <item
+            android:id="@+id/nav_ieee"
+            android:icon="@drawable/ic_ieeenew"
+            android:title="IEEE" />
+
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_perm_phone_msg_black_24dp"
+            android:title="Social Channels" />
+        <item
+            android:id="@+id/nav_resource"
+            android:icon="@drawable/ic_card_giftcard_black_24dp"
+            android:title="IEEE Resources" />
+    </group>
+
+</menu>
