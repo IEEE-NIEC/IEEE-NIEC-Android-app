@@ -1,8 +1,7 @@
 package com.sahni.rahul.ieee_niec.interfaces;
 
 import android.os.Bundle;
-
-import com.sahni.rahul.ieee_niec.fragments.UserDetailsDialogFragment;
+import android.support.v4.app.DialogFragment;
 
 /**
  * Created by sahni on 04-Sep-17.
@@ -10,5 +9,5 @@ import com.sahni.rahul.ieee_niec.fragments.UserDetailsDialogFragment;
 
 public interface OnUserDetailsDialogInteractionListener {
 
-    void onUserDetailsDialogInteraction(Bundle userDetailsBundle, UserDetailsDialogFragment dialogFragment);
+    void onUserDetailsDialogInteraction(Bundle userDetailsBundle, DialogFragment dialogFragment);
 }

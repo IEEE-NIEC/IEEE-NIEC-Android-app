@@ -23,21 +23,14 @@ import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
 import com.sahni.rahul.ieee_niec.models.User;
-import com.sahni.rahul.ieee_niec.networking.ApiService;
-import com.sahni.rahul.ieee_niec.networking.PostUserDetailsResponse;
-import com.sahni.rahul.ieee_niec.networking.RetrofitClient;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by sahni on 03-Sep-17.
  */
 
-public class UserDetailsDialogFragment extends DialogFragment {
+public class GetUserDetailsDialogFragment extends DialogFragment {
 
     private OnUserDetailsDialogInteractionListener mListener;
     private User mUser;
@@ -45,11 +38,11 @@ public class UserDetailsDialogFragment extends DialogFragment {
     private InterestAdapter mInterestAdapter;
     private ArrayList<String> mInterestArrayList;
 
-    public static UserDetailsDialogFragment newInstance(User user) {
+    public static GetUserDetailsDialogFragment newInstance(User user) {
 
         Bundle args = new Bundle();
         args.putParcelable(ContentUtils.USER_KEY, user);
-        UserDetailsDialogFragment fragment = new UserDetailsDialogFragment();
+        GetUserDetailsDialogFragment fragment = new GetUserDetailsDialogFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,7 +63,7 @@ public class UserDetailsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if(mListener != null){
-                    mListener.onUserDetailsDialogInteraction(null, UserDetailsDialogFragment.this);
+                    mListener.onUserDetailsDialogInteraction(null, GetUserDetailsDialogFragment.this);
                 }
             }
         });
@@ -117,13 +110,13 @@ public class UserDetailsDialogFragment extends DialogFragment {
                      * code for sending data to server and getting result
                      */
 
-                    saveDetailsInServer();
+//                    saveDetailsInServer();
 
 
                     if(mListener != null){
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(ContentUtils.USER_KEY, mUser);
-                        mListener.onUserDetailsDialogInteraction(bundle, UserDetailsDialogFragment.this);
+                        mListener.onUserDetailsDialogInteraction(bundle, GetUserDetailsDialogFragment.this);
                     }
                 }
             }
@@ -136,22 +129,7 @@ public class UserDetailsDialogFragment extends DialogFragment {
         return view;
     }
 
-    private void saveDetailsInServer() {
-        RetrofitClient.getInstance()
-                .create(ApiService.class)
-                .postUserDetails(mUser)
-                .enqueue(new Callback<PostUserDetailsResponse>() {
-                    @Override
-                    public void onResponse(Call<PostUserDetailsResponse> call, Response<PostUserDetailsResponse> response) {
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<PostUserDetailsResponse> call, Throwable t) {
-
-                    }
-                });
-    }
 
     @NonNull
     @Override

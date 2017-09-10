@@ -1,15 +1,12 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
-
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +16,19 @@ import android.widget.TextView;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
 import com.sahni.rahul.ieee_niec.models.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by sahni on 10-Sep-17.
  */
-public class UserFragment extends Fragment {
 
-    private static final String TAG = "UserFragment";
+public class UserDialogFragment extends DialogFragment {
+
+    private static final String TAG = "UserDialogFragment";
     private User mUser;
 
     private ImageView mUserImageView;
@@ -39,57 +38,45 @@ public class UserFragment extends Fragment {
     private RecyclerView mInterestRecyclerView;
     private ArrayList<String> mInterestArrayList;
     private InterestAdapter mInterestAdapter;
+    private OnUserDetailsDialogInteractionListener mListener;
 
 
-    public UserFragment() {
-        // Required empty public constructor
-    }
 
-    public static UserFragment newInstance(User user) {
+    public static UserDialogFragment newInstance(User user) {
 
         Bundle args = new Bundle();
         args.putParcelable(ContentUtils.USER_KEY, user);
-        UserFragment fragment = new UserFragment();
+        UserDialogFragment fragment = new UserDialogFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public static UserFragment newInstance(){
-        return new UserFragment();
-    }
-
-    public void update(User user){
-        Log.i(TAG, "update:");
-        mUser = user;
-        displayDetails();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            mUser = getArguments().getParcelable(ContentUtils.USER_KEY);
-        }
+        mUser = getArguments().getParcelable(ContentUtils.USER_KEY);
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_details, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_user_details,container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         Toolbar toolbar = view.findViewById(R.id.user_toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                getActivity(), drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mListener != null){
+                    mListener.onUserDetailsDialogInteraction(null, UserDialogFragment.this);
+                }
+            }
+        });
 
         mUserImageView = view.findViewById(R.id.user_image_view);
         mNameTextView = view.findViewById(R.id.user_name_text_view);
@@ -106,12 +93,14 @@ public class UserFragment extends Fragment {
     }
 
     private void displayDetails() {
-        if(!mUser.getImageUrl().isEmpty()) {
-            Picasso.with(getActivity())
-                    .load(mUser.getImageUrl())
-                    .placeholder(R.drawable.user)
-                    .error(R.drawable.user)
-                    .into(mUserImageView);
+        if(mUser.getImageUrl() != null) {
+            if(!mUser.getImageUrl().isEmpty()) {
+                Picasso.with(getActivity())
+                        .load(mUser.getImageUrl())
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+                        .into(mUserImageView);
+            }
         }
 
 
@@ -126,4 +115,11 @@ public class UserFragment extends Fragment {
         mInterestAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnUserDetailsDialogInteractionListener){
+            mListener = (OnUserDetailsDialogInteractionListener) context;
+        }
+    }
 }

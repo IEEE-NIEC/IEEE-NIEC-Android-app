@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import com.sahni.rahul.ieee_niec.models.User;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AccountFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class AccountFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener{
 
 
     private static final String TAG = "AccountFragment";
@@ -58,9 +59,10 @@ public class AccountFragment extends Fragment implements BottomNavigationView.On
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BottomNavigationView mBottomNavigationView = view.findViewById(R.id.account_navigation);
+        final BottomNavigationView mBottomNavigationView = view.findViewById(R.id.account_navigation);
+        final Menu bottomMenu = mBottomNavigationView.getMenu();
         viewPager = view.findViewById(R.id.account_viewpager);
-        pagerAdapter = new AccountPagerAdapter(getChildFragmentManager());
+        pagerAdapter = new AccountPagerAdapter(getChildFragmentManager(), mUser);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -70,6 +72,17 @@ public class AccountFragment extends Fragment implements BottomNavigationView.On
 
             @Override
             public void onPageSelected(int position) {
+//                MenuItem prevMenuItem = bottomMenu.getItem(position);
+//                if (prevMenuItem != null) {
+//                    prevMenuItem.setChecked(true);
+//                }
+//                else
+//                {
+//                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+//                }
+//
+//                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+
 
             }
 
@@ -79,6 +92,7 @@ public class AccountFragment extends Fragment implements BottomNavigationView.On
             }
         });
 
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         mBottomNavigationView.setSelectedItemId(R.id.profile);
 
@@ -86,46 +100,22 @@ public class AccountFragment extends Fragment implements BottomNavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         switch (item.getItemId()){
             case R.id.profile:
                 Log.i(TAG, "onNavigationItemSelected");
-//                ft.replace(R.id.account_frame_layout, UserFragment.newInstance(mUser)).commit();
-
-                viewPager.setCurrentItem(0, true);
-                for(Fragment fragment:  pagerAdapter.getFragments()){
-                    Log.i(TAG, "Checking for fragment");
-//                    Log.i(TAG, "Fragment : "+fragment.toString());
-                    if(fragment instanceof UserFragment){
-                        Log.i(TAG, "Fragment matched");
-                        ((UserFragment)fragment).update(mUser);
-                    }
-//                }
-
-//                if(viewPager.getCurrentItem() != 0){
-//                    viewPager.setCurrentItem(0, true);
-//                    for(Fragment fragment:  pagerAdapter.getFragments()){
-//                        Log.i(TAG, "Checking for fragment");
-//                        if(fragment instanceof UserFragment){
-//                            Log.i(TAG, "Fragment matched");
-//                            ((UserFragment)fragment).update(mUser);
-//                        }
-//                    }
-            }
+                if(viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0, true);
+                }
 
                 break;
             case R.id.search:
-//                ft.replace(R.id.account_frame_layout, SearchUserFragment.newInstance()).commit();
                 if(viewPager.getCurrentItem() != 1){
                     viewPager.setCurrentItem(1, true);
-                    for(Fragment fragment:  pagerAdapter.getFragments()){
-                        if(fragment instanceof SearchUserFragment){
-                            ((SearchUserFragment)fragment).update();
-                        }
-                    }
                 }
 
         }
         return true;
     }
+
+
 }

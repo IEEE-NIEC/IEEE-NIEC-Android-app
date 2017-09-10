@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,27 +17,34 @@ import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.fragments.AccountFragment;
 import com.sahni.rahul.ieee_niec.fragments.HomeFragment;
 import com.sahni.rahul.ieee_niec.fragments.ImageSliderBottomSheetFragment;
 import com.sahni.rahul.ieee_niec.fragments.InfoDetailsFragment;
 import com.sahni.rahul.ieee_niec.fragments.InformationFragment;
+import com.sahni.rahul.ieee_niec.fragments.SearchUserFragment;
+import com.sahni.rahul.ieee_niec.fragments.UserDialogFragment;
+import com.sahni.rahul.ieee_niec.fragments.UserFragment;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
 import com.sahni.rahul.ieee_niec.models.Information;
 import com.sahni.rahul.ieee_niec.models.User;
 import com.sahni.rahul.ieee_niec.models.UserSingInStatus;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnHomeFragmentInteractionListener
-        , OnInfoFragmentInteractionListener, OnInfoDetailsFragmentInteractionListener {
+        , OnInfoFragmentInteractionListener, OnInfoDetailsFragmentInteractionListener,
+                OnSearchUserFragmentInteractionListener, OnUserDetailsDialogInteractionListener {
 
     private static final String TAG = "MainActivity";
-    private static final int SIGN_IN_RC = 100;
+    private static final int MY_PROFILE_RC = 100;
+    private static final int SEARCH_USER_RC = 101;
     private User mUser;
-    private boolean loadUserDetailsFragment = false;
+    private boolean loadUserFragment = false;
+    private boolean loadSearchUserFragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +108,14 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    void displaySelectedFragment(int menuItemId){
+    void displaySelectedFragment(int menuItemId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        switch (menuItemId){
+        UserSingInStatus singInStatus;
+        switch (menuItemId) {
 
-            case R.id.nav_home :
-                ft.replace(R.id.main_frame_layout, HomeFragment.newInstance()).commit();
+            case R.id.nav_home:
+                ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), "HomeFragment").commit();
                 break;
 
             case R.id.nav_ieee:
@@ -114,32 +123,62 @@ public class MainActivity extends AppCompatActivity
 
 //                ft.replace(R.id.main_frame_layout, SignInFragment.newInstance()).commit();
 //                ft.addToBackStack(null);
-                UserSingInStatus singInStatus = isUserSigned();
-                if(singInStatus.getStatus()){
+//                UserSingInStatus singInStatus = isUserSigned();
+//                if (singInStatus.getStatus()) {
+//                    User user = singInStatus.getUser();
+//                    Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
+//                            "\n id: " + user.getUserId());
+////                    ft.replace(R.id.main_frame_layout, UserFragment.newInstance(user)).commit();
+//                    ft.replace(R.id.main_frame_layout, AccountFragment.newInstance(user)).commit();
+//                    ft.addToBackStack(null);
+//                } else {
+//                    startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_RC);
+//                }
+                break;
+
+
+            case R.id.nav_my_profile:
+                singInStatus = isUserSigned();
+                if (singInStatus.getStatus()) {
                     User user = singInStatus.getUser();
-                    Log.i(TAG, "displaySelectedFragment: name: "+user.getName()+" \n email: "+user.getEmailId()+
-                            "\n id: "+user.getUserId());
+                    Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
+                            "\n id: " + user.getUserId());
 //                    ft.replace(R.id.main_frame_layout, UserFragment.newInstance(user)).commit();
-                    ft.replace(R.id.main_frame_layout, AccountFragment.newInstance(user)).commit();
+                    ft.replace(R.id.main_frame_layout, UserFragment.newInstance(user),"UserFragment").commit();
                     ft.addToBackStack(null);
                 } else {
-                    startActivityForResult(new Intent(this, SignInActivity.class),SIGN_IN_RC);
+                    startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                 }
+                break;
+
+            case R.id.nav_search:
+                singInStatus = isUserSigned();
+                if (singInStatus.getStatus()) {
+                    User user = singInStatus.getUser();
+                    Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
+                            "\n id: " + user.getUserId());
+//                    ft.replace(R.id.main_frame_layout, UserFragment.newInstance(user)).commit();
+                    ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(),"SearchUserFragment").commit();
+                    ft.addToBackStack(null);
+                } else {
+                    startActivityForResult(new Intent(this, SignInActivity.class), SEARCH_USER_RC);
+                }
+
 
         }
     }
 
 
-    private UserSingInStatus isUserSigned(){
+    private UserSingInStatus isUserSigned() {
 
         SharedPreferences sharedPreferences = getSharedPreferences(ContentUtils.SHARED_PREF, Context.MODE_PRIVATE);
         String signInStatus = sharedPreferences.getString(ContentUtils.USER_KEY, ContentUtils.SIGNED_OUT);
         Gson gson = new Gson();
 
-        if(!signInStatus.equals(ContentUtils.SIGNED_OUT)){
+        if (!signInStatus.equals(ContentUtils.SIGNED_OUT)) {
             return new UserSingInStatus(true, gson.fromJson(signInStatus, User.class));
 
-        } else{
+        } else {
             return new UserSingInStatus(false, null);
         }
     }
@@ -147,27 +186,32 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SIGN_IN_RC && resultCode == RESULT_OK){
+        if (requestCode == MY_PROFILE_RC && resultCode == RESULT_OK) {
             mUser = data.getParcelableExtra(ContentUtils.USER_KEY);
-            loadUserDetailsFragment = true;
-            Log.i(TAG, "onActivityResult: name: "+mUser.getName()+" \n email: "+mUser.getEmailId()+
-                    "\n id: "+mUser.getUserId());
-
-
+            loadUserFragment = true;
+            Log.i(TAG, "onActivityResult: name: " + mUser.getName() + " \n email: " + mUser.getEmailId() +
+                    "\n id: " + mUser.getUserId());
+        } else if(requestCode == SEARCH_USER_RC && resultCode == RESULT_OK){
+            loadSearchUserFragment = true;
         }
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(loadUserDetailsFragment){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (loadUserFragment) {
+
 
 //            ft.replace(R.id.main_frame_layout, UserFragment.newInstance(mUser)).commit();
-            ft.replace(R.id.main_frame_layout, AccountFragment.newInstance(mUser)).commit();
+            ft.replace(R.id.main_frame_layout, UserFragment.newInstance(mUser),"UserFragment").commit();
+            ft.addToBackStack(null);
+        } else if(loadSearchUserFragment){
+            ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(),"SearchUserFragment").commit();
             ft.addToBackStack(null);
         }
-        loadUserDetailsFragment = false;
+        loadUserFragment = false;
+        loadSearchUserFragment = false;
 
     }
 
@@ -176,15 +220,15 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Log.i(TAG, itemTitle);
 
-        if(itemTitle.equals(ContentUtils.EVENTS)){
-            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS));
+        if (itemTitle.equals(ContentUtils.EVENTS)) {
+            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS),"InformationFragment");
             ft.commit();
             ft.addToBackStack(null);
-        } else if(itemTitle.equals(ContentUtils.ACHIEVEMENTS)){
+        } else if (itemTitle.equals(ContentUtils.ACHIEVEMENTS)) {
 
-        } else if(itemTitle.equals(ContentUtils.IEEE)){
+        } else if (itemTitle.equals(ContentUtils.IEEE)) {
 
-        } else if(itemTitle.equals((ContentUtils.PROJECTS))){
+        } else if (itemTitle.equals((ContentUtils.PROJECTS))) {
 
         }
     }
@@ -192,13 +236,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onInfoFragmentInteraction(Information info) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_frame_layout, InfoDetailsFragment.newInstance(info)).commit();
+        ft.replace(R.id.main_frame_layout, InfoDetailsFragment.newInstance(info),"InfoDetailsFragment").commit();
         ft.addToBackStack(null);
     }
 
     @Override
     public void onInfoDetailsInteraction(Information information) {
         ImageSliderBottomSheetFragment fragment = ImageSliderBottomSheetFragment.newInstance(information);
-        fragment.show(getSupportFragmentManager(), null);
+        fragment.show(getSupportFragmentManager(), "ImageSliderBottomSheetFragment");
+    }
+
+    @Override
+    public void onSearchUserFragmentInteraction(User user) {
+        UserDialogFragment userDialogFragment = UserDialogFragment.newInstance(user);
+        userDialogFragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        userDialogFragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        userDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
+        userDialogFragment.show(getSupportFragmentManager(),"UserDialogFragment");
+    }
+
+    @Override
+    public void onUserDetailsDialogInteraction(Bundle userDetailsBundle, DialogFragment dialogFragment) {
+        dialogFragment.dismiss();
     }
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -22,27 +23,33 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
 
     private Context mContext;
     private ArrayList<User> mArrayList;
+    private OnSearchUserResultClickListener mListener;
 
-    public SearchUserAdapter(Context mContext, ArrayList<User> mArrayList) {
+    public SearchUserAdapter(Context mContext, ArrayList<User> mArrayList, OnSearchUserResultClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
+        this.mListener = listener;
     }
 
     @Override
     public SearchUserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.search_user_item_layout, parent, false);
-        return new SearchUserViewHolder(view);
+        return new SearchUserViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(SearchUserViewHolder holder, int position) {
         User user = mArrayList.get(position);
         holder.textView.setText(user.getName());
-        Picasso.with(mContext)
-                .load(user.getImageUrl())
-                .error(R.drawable.user)
-                .placeholder(R.drawable.user)
-                .into(holder.imageView);
+        if(user.getImageUrl() != null) {
+            if(!user.getImageUrl().isEmpty()) {
+                Picasso.with(mContext)
+                        .load(user.getImageUrl())
+                        .error(R.drawable.user)
+                        .placeholder(R.drawable.user)
+                        .into(holder.imageView);
+            }
+        }
     }
 
     @Override
@@ -55,10 +62,16 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
         ImageView imageView;
         TextView textView;
 
-         SearchUserViewHolder(View itemView) {
+         SearchUserViewHolder(final View itemView, final OnSearchUserResultClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.search_user_image_view);
             textView = itemView.findViewById(R.id.search_user_text_view);
+             itemView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                     listener.onSearchUserResultClicked(itemView);
+                 }
+             });
         }
     }
 }

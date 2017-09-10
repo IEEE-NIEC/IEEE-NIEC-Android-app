@@ -4,25 +4,43 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="?attr/colorPrimary"
-    tools:context="com.sahni.rahul.ieee_niec.fragments.InformationFragment">
+    tools:context="com.sahni.rahul.ieee_niec.fragments.InformationFragment"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <android.support.design.widget.CollapsingToolbarLayout
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:fitsSystemWindows="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="@color/colorPrimary">
+
+            <android.support.v7.widget.Toolbar
+                android:fitsSystemWindows="false"
+                android:id="@+id/information_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.Toolbar
-            android:fitsSystemWindows="false"
-            android:id="@+id/information_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        </android.support.v7.widget.Toolbar>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@id/information_toolbar"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:id="@+id/information_recycler_view"
@@ -31,7 +49,6 @@
 
             />
         <ProgressBar
-            android:foregroundTint="@color/cardview_dark_background"
             android:id="@+id/information_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

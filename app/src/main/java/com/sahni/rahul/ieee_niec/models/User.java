@@ -30,6 +30,10 @@ public class User implements Parcelable{
     @SerializedName("id")
     private String userId;
 
+    public User(){
+
+    }
+
 
     public User(String name, String imageUrl, String emailId, String mobileNumber, ArrayList<String> interestArrayList, String userId) {
         this.name = name;

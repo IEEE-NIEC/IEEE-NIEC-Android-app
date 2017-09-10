@@ -1,6 +1,7 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,12 +19,24 @@ import android.widget.TextView;
 import com.lapism.searchview.SearchView;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserAdapter;
+import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
+import com.sahni.rahul.ieee_niec.models.UserStatus;
+import com.sahni.rahul.ieee_niec.networking.ApiService;
+import com.sahni.rahul.ieee_niec.networking.NetworkingUtils;
+import com.sahni.rahul.ieee_niec.networking.RetrofitClient;
+import com.sahni.rahul.ieee_niec.networking.SearchResponse;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class SearchUserFragment extends Fragment {
+
+public class SearchUserFragment extends Fragment implements OnSearchUserResultClickListener{
 
     private static final String TAG = "SearchUserFragment";
     private RecyclerView mUserRecyclerView;
@@ -31,6 +44,7 @@ public class SearchUserFragment extends Fragment {
     private ArrayList<User> mUserArrayList;
     private TextView mHintTextView;
     private ProgressBar mProgressBar;
+    private OnSearchUserFragmentInteractionListener mListener;
 
 
     public SearchUserFragment() {
@@ -63,7 +77,7 @@ public class SearchUserFragment extends Fragment {
         mHintTextView = view.findViewById(R.id.hint_text_view);
         mUserRecyclerView = view.findViewById(R.id.user_recycler_view);
         mUserArrayList = new ArrayList<>();
-        mUserAdapter = new SearchUserAdapter(getActivity(), mUserArrayList);
+        mUserAdapter = new SearchUserAdapter(getActivity(), mUserArrayList, this);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mUserRecyclerView.setAdapter(mUserAdapter);
 
@@ -77,10 +91,11 @@ public class SearchUserFragment extends Fragment {
                 public boolean onQueryTextSubmit(String query) {
                     Log.i(TAG, "onQueryTextSubmit: " + query);
 //                    mHistoryDatabase.addItem(new SearchItem(query));
+                    mUserArrayList.clear();
                     mSearchView.close(false);
                     mHintTextView.setVisibility(View.GONE);
                     mProgressBar.setVisibility(View.VISIBLE);
-                    fetchDetails(query);
+                    searchForUsers(query);
                     return true;
                 }
 
@@ -126,6 +141,88 @@ public class SearchUserFragment extends Fragment {
 
     }
 
+    private void searchForUsers(String query) {
+        RetrofitClient.getInstance()
+                .create(ApiService.class)
+                .searchForUsers(query)
+                .enqueue(new Callback<SearchResponse>() {
+                    @Override
+                    public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                        if (response.isSuccessful()) {
+                            mProgressBar.setVisibility(View.GONE);
+                            SearchResponse searchResponse = response.body();
+                            displayDetails(searchResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SearchResponse> call, Throwable t) {
+                        mProgressBar.setVisibility(View.GONE);
+                        Log.i(TAG, "onFailure: " + t.getMessage());
+
+                    }
+                });
+    }
+
+    private void displayDetails(SearchResponse searchResponse) {
+        if (searchResponse.getCode() == NetworkingUtils.USER_FOUND) {
+            ArrayList<UserStatus.TempUser> arrayList = searchResponse.getTempUserArrayList();
+            ArrayList<User> userArrayList = new ArrayList<>();
+            for (UserStatus.TempUser tempUser : arrayList) {
+
+                User user = new User(
+                        tempUser.getName(),
+                        tempUser.getImageUrl(),
+                        tempUser.getEmailId(),
+                        tempUser.getMobileNumber(),
+                        ContentUtils.getInterestArrayList(tempUser.getInterest()),
+                        tempUser.getUserId()
+                );
+                userArrayList.add(user);
+            }
+            mHintTextView.setVisibility(View.GONE);
+            mUserArrayList.addAll(userArrayList);
+            mUserAdapter.notifyDataSetChanged();
+        } else {
+            mHintTextView.setVisibility(View.VISIBLE);
+            mHintTextView.setText("No user found!");
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSearchUserFragmentInteractionListener) {
+            mListener = (OnSearchUserFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnSearchUserFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "onDestroyView");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart");
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -161,9 +258,18 @@ public class SearchUserFragment extends Fragment {
 
     }
 
-    public void update(){
+    public void update() {
         Log.i(TAG, "update()");
     }
+
+    @Override
+    public void onSearchUserResultClicked(View view) {
+        int position = mUserRecyclerView.getChildAdapterPosition(view);
+        User user = mUserArrayList.get(position);
+        mListener.onSearchUserFragmentInteraction(user);
+    }
+
+
 }
 
 

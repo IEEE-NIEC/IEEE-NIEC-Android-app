@@ -10,4 +10,6 @@ public class NetworkingUtils {
     public static int SUCCESS = 10;
     public static int FAIL = 20;
     public static int DATABASE_ERROR = 30;
+    public static int USER_FOUND = 40;
+    public static int USER_NOT_FOUND = 50;
 }

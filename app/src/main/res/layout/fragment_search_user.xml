@@ -6,31 +6,39 @@
     tools:context="com.sahni.rahul.ieee_niec.fragments.SearchUserFragment">
 
     <android.support.design.widget.AppBarLayout
+        android:fitsSystemWindows="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+
         >
 
         <android.support.v7.widget.Toolbar
+            android:fitsSystemWindows="false"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:contentInsetStart="0dp">
-
+            android:layout_height="56dp"
+            app:contentInsetStart="0dp"
+            app:background="@android:color/transparent"
+            >
             <com.lapism.searchview.SearchView
+                android:fitsSystemWindows="false"
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="com.lapism.searchview.SearchBehavior"
+                android:layout_height="56dp"
                 app:search_hint="Search"
-                app:search_theme="play_store"
-                app:search_version="toolbar" />
+                app:search_theme="light"
+                app:search_version="toolbar"
+                />
+
 
         </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_search_user"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="8dp"
         android:id="@+id/user_recycler_view"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
