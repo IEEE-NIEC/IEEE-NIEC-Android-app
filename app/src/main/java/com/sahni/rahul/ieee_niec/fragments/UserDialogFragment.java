@@ -3,6 +3,8 @@ package com.sahni.rahul.ieee_niec.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +62,7 @@ public class UserDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_details,container, false);
+        return inflater.inflate(R.layout.fragment_user_profile,container, false);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class UserDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.user_toolbar);
 
-        toolbar.setNavigationIcon(android.R.drawable.ic_menu_close_clear_cancel);
+        toolbar.setNavigationIcon(R.drawable.ic_cancel);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +80,26 @@ public class UserDialogFragment extends DialogFragment {
             }
         });
 
+        AppBarLayout appBarLayout = view.findViewById(R.id.user_app_bar);
+        final TextView toolbarTextView = view.findViewById(R.id.toolbar_text_view);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int scrollRange = appBarLayout.getTotalScrollRange();
+                if(scrollRange + verticalOffset == 0){
+                    toolbarTextView.setText(mUser.getName());
+                } else {
+                    toolbarTextView.setText("");
+                }
+            }
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.edit_fab);
+        fab.setVisibility(View.GONE);
+
+        ImageView overFlowMenu = view.findViewById(R.id.overflow_menu);
+        overFlowMenu.setVisibility(View.GONE);
+
         mUserImageView = view.findViewById(R.id.user_image_view);
         mNameTextView = view.findViewById(R.id.user_name_text_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
@@ -85,7 +107,7 @@ public class UserDialogFragment extends DialogFragment {
         mInterestRecyclerView = view.findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
         mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList);
+        mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
         displayDetails();

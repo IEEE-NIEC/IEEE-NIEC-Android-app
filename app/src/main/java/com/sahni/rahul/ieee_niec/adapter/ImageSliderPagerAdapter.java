@@ -3,6 +3,7 @@ package com.sahni.rahul.ieee_niec.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 public class ImageSliderPagerAdapter extends FragmentStatePagerAdapter {
 
+    private static final String TAG = "ImageSliderPagerAdapter";
     private ArrayList<String> mArrayList;
 
 
@@ -28,5 +30,11 @@ public class ImageSliderPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mArrayList.size();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, final int position) {
+        return super.instantiateItem(container, position);
+
     }
 }

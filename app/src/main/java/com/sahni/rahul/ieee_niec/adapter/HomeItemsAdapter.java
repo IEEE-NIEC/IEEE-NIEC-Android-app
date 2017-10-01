@@ -65,6 +65,7 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if(listener != null){
                         listener.onHomeItemClicked(view);
                     }

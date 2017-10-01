@@ -57,11 +57,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Interests"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/interest_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            tools:listitem="@layout/interest_item_layout" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <EditText
+                android:hint="Add"
                 android:id="@+id/interest_edit_text"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -89,23 +98,18 @@
 
         </LinearLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/interest_recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            tools:listitem="@layout/interest_item_layout" />
-
         <Button
             android:id="@+id/save_button"
-            android:background="?attr/colorPrimary"
-            android:textColor="@android:color/white"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="save"
-            android:layout_gravity="center_horizontal"/>
+            android:text="Save"/>
+
+
+
+
+
 
     </LinearLayout>
 

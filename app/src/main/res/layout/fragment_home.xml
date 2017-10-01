@@ -5,61 +5,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.sahni.rahul.ieee_niec.fragments.HomeFragment"
     android:orientation="vertical"
-    android:background="?attr/colorPrimary">
+    android:fitsSystemWindows="true"
+    android:background="@color/cardview_shadow_end_color"
+    >
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="305dp"
+        android:fitsSystemWindows="true"
+        app:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/home_collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:layout_height="305dp"
+            android:background="@android:color/black"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:fitsSystemWindows="true">
 
-            <RelativeLayout
-                android:fitsSystemWindows="true"
+            <LinearLayout
                 app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="305dp"
+                android:orientation="vertical">
+
                 <android.support.v4.view.ViewPager
-                    android:fitsSystemWindows="true"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/home_slider_view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="280dp"
                     />
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true">
-                    <!--<ImageView-->
-                        <!--android:adjustViewBounds="true"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:src="@drawable/ieee_niec_front4"-->
-                        <!--android:scaleType="centerCrop"-->
-                        <!--/>-->
-                    <ImageView
-                        android:id="@+id/image_ieee"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_launcher"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/image_ieee"
-                        android:layout_centerHorizontal="true"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:text="IEEE NIEC"/>
-                </RelativeLayout>
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:layout_margin="7dp"
+                    android:id="@+id/circle_indicator"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
 
-
-            </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
@@ -67,8 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="false"
-                android:theme="@style/AppTheme.AppBarOverlay"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -80,13 +67,13 @@
     <!--<include layout="@layout/content_home"/>-->
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/item_recycler_view"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        tools:listitem="@layout/home_recycler_layout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

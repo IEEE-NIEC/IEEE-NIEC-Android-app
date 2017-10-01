@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sahni.rahul.ieee_niec.activity.MainActivity"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     >
 
     <FrameLayout
-        android:fitsSystemWindows="false"
+        android:fitsSystemWindows="true"
         android:id="@+id/main_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

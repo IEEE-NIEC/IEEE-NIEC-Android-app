@@ -3,8 +3,6 @@ package com.sahni.rahul.ieee_niec.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 /**
@@ -17,8 +15,11 @@ public class Information implements Parcelable{
     private String title;
     private String description;
 
-    @SerializedName("url")
+//    @SerializedName("url")
     private ArrayList<String> imageUrlArrayList;
+
+    public Information() {
+    }
 
     protected Information(Parcel in) {
         id = in.readInt();

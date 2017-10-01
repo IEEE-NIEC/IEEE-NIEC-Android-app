@@ -16,6 +16,9 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"/>
         <TextView
+            android:text="TextView"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:id="@+id/info_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

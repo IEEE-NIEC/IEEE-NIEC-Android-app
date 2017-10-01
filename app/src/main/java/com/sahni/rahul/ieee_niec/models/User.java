@@ -30,10 +30,21 @@ public class User implements Parcelable{
     @SerializedName("id")
     private String userId;
 
+    private String idToken;
+
     public User(){
 
     }
 
+    public User(String name, String imageUrl, String emailId, String mobileNumber, ArrayList<String> interestArrayList, String userId, String idToken) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.emailId = emailId;
+        this.mobileNumber = mobileNumber;
+        this.interestArrayList = interestArrayList;
+        this.userId = userId;
+        this.idToken = idToken;
+    }
 
     public User(String name, String imageUrl, String emailId, String mobileNumber, ArrayList<String> interestArrayList, String userId) {
         this.name = name;
@@ -44,11 +55,12 @@ public class User implements Parcelable{
         this.userId = userId;
     }
 
-    public User(String name, String imageUrl, String emailId, String userId) {
+    public User(String name, String imageUrl, String emailId, String userId, String idToken) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.emailId = emailId;
         this.userId = userId;
+        this.idToken = idToken;
     }
 
     protected User(Parcel in) {
@@ -58,6 +70,7 @@ public class User implements Parcelable{
         mobileNumber = in.readString();
         interestArrayList = in.createStringArrayList();
         userId = in.readString();
+        idToken = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -85,6 +98,7 @@ public class User implements Parcelable{
         parcel.writeString(mobileNumber);
         parcel.writeStringList(interestArrayList);
         parcel.writeString(userId);
+        parcel.writeString(idToken);
     }
 
 
@@ -134,5 +148,13 @@ public class User implements Parcelable{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getIdToken() {
+        return idToken;
+    }
+
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
     }
 }

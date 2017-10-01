@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "957359963001",
-    "project_id": "firebase-ieee-niec"
+    "firebase_url": "https://fir-ieee-niec.firebaseio.com",
+    "project_id": "firebase-ieee-niec",
+    "storage_bucket": "firebase-ieee-niec.appspot.com"
   },
   "client": [
     {
@@ -13,6 +15,10 @@
       },
       "oauth_client": [
         {
+          "client_id": "957359963001-co8ss5d26m2kcdm69fuiakblfuub2gim.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "957359963001-ssn6me3hh9tvehql5878ludkksvaussn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,14 +29,6 @@
         {
           "client_id": "957359963001-6so4o6qu8n6ocp5r0ofsnosam841qpk8.apps.googleusercontent.com",
           "client_type": 3
-        },
-        {
-          "client_id": "957359963001-mo0tf0r88fr3t605c1v9f29tbnldn01o.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sahni.rahul.ieee_niec",
-            "certificate_hash": "73cdfcdb769505fa10d1f8723b22485d4fe95544"
-          }
         }
       ],
       "api_key": [
@@ -43,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957359963001-co8ss5d26m2kcdm69fuiakblfuub2gim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

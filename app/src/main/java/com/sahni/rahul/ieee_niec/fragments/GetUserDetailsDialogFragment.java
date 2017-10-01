@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * Created by sahni on 03-Sep-17.
  */
 
-public class GetUserDetailsDialogFragment extends DialogFragment {
+public class GetUserDetailsDialogFragment extends DialogFragment implements OnRemoveInterestClickListener {
 
     private OnUserDetailsDialogInteractionListener mListener;
     private User mUser;
@@ -77,7 +78,7 @@ public class GetUserDetailsDialogFragment extends DialogFragment {
         Button saveButton = view.findViewById(R.id.save_button);
         mInterestRecyclerView= view.findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
-        mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList);
+        mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.EDIT_INTEREST, this);
         mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
@@ -89,6 +90,7 @@ public class GetUserDetailsDialogFragment extends DialogFragment {
                     interestEditText.setError("Please enter valid word");
                 } else {
                     interestEditText.setText("");
+                    interestEditText.setHint("Add more");
                     mInterestArrayList.add(interest);
                     mInterestAdapter.notifyDataSetChanged();
                 }
@@ -159,5 +161,12 @@ public class GetUserDetailsDialogFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onRemovedClicked(View view) {
+        int position = mInterestRecyclerView.getChildAdapterPosition(view);
+        mInterestArrayList.remove(position);
+        mInterestAdapter.notifyDataSetChanged();
     }
 }

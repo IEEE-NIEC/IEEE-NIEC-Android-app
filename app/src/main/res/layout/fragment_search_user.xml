@@ -38,6 +38,7 @@
     <include layout="@layout/content_search_user"/>
 
     <android.support.v7.widget.RecyclerView
+        android:fitsSystemWindows="false"
         android:layout_marginTop="8dp"
         android:id="@+id/user_recycler_view"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

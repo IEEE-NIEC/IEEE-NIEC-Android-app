@@ -9,19 +9,19 @@
             android:title="Home" />
         <item
             android:id="@+id/nav_events"
-            android:icon="@drawable/ic_events"
+            android:icon="@drawable/ic_events_bw"
             android:title="Events" />
         <item
             android:id="@+id/nav_achieve"
-            android:icon="@drawable/ic_achieve"
+            android:icon="@drawable/ic_achieve_bw"
             android:title="Achievements" />
         <item
             android:id="@+id/nav_project"
-            android:icon="@drawable/ic_projectt"
+            android:icon="@drawable/ic_project_bw"
             android:title="Projects" />
         <item
             android:id="@+id/nav_ieee"
-            android:icon="@drawable/ic_ieeenew"
+            android:icon="@drawable/ic_ieeenew1"
             android:title="IEEE">
 
         </item>
@@ -32,18 +32,17 @@
 
         <item
             android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_perm_phone_msg_black_24dp"
             android:title="Account">
 
             <menu>
                 <item
                     android:id="@+id/nav_my_profile"
-                    android:icon="@mipmap/ic_launcher"
+                    android:icon="@drawable/ic_action_user"
                     android:title="My profile"
                     app:showAsAction="never" />
                 <item
                     android:id="@+id/nav_search"
-                    android:icon="@mipmap/ic_launcher"
+                    android:icon="@drawable/ic_action_search"
                     android:title="Search"
                     app:showAsAction="never" />
             </menu>

@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <!--<include-->
@@ -15,12 +15,18 @@
 
 
     <include layout="@layout/content_main" />
+    <!--<FrameLayout-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:id="@+id/main_frame_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--/>-->
 
     <android.support.design.widget.NavigationView
 
         app:itemTextColor="@android:color/black"
         app:itemIconTint="@android:color/black"
-        android:fitsSystemWindows="false"
+        android:fitsSystemWindows="true"
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
