@@ -41,7 +41,7 @@ public class UserProfileFragment extends Fragment implements PopupMenu.OnMenuIte
     private User mUser;
 
     private ImageView mUserImageView;
-    private TextView mNameTextView;
+//    private TextView mNameTextView;
     private TextView mEmailTextView;
     private TextView mMobileTextView;
     private RecyclerView mInterestRecyclerView;
@@ -68,12 +68,6 @@ public class UserProfileFragment extends Fragment implements PopupMenu.OnMenuIte
     public static UserProfileFragment newInstance(){
         return new UserProfileFragment();
     }
-
-//    public void update(User user){
-//        Log.i(TAG, "update:");
-//        mUser = user;
-//        displayDetails();
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,17 +99,7 @@ public class UserProfileFragment extends Fragment implements PopupMenu.OnMenuIte
 
         AppBarLayout appBarLayout = view.findViewById(R.id.user_app_bar);
         final TextView toolbarTextView = view.findViewById(R.id.toolbar_text_view);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int scrollRange = appBarLayout.getTotalScrollRange();
-                if(scrollRange + verticalOffset == 0){
-                    toolbarTextView.setText(mUser.getName());
-                } else {
-                    toolbarTextView.setText("");
-                }
-            }
-        });
+        toolbarTextView.setText(mUser.getName());
 
 
         FloatingActionButton fab = view.findViewById(R.id.edit_fab);
@@ -131,7 +115,7 @@ public class UserProfileFragment extends Fragment implements PopupMenu.OnMenuIte
         });
 
         mUserImageView = view.findViewById(R.id.user_image_view);
-        mNameTextView = view.findViewById(R.id.user_name_text_view);
+//        mNameTextView = view.findViewById(R.id.user_name_text_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
         mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
         mInterestRecyclerView = view.findViewById(R.id.interest_recycler_view);
@@ -182,7 +166,7 @@ public class UserProfileFragment extends Fragment implements PopupMenu.OnMenuIte
         }
 
 
-        mNameTextView.setText("" + mUser.getName());
+//        mNameTextView.setText("" + mUser.getName());
         mEmailTextView.setText("" + mUser.getEmailId());
         mMobileTextView.setText("" + mUser.getMobileNumber());
         mInterestArrayList.clear();

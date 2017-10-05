@@ -3,7 +3,6 @@ package com.sahni.rahul.ieee_niec.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +33,6 @@ public class UserDialogFragment extends DialogFragment {
     private User mUser;
 
     private ImageView mUserImageView;
-    private TextView mNameTextView;
     private TextView mEmailTextView;
     private TextView mMobileTextView;
     private RecyclerView mInterestRecyclerView;
@@ -80,19 +78,9 @@ public class UserDialogFragment extends DialogFragment {
             }
         });
 
-        AppBarLayout appBarLayout = view.findViewById(R.id.user_app_bar);
         final TextView toolbarTextView = view.findViewById(R.id.toolbar_text_view);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int scrollRange = appBarLayout.getTotalScrollRange();
-                if(scrollRange + verticalOffset == 0){
-                    toolbarTextView.setText(mUser.getName());
-                } else {
-                    toolbarTextView.setText("");
-                }
-            }
-        });
+        toolbarTextView.setText(mUser.getName());
+
 
         FloatingActionButton fab = view.findViewById(R.id.edit_fab);
         fab.setVisibility(View.GONE);
@@ -101,7 +89,7 @@ public class UserDialogFragment extends DialogFragment {
         overFlowMenu.setVisibility(View.GONE);
 
         mUserImageView = view.findViewById(R.id.user_image_view);
-        mNameTextView = view.findViewById(R.id.user_name_text_view);
+//        mNameTextView = view.findViewById(R.id.user_name_text_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
         mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
         mInterestRecyclerView = view.findViewById(R.id.interest_recycler_view);
@@ -126,7 +114,7 @@ public class UserDialogFragment extends DialogFragment {
         }
 
 
-        mNameTextView.setText("" + mUser.getName());
+//        mNameTextView.setText("" + mUser.getName());
         mEmailTextView.setText("" + mUser.getEmailId());
         mMobileTextView.setText("" + mUser.getMobileNumber());
         mInterestArrayList.clear();

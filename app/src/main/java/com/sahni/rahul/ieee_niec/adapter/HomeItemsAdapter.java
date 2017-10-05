@@ -1,7 +1,6 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Items;
-import com.sahni.rahul.ieee_niec.R;
 
 import java.util.ArrayList;
 
@@ -40,8 +39,14 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         Items items = arrayList.get(position);
-        holder.imageView.setImageDrawable(ContextCompat.getDrawable(context, items.getDrawableId()));
-        holder.bgImageView.setImageDrawable(ContextCompat.getDrawable(context, items.getBgDrawableId()));
+        holder.imageView.setImageResource(items.getDrawableId());
+        holder.bgImageView.setImageResource(items.getBgDrawableId());
+//        Picasso.with(context)
+//                .load(items.getDrawableId())
+//                .into(holder.imageView);
+//        Picasso.with(context)
+//                .load(items.getBgDrawableId())
+//                .into(holder.bgImageView);
         holder.textView.setText(items.getTitle());
     }
 

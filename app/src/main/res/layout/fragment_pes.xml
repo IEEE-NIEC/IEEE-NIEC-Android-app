@@ -1,0 +1,47 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    tools:context="com.sahni.rahul.ieee_niec.fragments.IeeePesFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/pes_wbg"/>
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Overview"
+            style="@style/TitleFont"/>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="The Power &amp; Energy Society (PES) provides the world's largest forum for sharing the latest in technological developments in the electric power industry, for developing standards that guide the development and construction of equipment and systems, and for educating members of the industry and the general public. Members of the Power &amp; Energy Society are leaders in this field, and they — and their employers — derive substantial benefits from involvement with this unique and outstanding association."/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/TitleFont"
+            android:text="IEEE NIEC PES"/>
+        <TextView
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IEEE PES NIEC is a student branch chapter of IEEE NIEC, who believe in their vision, i.e. to create a atmosphere for enthusiasts who want to work in electric power and energy fields for the betterment of society. Mission of IEEE PES NIEC is to utilise the resources provided by IEEE PES to accomplish their vision."/>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

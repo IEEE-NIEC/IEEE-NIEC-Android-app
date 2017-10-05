@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
@@ -203,15 +204,7 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
 //        mInfoAdapter.notifyDataSetChanged();
 //    }
 
-    @Override
-    public void onInformationItemClicked(View view) {
-        if(mListener != null) {
-            int position = mInfoRecyclerView.getChildAdapterPosition(view);
-            Information info = mInfoArrayList.get(position);
-            mListener.onInfoFragmentInteraction(info);
-        }
 
-    }
 
     @Override
     public void onPause() {
@@ -270,5 +263,14 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "onActivityCreated");
+    }
+
+    @Override
+    public void onInformationItemClicked(View view, ImageView sharedImageView) {
+        if(mListener != null) {
+            int position = mInfoRecyclerView.getChildAdapterPosition(view);
+            Information info = mInfoArrayList.get(position);
+            mListener.onInfoFragmentInteraction(info, sharedImageView);
+        }
     }
 }

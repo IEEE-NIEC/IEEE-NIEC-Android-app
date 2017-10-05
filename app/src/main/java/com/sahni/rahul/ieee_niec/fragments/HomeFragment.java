@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.home_toolbar);
+        Toolbar toolbar = view.findViewById(R.id.home_toolbar);
         AppBarLayout appBarLayout = view.findViewById(R.id.home_app_bar);
         final CollapsingToolbarLayout toolbarLayout = view.findViewById(R.id.home_collapsing_toolbar);
 
@@ -108,6 +108,8 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
                 getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+//        drawer.setFitsSystemWindows(true);
 
         mFeedViewPager = view.findViewById(R.id.home_slider_view_pager);
         mFeedArrayList = new ArrayList<>();
@@ -147,7 +149,8 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         mItemsArrayList.add(new Items(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.evnets_art));
         mItemsArrayList.add(new Items(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
         mItemsArrayList.add(new Items(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
-        mItemsArrayList.add(new Items(ContentUtils.IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
+        mItemsArrayList.add(new Items(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
+        mItemsArrayList.add(new Items(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
         mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);

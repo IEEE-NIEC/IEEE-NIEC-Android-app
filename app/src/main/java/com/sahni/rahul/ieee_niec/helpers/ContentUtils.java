@@ -16,7 +16,8 @@ public class ContentUtils {
     public static String EVENTS = "Events";
     public static String ACHIEVEMENTS = "Achievements";
     public static String PROJECTS = "Projects";
-    public static String IEEE = "IEEE";
+    public static String IEEE_RESOURCES = "IEEE Resources";
+    public static String ABOUT_IEEE = "About IEEE";
     public static String INFO_KEY = "info_key";
     public static String SHARED_PREF = "ieee_niec";
 
@@ -36,6 +37,8 @@ public class ContentUtils {
     public static final int EDIT_INTEREST = 2;
 
     public static final String STATE_RESOLVING_ERROR = "resolving_error";
+
+    public static final String TRANSITION_NAME = "transition_name";
 
 
     public static ArrayList<String> getInterestArrayList(String interest){

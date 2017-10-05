@@ -28,6 +28,7 @@
             android:name=".activity.EditUserProfileActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

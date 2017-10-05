@@ -22,12 +22,12 @@
         <item
             android:id="@+id/nav_ieee"
             android:icon="@drawable/ic_ieeenew1"
-            android:title="IEEE">
+            android:title="About IEEE">
 
         </item>
         <item
             android:id="@+id/nav_resource"
-            android:icon="@drawable/ic_card_giftcard_black_24dp"
+            android:icon="@drawable/ic_resources_bw"
             android:title="IEEE Resources" />
 
         <item

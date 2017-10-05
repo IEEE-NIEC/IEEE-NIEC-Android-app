@@ -14,7 +14,10 @@
         <!--android:layout_height="match_parent" />-->
 
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        />
     <!--<FrameLayout-->
         <!--android:fitsSystemWindows="true"-->
         <!--android:id="@+id/main_frame_layout"-->

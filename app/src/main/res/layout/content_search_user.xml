@@ -13,6 +13,7 @@
         android:textColor="@color/colorPrimary"
         android:text="Search for people based on their interest or name"/>
     <ProgressBar
+        style="@style/AppTheme.DarkAccent"
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,18 +10,22 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.fragments.AboutIeeeFragment;
 import com.sahni.rahul.ieee_niec.fragments.HomeFragment;
-import com.sahni.rahul.ieee_niec.fragments.InformationImageSliderFragment;
+import com.sahni.rahul.ieee_niec.fragments.IeeeResourcesFragment;
 import com.sahni.rahul.ieee_niec.fragments.InformationDetailsFragment;
 import com.sahni.rahul.ieee_niec.fragments.InformationFragment;
+import com.sahni.rahul.ieee_niec.fragments.InformationImageSliderFragment;
 import com.sahni.rahul.ieee_niec.fragments.SearchUserFragment;
 import com.sahni.rahul.ieee_niec.fragments.ShowFeedImagesDialogFragment;
 import com.sahni.rahul.ieee_niec.fragments.UserDialogFragment;
@@ -38,6 +42,8 @@ import com.sahni.rahul.ieee_niec.interfaces.OnUserProfileInteractionListener;
 import com.sahni.rahul.ieee_niec.models.Information;
 import com.sahni.rahul.ieee_niec.models.User;
 import com.sahni.rahul.ieee_niec.models.UserSingInStatus;
+
+import static com.sahni.rahul.ieee_niec.R.id.nav_search;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnHomeFragmentInteractionListener
@@ -59,8 +65,10 @@ public class MainActivity extends AppCompatActivity
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment_tag";
     private static final String USER_PROFILE_FRAGMENT_TAG = "user_profile_fragment";
     private static final String SEARCH_USER_FRAGMENT_TAG = "search_user_fragment";
+    private static final String ABOUT_IEEE_FRAGMENT_TAG = "about_ieee_fragment";
+    private static final String IEEE_RESOURCES_TAG = "ieee_resources_tag";
 
-    private NavigationView navigationView;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +81,10 @@ public class MainActivity extends AppCompatActivity
 //        drawer.addDrawerListener(toggle);
 //        toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
         displaySelectedFragment(R.id.nav_home);
-        navigationView.setCheckedItem(R.id.nav_home);
+        mNavigationView.setCheckedItem(R.id.nav_home);
 
     }
 
@@ -91,6 +99,8 @@ public class MainActivity extends AppCompatActivity
         InformationFragment eventsFragment = (InformationFragment) fm.findFragmentByTag(EVENTS_FRAGMENT_TAG);
         InformationFragment achievementsFragment = (InformationFragment) fm.findFragmentByTag(ACHIEVEMENTS_FRAGMENT_TAG);
         InformationFragment projectsFragment = (InformationFragment) fm.findFragmentByTag(PROJECTS_FRAGMENT_TAG);
+        AboutIeeeFragment ieeeFragment = (AboutIeeeFragment) fm.findFragmentByTag(ABOUT_IEEE_FRAGMENT_TAG);
+        IeeeResourcesFragment ieeeResourcesFragment = (IeeeResourcesFragment) fm.findFragmentByTag(IEEE_RESOURCES_TAG);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -100,13 +110,24 @@ public class MainActivity extends AppCompatActivity
                 || (searchUserFragment != null && searchUserFragment.isVisible())
                 || (eventsFragment != null && eventsFragment.isVisible())
                 || (achievementsFragment != null && achievementsFragment.isVisible())
-                || (projectsFragment != null && projectsFragment.isVisible())) {
+                || (projectsFragment != null && projectsFragment.isVisible())
+                || (ieeeFragment != null && ieeeFragment.isVisible())
+                || (ieeeResourcesFragment != null && ieeeResourcesFragment.isVisible())) {
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        } else if(homeFragment != null && homeFragment.isVisible()){
+            mNavigationView.setCheckedItem(R.id.nav_home);
+        } else if (homeFragment != null && homeFragment.isVisible()) {
             finishAffinity();
         } else {
-            super.onBackPressed();
+            try {
+                super.onBackPressed();
+            } catch (IllegalStateException e){
+                Log.i(TAG, "onBackPressed: "+e.getMessage());
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_home);
+
+            }
         }
     }
 
@@ -151,37 +172,39 @@ public class MainActivity extends AppCompatActivity
         switch (menuItemId) {
 
             case R.id.nav_home:
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_home);
                 break;
 
             case R.id.nav_events:
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_events);
                 break;
 
             case R.id.nav_achieve:
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_achieve);
                 break;
 
             case R.id.nav_project:
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_project);
                 break;
 
             case R.id.nav_ieee:
-//                startActivity(new Intent(this, SignInActivity.class));
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.replace(R.id.main_frame_layout, new AboutIeeeFragment(), ABOUT_IEEE_FRAGMENT_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_ieee);
+                break;
 
-//                ft.replace(R.id.main_frame_layout, SignInFragment.newInstance()).commit();
-//                ft.addToBackStack(null);
-//                UserSingInStatus singInStatus = isUserSigned();
-//                if (singInStatus.getStatus()) {
-//                    User user = singInStatus.getUser();
-//                    Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
-//                            "\n id: " + user.getUserId());
-////                    ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(user)).commit();
-//                    ft.replace(R.id.main_frame_layout, AccountFragment.newInstance(user)).commit();
-//                    ft.addToBackStack(null);
-//                } else {
-//                    startActivityForResult(new Intent(this, SignInActivity.class), SIGN_IN_RC);
-//                }
+            case R.id.nav_resource:
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.replace(R.id.main_frame_layout, new IeeeResourcesFragment(), IEEE_RESOURCES_TAG).addToBackStack(null).commit();
+                mNavigationView.setCheckedItem(R.id.nav_resource);
                 break;
 
 
@@ -192,21 +215,25 @@ public class MainActivity extends AppCompatActivity
                     Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
                             "\n id: " + user.getUserId());
 //                    ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(user)).commit();
+                    ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(user), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_my_profile);
                 } else {
                     startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                 }
                 break;
 
-            case R.id.nav_search:
+            case nav_search:
                 singInStatus = isUserSigned();
                 if (singInStatus.getStatus()) {
                     User user = singInStatus.getUser();
                     Log.i(TAG, "displaySelectedFragment: name: " + user.getName() + " \n email: " + user.getEmailId() +
                             "\n id: " + user.getUserId());
 //                    ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(user)).commit();
+                    ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
                     ft.addToBackStack(null);
+                    mNavigationView.setCheckedItem(R.id.nav_search);
                 } else {
                     startActivityForResult(new Intent(this, SignInActivity.class), SEARCH_USER_RC);
                 }
@@ -250,14 +277,13 @@ public class MainActivity extends AppCompatActivity
         super.onPostResume();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (loadUserFragment) {
-
-
-//            ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser)).commit();
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
-//            ft.addToBackStack(null);
+            mNavigationView.setCheckedItem(R.id.nav_my_profile);
         } else if (loadSearchUserFragment) {
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
-//            ft.addToBackStack(null);
+            mNavigationView.setCheckedItem(R.id.nav_search);
         }
         loadUserFragment = false;
         loadSearchUserFragment = false;
@@ -271,27 +297,46 @@ public class MainActivity extends AppCompatActivity
         Log.i(TAG, itemTitle);
 
         if (itemTitle.equals(ContentUtils.EVENTS)) {
-            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG);
-            ft.addToBackStack(null);
-            ft.commit();
-        } else if (itemTitle.equals(ContentUtils.ACHIEVEMENTS)) {
-            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG);
-            ft.addToBackStack(null);
-            ft.commit();
-        } else if (itemTitle.equals(ContentUtils.IEEE)) {
+//            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG);
+//            ft.addToBackStack(null);
+//            ft.commit();
+            displaySelectedFragment(R.id.nav_events);
 
+        } else if (itemTitle.equals(ContentUtils.ACHIEVEMENTS)) {
+//            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG);
+//            ft.addToBackStack(null);
+//            ft.commit();
+            displaySelectedFragment(R.id.nav_achieve);
         } else if (itemTitle.equals((ContentUtils.PROJECTS))) {
-            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG);
-            ft.addToBackStack(null);
-            ft.commit();
+//            ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG);
+//            ft.addToBackStack(null);
+//            ft.commit();
+            displaySelectedFragment(R.id.nav_project);
+        } else if (itemTitle.equals(ContentUtils.ABOUT_IEEE)) {
+//            ft.replace(R.id.main_frame_layout,new AboutIeeeFragment(), ABOUT_IEEE_FRAGMENT_TAG);
+//            ft.addToBackStack(null);
+//            ft.commit();
+            displaySelectedFragment(R.id.nav_ieee);
+        } else if (itemTitle.equals(ContentUtils.IEEE_RESOURCES)) {
+//            ft.replace(R.id.main_frame_layout,new IeeeResourcesFragment(), IEEE_RESOURCES_TAG);
+//            ft.addToBackStack(null);
+//            ft.commit();
+            displaySelectedFragment(R.id.nav_resource);
         }
     }
 
     @Override
-    public void onInfoFragmentInteraction(Information info) {
+    public void onInfoFragmentInteraction(Information info, ImageView sharedImageView) {
+        String transitionName = ViewCompat.getTransitionName(sharedImageView);
         Log.i(TAG, "onInfoFragmentInteraction: clicked");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_frame_layout, InformationDetailsFragment.newInstance(info), "InformationDetailsFragment").commit();
+//        ft.setTransition()
+//        ft.sha
+//        ft.setCustomAnimations(R.anim.slide_up, 0);
+//        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.replace(R.id.main_frame_layout, InformationDetailsFragment.newInstance(info, transitionName), "InformationDetailsFragment")
+                .addSharedElement(sharedImageView, transitionName)
+                .commit();
         ft.addToBackStack(null);
     }
 
@@ -325,7 +370,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSignOutClicked(){
+    public void onSignOutClicked() {
 //        FirebaseAuth.getInstance().signOut();
 //        deleteUserData();
         Intent intent = new Intent(this, SignInActivity.class);
@@ -334,19 +379,18 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        ft.
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onHomeSliderInteraction(String imageUrl) {
-        Log.i(TAG, "onHomeSliderInteraction: "+imageUrl);
+        Log.i(TAG, "onHomeSliderInteraction: " + imageUrl);
         ShowFeedImagesDialogFragment dialogFragment = ShowFeedImagesDialogFragment.newInstance(imageUrl);
         dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
-        dialogFragment.show(getSupportFragmentManager(),"ShowFeedImagesDialogFragment");
+        dialogFragment.show(getSupportFragmentManager(), "ShowFeedImagesDialogFragment");
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -90,13 +91,17 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         setContentView(R.layout.activity_sign_in);
 
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+//        }
+
         Intent intent = getIntent();
         mAction = intent.getStringExtra(ContentUtils.ACTION_SIGN);
 
         mAuth = FirebaseAuth.getInstance();
 
         mProgressBar = findViewById(R.id.sign_in_progress);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

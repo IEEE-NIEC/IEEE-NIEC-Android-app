@@ -1,0 +1,33 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardview_shadow_end_color"
+    tools:context="com.sahni.rahul.ieee_niec.fragments.IeeeResourcesFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <android.support.v7.widget.Toolbar
+
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:id="@+id/resources_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/resources_recycler_view"
+        tools:listitem="@layout/ieee_resources_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+</android.support.design.widget.CoordinatorLayout>
