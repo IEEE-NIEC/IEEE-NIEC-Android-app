@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Delete account"
+        android:icon="@drawable/ic_delete"
+        android:id="@+id/fab_delete"
+        android:orderInCategory="0"/>
+
+    <item android:title="Sign out"
+        android:icon="@drawable/ic_sign_out"
+        android:id="@+id/fab_sign_out"
+        android:orderInCategory="1"/>
+    <item android:title="Edit profile"
+        android:icon="@drawable/ic_edit_user"
+        android:id="@+id/fab_edit"
+        android:orderInCategory="2"/>
+
+
+</menu>

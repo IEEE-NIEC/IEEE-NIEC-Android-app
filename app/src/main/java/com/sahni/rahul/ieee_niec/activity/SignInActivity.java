@@ -1,12 +1,10 @@
 package com.sahni.rahul.ieee_niec.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,28 +31,22 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.fragments.GetUserDetailsDialogFragment;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
-import com.sahni.rahul.ieee_niec.models.User;
-import com.sahni.rahul.ieee_niec.models.UserStatus;
-import com.sahni.rahul.ieee_niec.networking.ApiService;
-import com.sahni.rahul.ieee_niec.networking.NetworkingUtils;
-import com.sahni.rahul.ieee_niec.networking.PostUserDetailsResponse;
-import com.sahni.rahul.ieee_niec.networking.RetrofitClient;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.sahni.rahul.ieee_niec.models.FirestoreUser;
 
 import static com.sahni.rahul.ieee_niec.helpers.ContentUtils.STATE_RESOLVING_ERROR;
 
@@ -78,22 +70,19 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private String mAction;
     private boolean mResolvingError = false;
 
+    private CollectionReference mUsersCollection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mResolvingError = savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
         }
 
-//        mResolvingError = savedInstanceState != null
-//                && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
-
         setContentView(R.layout.activity_sign_in);
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
-//        }
+        mUsersCollection = FirebaseFirestore.getInstance().collection("users");
 
         Intent intent = getIntent();
         mAction = intent.getStringExtra(ContentUtils.ACTION_SIGN);
@@ -124,6 +113,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View view) {
                 signIn();
+
+
 //                startActivityForResult(AccountPicker.newChooseAccountIntent(null,
 //                        null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null),
 //                        RC_ACCPICK);
@@ -137,10 +128,20 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             progressTextView.setText("Signing out...");
             mAlertDialog = new AlertDialog.Builder(this)
                     .setView(dialogView)
-//                            .setCancelable(false)
+                    .setCancelable(false)
                     .create();
             mAlertDialog.show();
-//            signOut();
+
+        } else if (mAction != null && mAction.equals(ContentUtils.DELETE_ACCOUNT)) {
+            mSignInButton.setEnabled(false);
+            View dialogView = getLayoutInflater().inflate(R.layout.progress_dialog_layout, null);
+            TextView progressTextView = dialogView.findViewById(R.id.progress_text_view);
+            progressTextView.setText("Deleting...");
+            mAlertDialog = new AlertDialog.Builder(this)
+                    .setView(dialogView)
+                    .setCancelable(false)
+                    .create();
+            mAlertDialog.show();
         }
 
 
@@ -158,7 +159,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        Log.i(TAG, "onActivityResult: checking result code");
         if (requestCode == RC_SIGN_IN) {
+            Log.i(TAG, "onActivityResult: result code matched");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         } else if (requestCode == REQUEST_RESOLVE_ERROR) {
@@ -171,22 +174,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 }
             }
         }
-//        else if(requestCode == RC_ACCPICK && resultCode == RESULT_OK){
-//            String account = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-//            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                    .requestIdToken(getString(R.string.default_web_client_id))
-//                    .requestEmail()
-//                    .build();
-//
-//
-//            mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                    .enableAutoManage(this, this)
-//                    .setAccountName(account)
-//                    .build();
-//            signIn();
-//
-//        }
     }
 
 
@@ -218,7 +205,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         Log.i(TAG, "firebaseAuthWithGoogle: task complete");
                         if (task.isSuccessful()) {
                             Log.i(TAG, "firebaseAuthWithGoogle: task successful");
-                            getUserDetails(acct);
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            getUserDetails(firebaseUser);
+
 
                         } else {
                             Log.i(TAG, "firebaseAuthWithGoogle: task unsuccessful");
@@ -236,73 +225,40 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 });
     }
 
-    private void getUserDetails(final GoogleSignInAccount acct) {
+    private void getUserDetails(final FirebaseUser firebaseUser) {
 
-//        RetrofitClient.getInstance()
-//                .create(ApiService.class)
-//                .checkUserStatus(acct.getId())
-//                .enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        Log.i(TAG,"onResponse: "+response.body());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                        Log.i(TAG,"onFailure: "+t.getMessage());
-//                    }
-//                });
-
-
-        RetrofitClient.getInstance()
-                .create(ApiService.class)
-                .checkUserStatus(acct.getId())
-                .enqueue(new Callback<UserStatus>() {
+        mUsersCollection.document(firebaseUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onResponse(Call<UserStatus> call, Response<UserStatus> response) {
-                        Log.i(TAG, "" + response.body().toString());
-                        UserStatus userStatus = response.body();
-                        Log.i(TAG, "handleSignInResult :" + response);
-                        if (userStatus.getCode() == NetworkingUtils.USER_FOUND) {
-                            UserStatus.TempUser tempUser = userStatus.getUser();
-                            ArrayList<String> interestList = ContentUtils.getInterestArrayList(tempUser.getInterest());
-                            User user = new User
-                                    (
-                                            tempUser.getName(), tempUser.getImageUrl(),
-                                            tempUser.getEmailId(), tempUser.getMobileNumber(),
-                                            interestList, tempUser.getUserId(),
-                                            acct.getIdToken()
-                                    );
-                            Toast.makeText(SignInActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
-                            saveDetailsLocally(user);
-                        } else {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                FirestoreUser user = document.toObject(FirestoreUser.class);
+                                Log.i(TAG, "getUserDetails: success: " + user.getEmailId());
+                                saveDetails(user);
+                                Toast.makeText(SignInActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
 
-                            String imageUrl = null;
-                            if (acct != null) {
-                                Uri imageUri = acct.getPhotoUrl();
-                                if (imageUri != null) {
-                                    imageUrl = imageUri.toString();
-                                } else {
-                                    imageUrl = "";
-                                }
-                                User user = new User(acct.getDisplayName(), imageUrl, acct.getEmail(), acct.getId(), acct.getIdToken());
+                            } else {
+                                Log.d(TAG, "No such document");
+
+                                FirestoreUser user = new FirestoreUser(
+                                        firebaseUser.getUid(), firebaseUser.getDisplayName(),
+                                        firebaseUser.getEmail(), firebaseUser.getPhotoUrl().toString()
+                                );
+
                                 getAdditionalDetailsFromUser(user);
-
                             }
-
-
+                        } else {
+                            Log.i(TAG, "getUserDetails: failed: " + task.getException());
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            mSignInButton.setEnabled(true);
+                            Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<UserStatus> call, Throwable t) {
-                        mSignInButton.setEnabled(true);
-                        mProgressBar.setVisibility(View.INVISIBLE);
-                        Log.i(TAG, "onFailure: " + t.getMessage());
                     }
                 });
-
-
     }
 
     @Override
@@ -329,8 +285,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                             @Override
                             public void onResult(@NonNull Status status) {
                                 FirebaseAuth.getInstance().signOut();
-                                deleteUserData();
-                                Snackbar.make(mProgressBar,"Goodbye!",Snackbar.LENGTH_LONG).show();
+                                ContentUtils.deleteUserDataFromSharedPref(SignInActivity.this);
+//                                deleteUserData();
+                                Snackbar.make(mProgressBar, "Goodbye!", Snackbar.LENGTH_LONG).show();
 //                                Toast.makeText(SignInActivity.this, "Signed Out, Goodbye!", Toast.LENGTH_SHORT).show();
                                 mAlertDialog.dismiss();
                                 mSignInButton.setEnabled(true);
@@ -339,43 +296,70 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 );
     }
 
+    private void deleteAccount() {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if (status.isSuccess()) {
+                            mUsersCollection.document(firebaseUser.getUid())
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            ContentUtils.deleteUserDataFromSharedPref(SignInActivity.this);
+                                            Snackbar.make(mProgressBar, "Goodbye!", Snackbar.LENGTH_LONG).show();
+                                            mAlertDialog.dismiss();
+                                            mSignInButton.setEnabled(true);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.i(TAG, "deleteAccount: couldn't delete: " + e.getMessage());
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
 
-    private void saveDetails(final User user) {
+
+    private void saveDetails(final FirestoreUser user) {
         Gson gson = new Gson();
         Log.i(TAG, "saveDetails: " + gson.toJson(user));
 
         mProgressBar.setVisibility(View.VISIBLE);
         mSignInButton.setEnabled(false);
-        RetrofitClient.getInstance()
-                .create(ApiService.class)
-                .postUserDetails(user)
-                .enqueue(new Callback<PostUserDetailsResponse>() {
-                    @Override
-                    public void onResponse(@NonNull Call<PostUserDetailsResponse> call, @NonNull Response<PostUserDetailsResponse> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body().getCode() == NetworkingUtils.SUCCESS) {
-                                saveDetailsLocally(user);
-                            } else {
-                                Log.i(TAG, "saveDetails: response not successful" + response.body().getMessage());
-                            }
-                        }
-                    }
 
+        mUsersCollection.document(user.getuId())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onFailure(Call<PostUserDetailsResponse> call, Throwable t) {
-                        Log.i(TAG, "saveDetails: onFailure" + t.getMessage());
+                    public void onSuccess(Void aVoid) {
+                        Log.i(TAG, "saveDetails: Success");
+                        saveDetailsLocally(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(TAG, "saveDetails: Failed: " + e.getMessage());
                         mProgressBar.setVisibility(View.INVISIBLE);
                         mSignInButton.setEnabled(true);
+                        Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
+
                     }
                 });
-
+//
     }
 
 
     @Override
     public void onUserDetailsDialogInteraction(Bundle userDetailsBundle, DialogFragment dialogFragment) {
         if (userDetailsBundle != null) {
-            User user = userDetailsBundle.getParcelable(ContentUtils.USER_KEY);
+            FirestoreUser user = userDetailsBundle.getParcelable(ContentUtils.USER_KEY);
             saveDetails(user);
             dialogFragment.dismiss();
 
@@ -384,22 +368,17 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    private void saveDetailsLocally(User user) {
-        Gson gson = new Gson();
-        String userString = gson.toJson(user);
-        Log.i(TAG, "saveDetailsLocally: " + userString);
-        SharedPreferences.Editor editor = getSharedPreferences(ContentUtils.SHARED_PREF,
-                Context.MODE_PRIVATE).edit();
-        editor.putString(ContentUtils.USER_KEY, userString);
-        editor.apply();
+    private void saveDetailsLocally(FirestoreUser user) {
+        ContentUtils.saveUserDataInSharedPref(user, this);
         Intent intent = new Intent();
         intent.putExtra(ContentUtils.USER_KEY, user);
         setResult(RESULT_OK, intent);
         finish();
 
+
     }
 
-    private void getAdditionalDetailsFromUser(User user) {
+    private void getAdditionalDetailsFromUser(FirestoreUser user) {
         GetUserDetailsDialogFragment dialogFragment = GetUserDetailsDialogFragment.newInstance(user);
         dialogFragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         dialogFragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -422,8 +401,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (mAction != null && mAction.equals(ContentUtils.SIGNED_OUT)){
+        if (mAction != null && mAction.equals(ContentUtils.SIGNED_OUT)) {
             signOut();
+        } else if (mAction != null && mAction.equals(ContentUtils.DELETE_ACCOUNT)) {
+            deleteAccount();
         }
     }
 
@@ -444,7 +425,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 mGoogleApiClient.connect();
             }
         } else {
-            GoogleApiAvailability.getInstance().getErrorDialog(this, connectionResult.getErrorCode(), REQUEST_RESOLVE_ERROR);
+            GoogleApiAvailability.getInstance().getErrorDialog(this, connectionResult.getErrorCode(), REQUEST_RESOLVE_ERROR).show();
         }
     }
 

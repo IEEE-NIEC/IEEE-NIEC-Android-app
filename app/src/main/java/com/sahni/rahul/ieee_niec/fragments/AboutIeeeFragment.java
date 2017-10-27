@@ -3,6 +3,7 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -39,6 +40,9 @@ public class AboutIeeeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Toolbar toolbar = view.findViewById(R.id.about_ieee_toolbar);
+        CollapsingToolbarLayout toolbarLayout = view.findViewById(R.id.about_ieee_collapsing_toolbar);
+        toolbar.setTitle("About IEEE");
+
         TabLayout tabLayout = view.findViewById(R.id.about_ieee_tab_layout);
         ViewPager viewPager = view.findViewById(R.id.about_ieee_view_pager);
 
@@ -48,7 +52,7 @@ public class AboutIeeeFragment extends Fragment {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        toolbar.setTitle("About IEEE");
+//        toolbar.setTitle("About IEEE");
 
         AboutIeeePagerAdapter pagerAdapter = new AboutIeeePagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);

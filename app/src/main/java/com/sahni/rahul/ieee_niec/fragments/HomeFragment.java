@@ -109,14 +109,20 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-//        drawer.setFitsSystemWindows(true);
+        mRecyclerView = view.findViewById(R.id.item_recycler_view);
+        mItemsArrayList = new ArrayList<>();
+        mItemsArrayList.add(new Items(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.evnets_art));
+        mItemsArrayList.add(new Items(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
+        mItemsArrayList.add(new Items(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
+        mItemsArrayList.add(new Items(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
+        mItemsArrayList.add(new Items(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
+        mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mItemsArrayList, this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setAdapter(mHomeItemsAdapter);
+        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
 
         mFeedViewPager = view.findViewById(R.id.home_slider_view_pager);
         mFeedArrayList = new ArrayList<>();
-//        mFeedArrayList.add("https://firebasestorage.googleapis.com/v0/b/firebase-ieee-niec.appspot.com/o/profile_image%2FDSC_6436.jpg?alt=media&token=d6ae57a4-856b-4e39-b793-2c646c2e12cb");
-//        mFeedArrayList.add("https://firebasestorage.googleapis.com/v0/b/firebase-ieee-niec.appspot.com/o/profile_image%2F110649531844816796256?alt=media&token=2ab6bfee-a16e-449b-8633-e4420e547b75");
-//        mSliderImageUrlArrayList.add("https://image.tmdb.org/t/p/w300/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
-//        mSliderImageUrlArrayList.add("https://img.youtube.com/vi/CmRih_VtVAs/0.jpg");
         mFeedAdapter = new FeedPagerAdapter(getChildFragmentManager(), mFeedArrayList);
         mFeedViewPager.setAdapter(mFeedAdapter);
 
@@ -134,8 +140,8 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
                     mFeedArrayList.add(feed);
 
                 }
-//                mFeedViewPager.
                 mFeedAdapter.notifyDataSetChanged();
+                mRecyclerView.setPadding(0,0,0, 0);
             }
 
             @Override
@@ -144,16 +150,6 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
             }
         });
 
-        mRecyclerView = view.findViewById(R.id.item_recycler_view);
-        mItemsArrayList = new ArrayList<>();
-        mItemsArrayList.add(new Items(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.evnets_art));
-        mItemsArrayList.add(new Items(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
-        mItemsArrayList.add(new Items(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
-        mItemsArrayList.add(new Items(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
-        mItemsArrayList.add(new Items(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
-        mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mItemsArrayList, this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(mHomeItemsAdapter);
 
     }
 

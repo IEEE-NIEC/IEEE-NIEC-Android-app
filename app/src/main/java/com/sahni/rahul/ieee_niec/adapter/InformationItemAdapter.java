@@ -1,7 +1,6 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
                     .into(holder.imageView);
         }
 
-        ViewCompat.setTransitionName(holder.imageView, info.getTitle());
+//        ViewCompat.setTransitionName(holder.imageView, info.getTitle());
 
 //        holder.imageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -59,14 +58,14 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
 //                }
 //            }
 //        });
-        holder.holderView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mListener != null){
-                    mListener.onInformationItemClicked(view, holder.imageView);
-                }
-            }
-        });
+//        holder.holderView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(mListener != null){
+//                    mListener.onInformationItemClicked(view, holder.imageView);
+//                }
+//            }
+//        });
 
 
     }
@@ -89,14 +88,14 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
             holderView = itemView;
             imageView = itemView.findViewById(R.id.info_image_view);
             textView = itemView.findViewById(R.id.info_text_view);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if(listener != null){
-//                        listener.onInformationItemClicked(view, imageView);
-//                    }
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        listener.onInformationItemClicked(view);
+                    }
+                }
+            });
         }
     }
 }

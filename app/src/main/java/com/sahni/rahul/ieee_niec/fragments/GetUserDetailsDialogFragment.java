@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.sahni.rahul.ieee_niec.R;
@@ -23,7 +26,7 @@ import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
-import com.sahni.rahul.ieee_niec.models.User;
+import com.sahni.rahul.ieee_niec.models.FirestoreUser;
 
 import java.util.ArrayList;
 
@@ -34,12 +37,14 @@ import java.util.ArrayList;
 public class GetUserDetailsDialogFragment extends DialogFragment implements OnRemoveInterestClickListener {
 
     private OnUserDetailsDialogInteractionListener mListener;
-    private User mUser;
+    private FirestoreUser mUser;
     private RecyclerView mInterestRecyclerView;
     private InterestAdapter mInterestAdapter;
     private ArrayList<String> mInterestArrayList;
 
-    public static GetUserDetailsDialogFragment newInstance(User user) {
+    private static final String TAG = "GetUserDetailsDialog";
+
+    public static GetUserDetailsDialogFragment newInstance(FirestoreUser user) {
 
         Bundle args = new Bundle();
         args.putParcelable(ContentUtils.USER_KEY, user);
@@ -70,16 +75,104 @@ public class GetUserDetailsDialogFragment extends DialogFragment implements OnRe
         });
 
 
-        TextInputEditText nameEditText = view.findViewById(R.id.name_edit_text);
-        TextInputEditText emailEditText = view.findViewById(R.id.email_edit_text);
-        final EditText interestEditText = view.findViewById(R.id.interest_edit_text);
+        final TextInputEditText nameEditText = view.findViewById(R.id.name_edit_text);
+        final TextInputEditText emailEditText = view.findViewById(R.id.email_edit_text);
+        final TextInputEditText interestEditText = view.findViewById(R.id.interest_edit_text);
         ImageView addInterestImageView = view.findViewById(R.id.add_interest_image_view);
         final TextInputEditText mobileEditText = view.findViewById(R.id.mobile_edit_text);
+        final TextInputEditText aboutEditText = view.findViewById(R.id.about_edit_text);
+//        final TextInputEditText professionPlaceEditText = view.findViewById(R.id.profession_place_edit_text);
+
+        final TextInputLayout nameInputLayout = view.findViewById(R.id.name_input_layout);
+        final TextInputLayout emailInputLayout = view.findViewById(R.id.email_input_layout);
+        final TextInputLayout mobileInputLayout = view.findViewById(R.id.mobile_input_layout);
+        final TextInputLayout aboutInputLayout = view.findViewById(R.id.about_input_layout);
+//        final TextInputLayout placeInputLayout = view.findViewById(R.id.profession_place_input_layout);
+        final TextInputLayout interestInputLayout = view.findViewById(R.id.interest_text_input_layout);
+
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().equals("")){
+                    nameInputLayout.setError(null);
+                }
+            }
+        });
+
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().equals("")){
+                    emailInputLayout.setError(null);
+                }
+            }
+        });
+
+        mobileEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().equals("")){
+                    mobileInputLayout.setError(null);
+                }
+            }
+        });
+
+        aboutEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().trim().equals("")){
+                    aboutInputLayout.setError(null);
+                }
+            }
+        });
+
+
         Button saveButton = view.findViewById(R.id.save_button);
         mInterestRecyclerView= view.findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
         mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.EDIT_INTEREST, this);
         mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mInterestRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
         addInterestImageView.setOnClickListener(new View.OnClickListener() {
@@ -87,12 +180,14 @@ public class GetUserDetailsDialogFragment extends DialogFragment implements OnRe
             public void onClick(View view) {
                 String interest = interestEditText.getText().toString();
                 if(interest.trim().equals("")){
-                    interestEditText.setError("Please enter valid word");
+                    interestInputLayout.setError("Can't be blank!");
                 } else {
+                    interestInputLayout.setError(null);
                     interestEditText.setText("");
-                    interestEditText.setHint("Add more");
+                    interestInputLayout.setHint("Add more!");
                     mInterestArrayList.add(interest);
-                    mInterestAdapter.notifyDataSetChanged();
+                    mInterestAdapter.notifyItemInserted(mInterestArrayList.size());
+                    mInterestRecyclerView.smoothScrollToPosition(mInterestArrayList.size()-1);
                 }
             }
         });
@@ -101,19 +196,29 @@ public class GetUserDetailsDialogFragment extends DialogFragment implements OnRe
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = nameEditText.getText().toString();
+                String emailId = emailEditText.getText().toString();
                 String mobileNo = mobileEditText.getText().toString();
-                if(mobileNo.trim().equals("")){
-                    mobileEditText.setError("Enter valid mobile number");
-                } else {
-                    mUser.setMobileNumber(mobileNo);
-                    mUser.setInterestArrayList(mInterestArrayList);
+                String about = aboutEditText.getText().toString();
 
-                    /**
-                     * code for sending data to server and getting result
-                     */
 
-//                    saveDetailsInServer();
-
+                if(name.trim().equals("")){
+                    nameInputLayout.setError("Can't be blank!");
+                } else if(emailId.trim().equals("")){
+                    emailInputLayout.setError("Can't be blank!");
+                }else if(mobileNo.trim().equals("")){
+                    mobileInputLayout.setError("Can't be blank!");
+                } else if(about.trim().equals("")){
+                    aboutInputLayout.setError("Tell us how awesome you are!");
+                }else if(mInterestArrayList.isEmpty()){
+                    interestInputLayout.setError("Show off some off your skills!");
+                }
+                else {
+                    mUser.setName(name);
+                    mUser.setEmailId(emailId);
+                    mUser.setMobileNo(mobileNo);
+                    mUser.setInterestMap(ContentUtils.getMapFromArrayList(mInterestArrayList));
+                    mUser.setAbout(about);
 
                     if(mListener != null){
                         Bundle bundle = new Bundle();
@@ -123,10 +228,13 @@ public class GetUserDetailsDialogFragment extends DialogFragment implements OnRe
                 }
             }
         });
-        nameEditText.setText(mUser.getName());
-        nameEditText.setEnabled(false);
-        emailEditText.setText(mUser.getEmailId());
-        emailEditText.setEnabled(false);
+        if(mUser != null) {
+            if (!(mUser.getEmailId() == null || mUser.getEmailId().equals(""))) {
+                emailEditText.setText(mUser.getEmailId());
+                emailEditText.setEnabled(false);
+                emailEditText.clearFocus();
+            }
+        }
 
         return view;
     }
@@ -167,6 +275,6 @@ public class GetUserDetailsDialogFragment extends DialogFragment implements OnRe
     public void onRemovedClicked(View view) {
         int position = mInterestRecyclerView.getChildAdapterPosition(view);
         mInterestArrayList.remove(position);
-        mInterestAdapter.notifyDataSetChanged();
+        mInterestAdapter.notifyItemRemoved(position);
     }
 }

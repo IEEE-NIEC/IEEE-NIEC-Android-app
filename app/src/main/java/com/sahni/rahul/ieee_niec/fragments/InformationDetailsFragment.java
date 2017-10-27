@@ -2,7 +2,6 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -11,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,6 @@ import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.models.Information;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -30,19 +29,18 @@ import com.squareup.picasso.Picasso;
  */
 public class InformationDetailsFragment extends Fragment {
 
+    public static final String TAG = "InformationDetailsFrag";
     private Information mInfo;
     private OnInfoDetailsFragmentInteractionListener mListener;
-    private String mTransitionName;
 
     public InformationDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static InformationDetailsFragment newInstance(Information info, String transitionName){
+    public static InformationDetailsFragment newInstance(Information info){
         InformationDetailsFragment fragment = new InformationDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ContentUtils.INFO_KEY, info);
-        bundle.putString(ContentUtils.TRANSITION_NAME, transitionName);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -53,7 +51,6 @@ public class InformationDetailsFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             mInfo = bundle.getParcelable(ContentUtils.INFO_KEY);
-            mTransitionName = bundle.getString(ContentUtils.TRANSITION_NAME);
         }
     }
 
@@ -92,26 +89,16 @@ public class InformationDetailsFragment extends Fragment {
         });
 
         ImageView imageView = view.findViewById(R.id.info_details_image_view);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageView.setTransitionName(mTransitionName);
-        }
         TextView titleTextView = view.findViewById(R.id.info_details_title_text_view);
         TextView descriptionTextView = view.findViewById(R.id.info_details_description_text_view);
         Picasso.with(getActivity())
                 .load(mInfo.getImageUrlArrayList().get(0))
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        startPostponedEnterTransition();
-                    }
-
-                    @Override
-                    public void onError() {
-                        startPostponedEnterTransition();
-                    }
-                });
+                .placeholder(R.drawable.place)
+                .error(R.drawable.place)
+                .into(imageView);
         titleTextView.setText(mInfo.getTitle());
         descriptionTextView.setText(mInfo.getDescription());
+        Log.i(TAG, "desc: "+mInfo.getDescription());
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

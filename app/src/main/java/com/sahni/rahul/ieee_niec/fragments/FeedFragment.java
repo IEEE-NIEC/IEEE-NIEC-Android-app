@@ -75,8 +75,6 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView = view.findViewById(R.id.home_slider_image_view);
         final ProgressBar progressBar = view.findViewById(R.id.home_slider_progress);
-//        progressBar.getIndeterminateDrawable().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
-
         final String imageUrl = mFeed.getmFeedImageUrl();
 
         imageView.setOnClickListener(new View.OnClickListener() {

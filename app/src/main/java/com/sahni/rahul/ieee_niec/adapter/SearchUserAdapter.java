@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
-import com.sahni.rahul.ieee_niec.models.User;
+import com.sahni.rahul.ieee_niec.models.FirestoreUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,10 +22,10 @@ import java.util.ArrayList;
 public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.SearchUserViewHolder> {
 
     private Context mContext;
-    private ArrayList<User> mArrayList;
+    private ArrayList<FirestoreUser> mArrayList;
     private OnSearchUserResultClickListener mListener;
 
-    public SearchUserAdapter(Context mContext, ArrayList<User> mArrayList, OnSearchUserResultClickListener listener) {
+    public SearchUserAdapter(Context mContext, ArrayList<FirestoreUser> mArrayList, OnSearchUserResultClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.mListener = listener;
@@ -39,7 +39,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
 
     @Override
     public void onBindViewHolder(SearchUserViewHolder holder, int position) {
-        User user = mArrayList.get(position);
+        FirestoreUser user = mArrayList.get(position);
         holder.textView.setText(user.getName());
         if(user.getImageUrl() != null) {
             if(!user.getImageUrl().isEmpty()) {

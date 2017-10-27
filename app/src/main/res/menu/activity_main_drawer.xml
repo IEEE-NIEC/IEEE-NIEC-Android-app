@@ -35,16 +35,19 @@
             android:title="Account">
 
             <menu>
-                <item
-                    android:id="@+id/nav_my_profile"
-                    android:icon="@drawable/ic_action_user"
-                    android:title="My profile"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/nav_search"
-                    android:icon="@drawable/ic_action_search"
-                    android:title="Search"
-                    app:showAsAction="never" />
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_my_profile"
+                        android:icon="@drawable/ic_action_user"
+                        android:title="My profile"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/nav_search"
+                        android:icon="@drawable/ic_action_search"
+                        android:title="Search"
+                        app:showAsAction="never" />
+                </group>
+
             </menu>
         </item>
 

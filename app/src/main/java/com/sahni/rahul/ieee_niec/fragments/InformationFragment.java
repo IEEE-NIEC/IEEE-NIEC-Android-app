@@ -2,10 +2,13 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,21 +16,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InformationItemAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.helpers.EndlessRecyclerViewScrollListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInformationItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
-import com.sahni.rahul.ieee_niec.networking.EventsResponse;
 
 import java.util.ArrayList;
 
@@ -41,17 +49,30 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
     private InformationItemAdapter mInfoAdapter;
     private ArrayList<Information> mInfoArrayList;
     private ProgressBar mProgressBar;
+    private CardView mLoadMoreProgress;
+    private TextView mNoInfoTextView;
+
     private OnInfoFragmentInteractionListener mListener;
     private String mInfoType;
 
-    private Bundle mSaveStateBundle;
-    private EventsResponse mEventsResponse;
+    private AppBarLayout mAppBarLayout;
 
-    private DatabaseReference mEventsReference;
-    private DatabaseReference mAchievementsReference;
-    private DatabaseReference mProjectsReference;
-    private DatabaseReference mDatabaseReference;
+    private EventListener<QuerySnapshot> mEventListener;
 
+    private static final int NO_OF_INFO_TO_FETCH = 5;
+    private boolean isMoreDataAvailable = true;
+
+//    int mScrollPosition = 0;
+
+    private int mLastItemId;
+
+    private CollectionReference mCollectionReference;
+
+    private ListenerRegistration mListenerRegistration;
+
+    private EndlessRecyclerViewScrollListener mScrollListener;
+
+    private boolean isFetchingDataFirstTime = true;
 
     public InformationFragment() {
         // Required empty public constructor
@@ -70,93 +91,185 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mInfoType = bundle.getString(INFO_KEY);
-        Log.i(TAG, "onCreate");
+//        mScrollPosition = bundle.getInt(SCROLL_POSITION_KEY);
+//        Log.i(TAG, "onCreate: scroll position: "+mScrollPosition);
+//        Log.i(TAG, "")
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.i(TAG,"onCreateView");
+        Log.i(TAG, "onCreateView");
+
         return inflater.inflate(R.layout.fragment_information, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "onViewCreated");
+
         final Toolbar toolbar = view.findViewById(R.id.information_toolbar);
         toolbar.setTitle(mInfoType);
+
+        mAppBarLayout = view.findViewById(R.id.info_appbar);
         mProgressBar = view.findViewById(R.id.information_progress_bar);
+        mLoadMoreProgress = view.findViewById(R.id.load_more_progress);
+        mNoInfoTextView = view.findViewById(R.id.no_info_text_view);
+        mNoInfoTextView.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mLoadMoreProgress.setVisibility(View.INVISIBLE);
 
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                getActivity(),drawerLayout,toolbar,R.string.navigation_drawer_open, R.string.navigation_drawer_close
+                getActivity(), drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        mInfoArrayList = new ArrayList<>();
-        mInfoRecyclerView = view.findViewById(R.id.information_recycler_view);
-        mInfoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false));
-        mInfoAdapter = new InformationItemAdapter(getActivity(), mInfoArrayList, this);
-        mInfoRecyclerView.setAdapter(mInfoAdapter);
-
-//        mDatabaseReference = ;
-
-        if(mInfoType.equals(ContentUtils.EVENTS)){
-            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("events");
-        } else if(mInfoType.equals(ContentUtils.ACHIEVEMENTS)){
-            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("achievements");
-        } else {
-            mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("projects");
+        switch (mInfoType) {
+            case ContentUtils.EVENTS:
+                mCollectionReference = FirebaseFirestore.getInstance().collection("events");
+                break;
+            case ContentUtils.ACHIEVEMENTS:
+                mCollectionReference = FirebaseFirestore.getInstance().collection("achievements");
+                break;
+            case ContentUtils.PROJECTS:
+                mCollectionReference = FirebaseFirestore.getInstance().collection("projects");
+                break;
         }
 
+        if (mInfoArrayList != null) {
+            isFetchingDataFirstTime = false;
+            mAppBarLayout.setExpanded(false);
 
+        } else {
+            mInfoArrayList = new ArrayList<>();
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        }
+
+        mInfoRecyclerView = view.findViewById(R.id.information_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mInfoRecyclerView.setLayoutManager(layoutManager);
+        mInfoAdapter = new InformationItemAdapter(getActivity(), mInfoArrayList, this);
+        mInfoRecyclerView.setAdapter(mInfoAdapter);
+        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mProgressBar.setVisibility(View.GONE);
-                mInfoArrayList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Information info = snapshot.getValue(Information.class);
-                    mInfoArrayList.add(info);
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: total items :" + totalItemsCount);
+                if (isMoreDataAvailable) {
+                    Log.i(TAG, "onLoadMore: fetching more data");
+                    fetchMoreData();
                 }
-                mInfoAdapter.notifyDataSetChanged();
             }
+        };
+        mInfoRecyclerView.addOnScrollListener(mScrollListener);
+        if(isFetchingDataFirstTime){
+            fetchDataFirstTime();
+        } else {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.i(TAG, "Database error : "+databaseError.getMessage());
-            }
-        });
+            /**
+             * bit of a hack to remove bug which hides some part of recycler view's last item.
+             * This bug is only encountered when CollapsingToolbarLayout is used with RecyclerView
+             */
+            mInfoRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
+        }
+    }
 
-//        if(mInfoArrayList != null){
-//
-//            mInfoRecyclerView.setAdapter(mInfoAdapter);
-//            ArrayList<Information> tempArrayList = new ArrayList<>();
-//            tempArrayList.addAll(mInfoArrayList);
-//            displayDetails(tempArrayList);
-//        } else {
-//            mInfoArrayList = new ArrayList<>();
-//
-//            mInfoRecyclerView.setAdapter(mInfoAdapter);
-//            fetchData();
-//        }
+    private void fetchDataFirstTime() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mInfoRecyclerView.setPadding(0,0,0,0);
+        mScrollListener.resetState();
+        attachCollectionSnapshotListener();
+    }
 
+    private void fetchMoreData() {
+        mInfoRecyclerView.setPadding(0,0,0,0);
+        mLoadMoreProgress.setVisibility(View.VISIBLE);
+        mCollectionReference.orderBy("id", Query.Direction.DESCENDING)
+                .limit(NO_OF_INFO_TO_FETCH)
+                .startAfter(mLastItemId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()) {
+                                for (DocumentSnapshot documents : querySnapshot.getDocuments()) {
+                                    Information information = documents.toObject(Information.class);
+                                    mInfoArrayList.add(information);
+                                }
+                                Information info  = mInfoArrayList.get(mInfoArrayList.size()-1);
+                                mLastItemId = info.getId();
+                                mInfoAdapter.notifyDataSetChanged();
+                            } else {
+                                isMoreDataAvailable = false;
+                                Log.i(TAG, "fetchData: No result available");
+                            }
+                        } else {
+                            Log.i(TAG, "fetchData: Error in getting result");
+                        }
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                        mLoadMoreProgress.setVisibility(View.INVISIBLE);
+                    }
+                });
 
     }
+
+    private void attachCollectionSnapshotListener(){
+        if(mEventListener == null){
+            mEventListener = new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                    if(e == null){
+                        if (!documentSnapshots.isEmpty()) {
+                            mInfoArrayList.clear();
+                            for (DocumentSnapshot documents : documentSnapshots.getDocuments()) {
+                                Information information = documents.toObject(Information.class);
+                                mInfoArrayList.add(information);
+                            }
+                            Information info  = mInfoArrayList.get(mInfoArrayList.size()-1);
+                            mLastItemId = info.getId();
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            mInfoAdapter.notifyDataSetChanged();
+                        } else {
+                            isMoreDataAvailable = false;
+                            Log.i(TAG, "fetchData: No result available");
+                            mNoInfoTextView.setVisibility(View.VISIBLE);
+                            mProgressBar.setVisibility(View.GONE);
+                            mNoInfoTextView.setText("No "+mInfoType+ " found!");
+                        }
+                    } else {
+                        mNoInfoTextView.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+                        mNoInfoTextView.setText("Error getting "+mInfoType+"!. Please try again later");
+                        Log.i(TAG, "fetchDataFirstTime: error reading data: "+e.getMessage());
+                    }
+                }
+            };
+
+          mListenerRegistration = mCollectionReference.orderBy("id", Query.Direction.DESCENDING)
+//                .endAt(NO_OF_INFO_TO_FETCH)
+                    .limit(NO_OF_INFO_TO_FETCH)
+                    .addSnapshotListener(mEventListener);
+        }
+    }
+
+    private void detachCollectionSnapshotListener(){
+        if(mListenerRegistration != null){
+            mListenerRegistration.remove();
+        }
+    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Log.i(TAG, "onAttach");
-        if(context instanceof OnInfoFragmentInteractionListener){
+        if (context instanceof OnInfoFragmentInteractionListener) {
             mListener = (OnInfoFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()+" must implement OnInformationItemClickListener");
+            throw new RuntimeException(context.toString() + " must implement OnInformationItemClickListener");
         }
     }
 
@@ -167,110 +280,22 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
         Log.i(TAG, "onDetach");
     }
 
-//    private void fetchData() {
-//
-//        if(mInfoType.equals(ContentUtils.EVENTS)) {
-//            RetrofitClient.getInstance()
-//                    .create(ApiService.class)
-//                    .getEvents()
-//                    .enqueue(new Callback<EventsResponse>() {
-//                        @Override
-//                        public void onResponse(Call<EventsResponse> call, Response<EventsResponse> response) {
-//                            if (response.isSuccessful()) {
-//                                mEventsResponse = response.body();
-//                                displayDetails(mEventsResponse.getInfoArrayList());
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<EventsResponse> call, Throwable t) {
-//                            t.printStackTrace();
-//                        }
-//                    });
-//        } else if(mInfoType.equals(ContentUtils.ACHIEVEMENTS)){
-//
-//        } else if(mInfoType.equals(ContentUtils.PROJECTS)){
-//
-//        }
-//    }
-
-//    private void displayDetails(ArrayList<Information> informationArrayList) {
-//        Log.i(TAG, "displayDetails");
-//        mProgressBar.setVisibility(View.GONE);
-////        mInfoRecyclerView.setVisibility(View.VISIBLE);
-//        mInfoArrayList.clear();
-//        Log.i(TAG,"displayDetails: size ="+informationArrayList.size());
-//        mInfoArrayList.addAll(informationArrayList);
-//        mInfoAdapter.notifyDataSetChanged();
-//    }
-
-
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG, "onPause");
-//        if(mSaveStateBundle == null && mEventsResponse != null){
-//            mSaveStateBundle = new Bundle();
-//            mSaveStateBundle.putParcelable(ContentUtils.INFO_KEY, mEventsResponse);
-//        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG, "onDestroyView");
+        detachCollectionSnapshotListener();
     }
 
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.i(TAG, "onViewStateRestored");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated");
-    }
-
-    @Override
-    public void onInformationItemClicked(View view, ImageView sharedImageView) {
-        if(mListener != null) {
+    public void onInformationItemClicked(View view) {
+        if (mListener != null) {
             int position = mInfoRecyclerView.getChildAdapterPosition(view);
             Information info = mInfoArrayList.get(position);
-            mListener.onInfoFragmentInteraction(info, sharedImageView);
+            mListener.onInfoFragmentInteraction(info);
+
+
         }
     }
 }

@@ -24,6 +24,14 @@ public class User implements Parcelable{
     @SerializedName("mobile")
     private String mobileNumber;
 
+    private String sex;
+
+    private String college;
+
+    private String branch;
+
+    private String year;
+
     @SerializedName("interest")
     private ArrayList<String> interestArrayList;
 
@@ -63,14 +71,34 @@ public class User implements Parcelable{
         this.idToken = idToken;
     }
 
+
     protected User(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();
         emailId = in.readString();
         mobileNumber = in.readString();
+        sex = in.readString();
+        college = in.readString();
+        branch = in.readString();
+        year = in.readString();
         interestArrayList = in.createStringArrayList();
         userId = in.readString();
         idToken = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(imageUrl);
+        dest.writeString(emailId);
+        dest.writeString(mobileNumber);
+        dest.writeString(sex);
+        dest.writeString(college);
+        dest.writeString(branch);
+        dest.writeString(year);
+        dest.writeStringList(interestArrayList);
+        dest.writeString(userId);
+        dest.writeString(idToken);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -84,23 +112,6 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(imageUrl);
-        parcel.writeString(emailId);
-        parcel.writeString(mobileNumber);
-        parcel.writeStringList(interestArrayList);
-        parcel.writeString(userId);
-        parcel.writeString(idToken);
-    }
-
 
     public String getName() {
         return name;
@@ -157,4 +168,43 @@ public class User implements Parcelable{
     public void setIdToken(String idToken) {
         this.idToken = idToken;
     }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getCollege() {
+        return college;
+    }
+
+    public void setCollege(String college) {
+        this.college = college;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }

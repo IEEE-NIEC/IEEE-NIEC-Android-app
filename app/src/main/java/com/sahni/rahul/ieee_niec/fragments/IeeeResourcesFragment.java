@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.IeeeResourcesAdapter;
+import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnIeeeResourcesClickListener;
 import com.sahni.rahul.ieee_niec.models.Resources;
 
@@ -48,6 +50,7 @@ public class IeeeResourcesFragment extends Fragment implements OnIeeeResourcesCl
         super.onViewCreated(view, savedInstanceState);
 
         Toolbar toolbar = view.findViewById(R.id.resources_toolbar);
+        CollapsingToolbarLayout toolbarLayout = view.findViewById(R.id.ieee_resources_collapsing_toolbar);
         toolbar.setTitle("IEEE Resources");
 
         DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
@@ -71,6 +74,7 @@ public class IeeeResourcesFragment extends Fragment implements OnIeeeResourcesCl
         IeeeResourcesAdapter adapter = new IeeeResourcesAdapter(getContext(), mArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
     }
 
     @Override

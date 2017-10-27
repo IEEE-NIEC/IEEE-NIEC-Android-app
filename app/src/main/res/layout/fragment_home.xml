@@ -13,7 +13,7 @@
         android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/home_collapsing_toolbar"

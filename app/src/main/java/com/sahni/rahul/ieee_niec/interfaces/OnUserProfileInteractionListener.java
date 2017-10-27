@@ -1,6 +1,6 @@
 package com.sahni.rahul.ieee_niec.interfaces;
 
-import com.sahni.rahul.ieee_niec.models.User;
+import com.sahni.rahul.ieee_niec.models.FirestoreUser;
 
 /**
  * Created by sahni on 24-Sep-17.
@@ -8,5 +8,9 @@ import com.sahni.rahul.ieee_niec.models.User;
 
 public interface OnUserProfileInteractionListener {
 
-    void onUserProfileInteraction(User user);
+    void editProfile(FirestoreUser user);
+
+    void signOut();
+
+    void deleteAccount();
 }

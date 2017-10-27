@@ -5,18 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <TextView
-        android:id="@+id/hint_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/colorPrimary"
-        android:text="Search for people based on their interest or name"/>
-    <ProgressBar
-        style="@style/AppTheme.DarkAccent"
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/search_user_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
