@@ -2,15 +2,12 @@ package com.sahni.rahul.ieee_niec.activity;
 
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -43,18 +40,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.fragments.GetUserDetailsDialogFragment;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 
 import static com.sahni.rahul.ieee_niec.helpers.ContentUtils.STATE_RESOLVING_ERROR;
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener
-        , OnUserDetailsDialogInteractionListener, GoogleApiClient.ConnectionCallbacks {
+        ,GoogleApiClient.ConnectionCallbacks {
 
     private static final String TAG = "SignInActivity";
-    private static final int RC_ACCPICK = 100;
+    private static final int RC_GET_USER_DETAILS = 600;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 1;
     private ProgressBar mProgressBar;
@@ -173,6 +168,15 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     mGoogleApiClient.connect();
                 }
             }
+        } else if(requestCode == RC_GET_USER_DETAILS){
+            if(resultCode == RESULT_OK){
+                User user = data.getParcelableExtra(ContentUtils.USER_KEY);
+                saveDetails(user);
+            } else {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mSignInButton.setEnabled(true);
+                Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -184,7 +188,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
             final GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
-//            getUserDetails(acct);
+//            checkForUserDetailsOnline(acct);
 
             Log.i(TAG, "handleSignInResult: name = " + acct.getDisplayName());
             Log.i(TAG, "handleSignInResult: id token = " + acct.getIdToken());
@@ -206,7 +210,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         if (task.isSuccessful()) {
                             Log.i(TAG, "firebaseAuthWithGoogle: task successful");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            getUserDetails(firebaseUser);
+                            checkForUserDetailsOnline(firebaseUser);
 
 
                         } else {
@@ -225,7 +229,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 });
     }
 
-    private void getUserDetails(final FirebaseUser firebaseUser) {
+    private void checkForUserDetailsOnline(final FirebaseUser firebaseUser) {
 
         mUsersCollection.document(firebaseUser.getUid())
                 .get()
@@ -235,15 +239,15 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                FirestoreUser user = document.toObject(FirestoreUser.class);
-                                Log.i(TAG, "getUserDetails: success: " + user.getEmailId());
-                                saveDetails(user);
+                                User user = document.toObject(User.class);
+                                Log.i(TAG, "checkForUserDetailsOnline: success: " + user.getEmailId());
                                 Toast.makeText(SignInActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
+                                saveDetailsLocally(user);
 
                             } else {
                                 Log.d(TAG, "No such document");
 
-                                FirestoreUser user = new FirestoreUser(
+                                User user = new User(
                                         firebaseUser.getUid(), firebaseUser.getDisplayName(),
                                         firebaseUser.getEmail(), firebaseUser.getPhotoUrl().toString()
                                 );
@@ -251,7 +255,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                 getAdditionalDetailsFromUser(user);
                             }
                         } else {
-                            Log.i(TAG, "getUserDetails: failed: " + task.getException());
+                            Log.i(TAG, "checkForUserDetailsOnline: failed: " + task.getException());
                             mProgressBar.setVisibility(View.INVISIBLE);
                             mSignInButton.setEnabled(true);
                             Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
@@ -326,7 +330,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-    private void saveDetails(final FirestoreUser user) {
+    private void saveDetails(final User user) {
         Gson gson = new Gson();
         Log.i(TAG, "saveDetails: " + gson.toJson(user));
 
@@ -339,6 +343,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i(TAG, "saveDetails: Success");
+                        Toast.makeText(SignInActivity.this, "Welcome, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                         saveDetailsLocally(user);
                     }
                 })
@@ -356,19 +361,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
 
-    @Override
-    public void onUserDetailsDialogInteraction(Bundle userDetailsBundle, DialogFragment dialogFragment) {
-        if (userDetailsBundle != null) {
-            FirestoreUser user = userDetailsBundle.getParcelable(ContentUtils.USER_KEY);
-            saveDetails(user);
-            dialogFragment.dismiss();
 
-        } else {
-            dialogFragment.dismiss();
-        }
-    }
-
-    private void saveDetailsLocally(FirestoreUser user) {
+    private void saveDetailsLocally(User user) {
         ContentUtils.saveUserDataInSharedPref(user, this);
         Intent intent = new Intent();
         intent.putExtra(ContentUtils.USER_KEY, user);
@@ -378,12 +372,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
-    private void getAdditionalDetailsFromUser(FirestoreUser user) {
-        GetUserDetailsDialogFragment dialogFragment = GetUserDetailsDialogFragment.newInstance(user);
-        dialogFragment.setEnterTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        dialogFragment.setExitTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragmentTheme);
-        dialogFragment.show(getSupportFragmentManager(), "dialogFragment");
+    private void getAdditionalDetailsFromUser(User user) {
+        Intent intent = new Intent(this, GetUserDetailsActivity.class);
+        intent.putExtra(ContentUtils.USER_KEY, user);
+        startActivityForResult(intent, RC_GET_USER_DETAILS);
     }
 
 
@@ -393,11 +385,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 //        super.onBackPressed();
     }
 
-    private void deleteUserData() {
-        SharedPreferences.Editor editor = getSharedPreferences(ContentUtils.SHARED_PREF, MODE_PRIVATE).edit();
-        editor.clear();
-        editor.apply();
-    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -434,4 +421,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
     }
+
+
 }

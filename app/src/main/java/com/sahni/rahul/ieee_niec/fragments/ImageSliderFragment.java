@@ -1,4 +1,4 @@
-package com.sahni.rahul.ieee_niec.adapter;
+package com.sahni.rahul.ieee_niec.fragments;
 
 
 import android.os.Bundle;
@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -51,9 +53,20 @@ public class ImageSliderFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView = view.findViewById(R.id.slider_image_view);
+        final ProgressBar progressBar = view.findViewById(R.id.slider_progress_bar);
         Picasso.with(getActivity())
                 .load(mImageUrl)
-                .placeholder(R.drawable.place)
-                .into(imageView);
+                .error(R.drawable.place)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
     }
 }

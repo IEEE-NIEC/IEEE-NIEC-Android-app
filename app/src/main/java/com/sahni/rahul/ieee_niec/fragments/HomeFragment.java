@@ -29,7 +29,7 @@ import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Feed;
-import com.sahni.rahul.ieee_niec.models.Items;
+import com.sahni.rahul.ieee_niec.models.HomeItems;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
     private static String TAG = "HomeFragment";
     private RecyclerView mRecyclerView;
     private HomeItemsAdapter mHomeItemsAdapter;
-    private ArrayList<Items> mItemsArrayList;
+    private ArrayList<HomeItems> mHomeItemsArrayList;
 
     private ViewPager mFeedViewPager;
     private FeedPagerAdapter mFeedAdapter;
@@ -110,13 +110,13 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         toggle.syncState();
 
         mRecyclerView = view.findViewById(R.id.item_recycler_view);
-        mItemsArrayList = new ArrayList<>();
-        mItemsArrayList.add(new Items(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.evnets_art));
-        mItemsArrayList.add(new Items(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
-        mItemsArrayList.add(new Items(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
-        mItemsArrayList.add(new Items(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
-        mItemsArrayList.add(new Items(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
-        mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mItemsArrayList, this);
+        mHomeItemsArrayList = new ArrayList<>();
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.evnets_art));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
+        mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);
         mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
@@ -178,8 +178,8 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
     public void onHomeItemClicked(View view) {
         if(listener != null){
             int position = mRecyclerView.getChildAdapterPosition(view);
-            Items items = mItemsArrayList.get(position);
-            listener.onHomeFragmentInteraction(items.getTitle());
+            HomeItems homeItems = mHomeItemsArrayList.get(position);
+            listener.onHomeFragmentInteraction(homeItems.getTitle());
         }
     }
 

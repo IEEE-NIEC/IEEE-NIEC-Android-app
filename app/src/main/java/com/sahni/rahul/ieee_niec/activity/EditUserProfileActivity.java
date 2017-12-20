@@ -38,7 +38,7 @@ import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -50,7 +50,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
 
     private static final String TAG = "EditUserProfileActivity";
     private static final int PICK_IMAGE_REQUEST = 1001;
-    private FirestoreUser mUser;
+    private User mUser;
     private RecyclerView mInterestRecyclerView;
     private InterestAdapter mInterestAdapter;
     private ArrayList<String> mInterestArrayList;
@@ -337,7 +337,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         aboutEditText.setText(mUser.getAbout());
     }
 
-    private void saveDetails(final FirestoreUser user, final Dialog progressDialog) {
+    private void saveDetails(final User user, final Dialog progressDialog) {
 
         if(isImageChanged){
 
@@ -370,7 +370,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         }
     }
 
-    private void pushUpdatedDataToServer(final FirestoreUser user, final Dialog progressDialog){
+    private void pushUpdatedDataToServer(final User user, final Dialog progressDialog){
 
 
         mUsersCollection.document(user.getuId())

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeItemClickListener;
-import com.sahni.rahul.ieee_niec.models.Items;
+import com.sahni.rahul.ieee_niec.models.HomeItems;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.ItemViewHolder> {
 
     private Context context;
-    private ArrayList<Items> arrayList;
+    private ArrayList<HomeItems> arrayList;
     private OnHomeItemClickListener listener;
 
-    public HomeItemsAdapter(Context context, ArrayList<Items> arrayList, OnHomeItemClickListener listener) {
+    public HomeItemsAdapter(Context context, ArrayList<HomeItems> arrayList, OnHomeItemClickListener listener) {
         this.context = context;
         this.arrayList = arrayList;
         this.listener = listener;
@@ -38,16 +38,16 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        Items items = arrayList.get(position);
-        holder.imageView.setImageResource(items.getDrawableId());
-        holder.bgImageView.setImageResource(items.getBgDrawableId());
+        HomeItems homeItems = arrayList.get(position);
+        holder.imageView.setImageResource(homeItems.getDrawableId());
+        holder.bgImageView.setImageResource(homeItems.getBgDrawableId());
 //        Picasso.with(context)
-//                .load(items.getDrawableId())
+//                .load(homeItems.getDrawableId())
 //                .into(holder.imageView);
 //        Picasso.with(context)
-//                .load(items.getBgDrawableId())
+//                .load(homeItems.getBgDrawableId())
 //                .into(holder.bgImageView);
-        holder.textView.setText(items.getTitle());
+        holder.textView.setText(homeItems.getTitle());
     }
 
     @Override

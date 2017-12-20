@@ -25,7 +25,7 @@ import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserProfileInteractionListener;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -39,7 +39,7 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 public class UserProfileFragment extends Fragment {
 
     private static final String TAG = "UserProfileFragment";
-    private FirestoreUser mUser;
+    private User mUser;
 
     private ImageView mUserImageView;
     //    private TextView mNameTextView;
@@ -60,7 +60,7 @@ public class UserProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static UserProfileFragment newInstance(FirestoreUser user) {
+    public static UserProfileFragment newInstance(User user) {
 
         Bundle args = new Bundle();
         args.putParcelable(ContentUtils.USER_KEY, user);

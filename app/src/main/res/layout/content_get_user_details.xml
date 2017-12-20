@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sahni.rahul.ieee_niec.activity.GetUserDetailsActivity"
     android:orientation="vertical"
-
     android:layout_marginStart="@dimen/activity_horizontal_margin"
     android:layout_marginEnd="@dimen/activity_horizontal_margin"
-
-
-    android:fillViewport="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:fillViewport="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -158,6 +156,7 @@
             app:layout_constraintTop_toBottomOf="@+id/interest_text_input_layout" />
 
         <android.support.v7.widget.RecyclerView
+            tools:listitem="@layout/interest_item_layout"
             android:id="@+id/interest_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -184,24 +183,6 @@
                 android:inputType="textCapSentences"
                 android:textColorHint="@android:color/black" />
         </android.support.design.widget.TextInputLayout>
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:id="@+id/profession_place_input_layout"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:textColorHint="@android:color/black"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintRight_toRightOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/profession_input_layout">-->
-
-            <!--<android.support.design.widget.TextInputEditText-->
-                <!--android:id="@+id/profession_place_edit_text"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="At? ex: NIEC"-->
-                <!--android:inputType="textCapSentences" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
 
 
     </android.support.constraint.ConstraintLayout>

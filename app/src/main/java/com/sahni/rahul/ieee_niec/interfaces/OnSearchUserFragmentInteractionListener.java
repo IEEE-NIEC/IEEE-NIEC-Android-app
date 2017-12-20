@@ -1,6 +1,6 @@
 package com.sahni.rahul.ieee_niec.interfaces;
 
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 
 /**
  * Created by sahni on 10-Sep-17.
@@ -8,5 +8,5 @@ import com.sahni.rahul.ieee_niec.models.FirestoreUser;
 
 public interface OnSearchUserFragmentInteractionListener {
 
-    void onSearchUserFragmentInteraction(FirestoreUser user);
+    void onSearchUserFragmentInteraction(User user);
 }

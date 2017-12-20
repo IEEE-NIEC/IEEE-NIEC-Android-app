@@ -5,10 +5,15 @@
     <ImageView
         android:id="@+id/slider_image_view"
         android:layout_centerInParent="true"
-        android:background="@drawable/place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"/>
+    <ProgressBar
+        android:id="@+id/slider_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyleSmall"/>
 
 </RelativeLayout>

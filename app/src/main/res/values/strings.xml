@@ -12,4 +12,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_information_image_slider">InformationImageSliderActivity</string>
+    <string name="title_activity_show_feed_image">ShowFeedImageActivity</string>
+    <string name="title_activity_get_user_details">GetUserDetailsActivity</string>
 </resources>

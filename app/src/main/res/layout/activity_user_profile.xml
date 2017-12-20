@@ -24,12 +24,12 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <RelativeLayout
-                android:fitsSystemWindows="true"
                 android:orientation="vertical"
                 app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ProgressBar
+                    android:fitsSystemWindows="true"
                     android:id="@+id/image_progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                     android:fitsSystemWindows="true"
                     android:layout_centerInParent="true"
                     android:id="@+id/user_image_view"
-                    android:minHeight="250dp"
+                    android:minHeight="200dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
@@ -49,8 +49,8 @@
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
-                app:layout_collapseMode="pin"
                 android:fitsSystemWindows="false"
+                app:layout_collapseMode="pin"
                 android:id="@+id/user_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

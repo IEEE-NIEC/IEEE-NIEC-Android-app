@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
+import com.sahni.rahul.ieee_niec.fragments.ImageSliderFragment;
+
 import java.util.ArrayList;
 
 /**

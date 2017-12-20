@@ -1,20 +1,17 @@
-package com.sahni.rahul.ieee_niec.fragments;
+package com.sahni.rahul.ieee_niec.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,8 +19,7 @@ import android.widget.TextView;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnUserDetailsDialogInteractionListener;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -31,77 +27,55 @@ import java.util.ArrayList;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 
-/**
- * Created by sahni on 10-Sep-17.
- */
+public class UserProfileActivity extends AppCompatActivity {
 
-public class UserDialogFragment extends DialogFragment {
-
-    private static final String TAG = "UserDialogFragment";
-    private FirestoreUser mUser;
+    private static final String TAG = "UserProfileActivity";
+    private User mUser;
 
     private ImageView mUserImageView;
     private TextView mEmailTextView;
     private TextView mMobileTextView;
-    private RecyclerView mInterestRecyclerView;
     private ArrayList<String> mInterestArrayList;
     private InterestAdapter mInterestAdapter;
-    private OnUserDetailsDialogInteractionListener mListener;
     private ProgressBar mImageProgressBar;
     private TextView mAboutTextView;
 
-
-    public static UserDialogFragment newInstance(FirestoreUser user) {
-
-        Bundle args = new Bundle();
-        args.putParcelable(ContentUtils.USER_KEY, user);
-        UserDialogFragment fragment = new UserDialogFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUser = getArguments().getParcelable(ContentUtils.USER_KEY);
-    }
+        setContentView(R.layout.activity_user_profile);
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
-    }
+        mUser = getIntent().getParcelableExtra(ContentUtils.USER_KEY);
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Toolbar toolbar = view.findViewById(R.id.user_toolbar);
+        Toolbar toolbar = findViewById(R.id.user_toolbar);
         toolbar.setTitle(mUser.getName());
-        mImageProgressBar = view.findViewById(R.id.image_progress_bar);
-        toolbar.setNavigationIcon(R.drawable.ic_cancel);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onUserDetailsDialogInteraction(null, UserDialogFragment.this);
-                }
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
-
-        mUserImageView = view.findViewById(R.id.user_image_view);
+        mUserImageView = findViewById(R.id.user_image_view);
 //        mNameTextView = view.findViewById(R.id.user_name_text_view);
-        mEmailTextView = view.findViewById(R.id.user_email_text_view);
-        mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
-        mAboutTextView = view.findViewById(R.id.about_text_view);
+        mEmailTextView = findViewById(R.id.user_email_text_view);
+        mMobileTextView = findViewById(R.id.user_mobile_text_view);
+        mAboutTextView = findViewById(R.id.about_text_view);
+        mImageProgressBar = findViewById(R.id.image_progress_bar);
 
-        mInterestRecyclerView = view.findViewById(R.id.interest_recycler_view);
+        RecyclerView interestRecyclerView = findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
-        mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
-        mInterestRecyclerView.setAdapter(mInterestAdapter);
+        interestRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mInterestAdapter = new InterestAdapter(this, mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
+        interestRecyclerView.setAdapter(mInterestAdapter);
 
-        FabSpeedDial fabSpeedDial = view.findViewById(R.id.fab_speed_dial);
+        FabSpeedDial fabSpeedDial = findViewById(R.id.fab_speed_dial);
         fabSpeedDial.setVisibility(View.GONE);
 
         displayDetails();
@@ -111,7 +85,7 @@ public class UserDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"+mUser.getEmailId()));
-                if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+                if(intent.resolveActivity(getPackageManager()) != null){
                     startActivity(intent);
                 } else{
                     Snackbar.make(mEmailTextView, "Please install email app to continue", BaseTransientBottomBar.LENGTH_INDEFINITE)
@@ -129,16 +103,17 @@ public class UserDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:"+ mUser.getMobileNo()));
-                if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+                if(intent.resolveActivity(getPackageManager()) != null){
                     startActivity(intent);
                 }
             }
         });
 
+
     }
 
     private void displayDetails() {
-        Picasso.with(getActivity())
+        Picasso.with(this)
                 .load(mUser.getImageUrl())
                 .into(mUserImageView, new Callback() {
                     @Override
@@ -167,23 +142,5 @@ public class UserDialogFragment extends DialogFragment {
         mAboutTextView.setText(mUser.getAbout());
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnUserDetailsDialogInteractionListener) {
-            mListener = (OnUserDetailsDialogInteractionListener) context;
-        }
-    }
 
-    @Override
-    public int getTheme() {
-        return R.style.DialogFragmentTheme;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow()
-                .getAttributes().windowAnimations = R.style.DialogFragmentTheme;
-    }
 }

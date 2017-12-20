@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +51,7 @@ public class ContentUtils {
     public static final String OTHER_SEX = "Other";
 
 
+
     public static ArrayList<String> getInterestArrayList(String interest) {
         ArrayList<String> interestArrayList = new ArrayList<>();
         if (interest != null) {
@@ -83,7 +84,7 @@ public class ContentUtils {
         return interestArrayList;
     }
 
-    public static void saveUserDataInSharedPref(FirestoreUser user, Context context) {
+    public static void saveUserDataInSharedPref(User user, Context context) {
         Gson gson = new Gson();
         String userString = gson.toJson(user);
         SharedPreferences.Editor editor = context.getSharedPreferences(ContentUtils.SHARED_PREF,
@@ -94,12 +95,12 @@ public class ContentUtils {
 
     /**
      * @param context
-     * @return {{@link FirestoreUser}} if available else returns null
+     * @return {{@link User}} if available else returns null
      */
-    public static FirestoreUser getUserDataFromShredPref(Context context) {
+    public static User getUserDataFromSharedPref(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(ContentUtils.SHARED_PREF, Context.MODE_PRIVATE);
         String userData = sharedPreferences.getString(ContentUtils.USER_KEY, null);
-        return userData == null ? null : new Gson().fromJson(userData, FirestoreUser.class);
+        return userData == null ? null : new Gson().fromJson(userData, User.class);
     }
 
     public static void deleteUserDataFromSharedPref(Context context){

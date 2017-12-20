@@ -27,7 +27,7 @@ import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.UpdateSearchFragmentDetails;
-import com.sahni.rahul.ieee_niec.models.FirestoreUser;
+import com.sahni.rahul.ieee_niec.models.User;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
 
     private RecyclerView mSearchUserRecyclerView;
     private SearchUserAdapter mSearchUserAdapter;
-    private ArrayList<FirestoreUser> mUserArrayList;
+    private ArrayList<User> mUserArrayList;
     private ProgressBar mProgressbar;
     private TextView mHintTextView;
 
@@ -119,7 +119,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                             } else {
                                 mHintTextView.setVisibility(View.INVISIBLE);
                                 for (DocumentSnapshot document : documentSnapshots.getDocuments()) {
-                                    FirestoreUser user = document.toObject(FirestoreUser.class);
+                                    User user = document.toObject(User.class);
                                     mUserArrayList.add(user);
                                 }
                                 mSearchUserAdapter.notifyDataSetChanged();
@@ -151,7 +151,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                             } else {
                                 mHintTextView.setVisibility(View.INVISIBLE);
                                 for (DocumentSnapshot document : documentSnapshots.getDocuments()) {
-                                    FirestoreUser user = document.toObject(FirestoreUser.class);
+                                    User user = document.toObject(User.class);
                                     if (user.getName().contains(query)) {
                                         mUserArrayList.add(user);
                                     }
@@ -179,7 +179,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
     @Override
     public void onSearchUserResultClicked(View view) {
         int position = mSearchUserRecyclerView.getChildAdapterPosition(view);
-        FirestoreUser user = mUserArrayList.get(position);
+        User user = mUserArrayList.get(position);
         if(mListener != null){
             mListener.onSearchUserFragmentInteraction(user);
         }
