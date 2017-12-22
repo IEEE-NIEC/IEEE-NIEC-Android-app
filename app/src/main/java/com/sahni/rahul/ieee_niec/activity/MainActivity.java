@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
                 || (projectsFragment != null && projectsFragment.isVisible())
                 || (ieeeFragment != null && ieeeFragment.isVisible())
                 || (ieeeResourcesFragment != null && ieeeResourcesFragment.isVisible())) {
-            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            ft.setCustomAnimations(R.anim.slide_back_from_left, R.anim.fade_translate_down);
             ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
             mNavigationView.setCheckedItem(R.id.nav_home);
             currentFragmentTag = HOME_FRAGMENT_TAG;
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity
                 super.onBackPressed();
             } catch (Exception e) {
                 Log.i(TAG, "onBackPressed: " + e.getMessage());
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.slide_back_from_left, R.anim.fade_translate_down);
                 ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_home);
                 currentFragmentTag = HOME_FRAGMENT_TAG;
@@ -175,42 +175,43 @@ public class MainActivity extends AppCompatActivity
         switch (menuItemId) {
 
             case R.id.nav_home:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//                ft.add()
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_home);
                 currentFragmentTag = HOME_FRAGMENT_TAG;
                 break;
 
             case R.id.nav_events:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_events);
                 currentFragmentTag = EVENTS_FRAGMENT_TAG;
                 break;
 
             case R.id.nav_achieve:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_achieve);
                 currentFragmentTag = ACHIEVEMENTS_FRAGMENT_TAG;
                 break;
 
             case R.id.nav_project:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_project);
                 currentFragmentTag = PROJECTS_FRAGMENT_TAG;
                 break;
 
             case R.id.nav_ieee:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, new AboutIeeeFragment(), ABOUT_IEEE_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_ieee);
                 currentFragmentTag = ABOUT_IEEE_FRAGMENT_TAG;
                 break;
 
             case R.id.nav_resource:
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, new IeeeResourcesFragment(), IEEE_RESOURCES_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_resource);
                 currentFragmentTag = IEEE_RESOURCES_TAG;
@@ -222,7 +223,7 @@ public class MainActivity extends AppCompatActivity
                 if (firebaseUser != null) {
                     mUser = ContentUtils.getUserDataFromSharedPref(this);
                     if (mUser != null) {
-                        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                         ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
                         mNavigationView.setCheckedItem(R.id.nav_my_profile);
                         currentFragmentTag = USER_PROFILE_FRAGMENT_TAG;
@@ -239,7 +240,7 @@ public class MainActivity extends AppCompatActivity
                 if (firebaseUser != null) {
                     mUser = ContentUtils.getUserDataFromSharedPref(this);
                     if (mUser != null) {
-                        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                         ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
                         ft.addToBackStack(null);
                         mNavigationView.setCheckedItem(R.id.nav_search);
@@ -271,12 +272,12 @@ public class MainActivity extends AppCompatActivity
         super.onPostResume();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (loadUserFragment) {
-            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
             ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
             mNavigationView.setCheckedItem(R.id.nav_my_profile);
             currentFragmentTag = USER_PROFILE_FRAGMENT_TAG;
         } else if (loadSearchUserFragment) {
-            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
             ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
             mNavigationView.setCheckedItem(R.id.nav_search);
             currentFragmentTag = SEARCH_USER_FRAGMENT_TAG;
@@ -313,7 +314,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.i(TAG, "onInfoFragmentInteraction: clicked");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left, R.anim.slide_back_from_left, R.anim.fade_translate_down);
         ft.replace(R.id.main_frame_layout, InformationDetailsFragment.newInstance(info), "InformationDetailsFragment")
                 .commit();
         ft.addToBackStack(null);
