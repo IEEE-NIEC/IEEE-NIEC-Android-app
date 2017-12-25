@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Delete account"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/ic_delete_forever_black"
         android:id="@+id/fab_delete"
         android:orderInCategory="0"/>
 

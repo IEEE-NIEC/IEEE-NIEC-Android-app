@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,13 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
         holder.textView.setText(user.getName());
         if(user.getImageUrl() != null) {
             if(!user.getImageUrl().isEmpty()) {
-                Picasso.with(mContext)
+//                Picasso.with(mContext)
+//                        .load(user.getImageUrl())
+//                        .error(R.drawable.user)
+//                        .placeholder(R.drawable.user)
+//                        .into(holder.imageView);
+
+                GlideApp.with(mContext)
                         .load(user.getImageUrl())
                         .error(R.drawable.user)
                         .placeholder(R.drawable.user)

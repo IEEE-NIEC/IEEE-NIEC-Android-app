@@ -18,11 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.models.Information;
-import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,7 +91,12 @@ public class InformationDetailsFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.info_details_image_view);
         TextView titleTextView = view.findViewById(R.id.info_details_title_text_view);
         TextView descriptionTextView = view.findViewById(R.id.info_details_description_text_view);
-        Picasso.with(getActivity())
+//        Picasso.with(getActivity())
+//                .load(mInfo.getImageUrlArrayList().get(0))
+//                .placeholder(R.drawable.place)
+//                .error(R.drawable.place)
+//                .into(imageView);
+        GlideApp.with(this)
                 .load(mInfo.getImageUrlArrayList().get(0))
                 .placeholder(R.drawable.place)
                 .error(R.drawable.place)

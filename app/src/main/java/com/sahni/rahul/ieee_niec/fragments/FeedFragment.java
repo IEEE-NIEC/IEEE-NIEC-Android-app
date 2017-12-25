@@ -2,6 +2,7 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,12 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeSliderInteractionListener;
 import com.sahni.rahul.ieee_niec.models.Feed;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 
 public class FeedFragment extends Fragment {
@@ -85,20 +90,37 @@ public class FeedFragment extends Fragment {
         });
 
         if(imageUrl != null) {
-            Picasso.with(getActivity())
-                    .load(imageUrl)
-                    .error(R.drawable.place)
-                    .into(imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            progressBar.setVisibility(View.GONE);
-                        }
+//            Picasso.with(getActivity())
+//                    .load(imageUrl)
+//                    .error(R.drawable.place)
+//                    .into(imageView, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//                            progressBar.setVisibility(View.GONE);
+//                        }
+//
+//                        @Override
+//                        public void onError() {
+//                            progressBar.setVisibility(View.GONE);
+//                        }
+//                    });
 
-                        @Override
-                        public void onError() {
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+            RequestBuilder<Drawable> requestBuilder = Glide.with(getActivity())
+                    .load(imageUrl);
+
+            requestBuilder.listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            }).into(imageView);
         }
     }
 }

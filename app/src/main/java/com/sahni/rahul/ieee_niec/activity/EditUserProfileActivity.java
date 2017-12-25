@@ -3,9 +3,11 @@ package com.sahni.rahul.ieee_niec.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -24,11 +26,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,8 +46,6 @@ import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -54,12 +59,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
     private RecyclerView mInterestRecyclerView;
     private InterestAdapter mInterestAdapter;
     private ArrayList<String> mInterestArrayList;
+    private boolean isDataChanged = false;
 
-
-    private FirebaseAuth mFirebaseAuth;
     private StorageReference mProfileImageStorage;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseUser mFirebaseUser;
 
     private ProgressBar mImageProgressBar;
     private ImageView mProfileImageView;
@@ -67,19 +69,17 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
     private boolean isImageChanged = false;
     private Uri changedImageUri;
 
-    TextInputEditText nameInputEditText;
-    TextInputEditText emailInputEditText;
-    TextInputEditText mobileInputEditText;
-    TextInputEditText aboutEditText;
-    TextInputEditText interestInputEditText;
+    private TextInputEditText nameInputEditText;
+    private TextInputEditText emailInputEditText;
+    private TextInputEditText mobileInputEditText;
+    private TextInputEditText aboutEditText;
+    private TextInputEditText interestInputEditText;
 
-    TextInputLayout nameInputLayout;
-    TextInputLayout mobileInputLayout;
-    TextInputLayout aboutInputLayout;
-    TextInputLayout interestInputLayout;
+    private TextInputLayout nameInputLayout;
+    private TextInputLayout mobileInputLayout;
+    private TextInputLayout aboutInputLayout;
+    private TextInputLayout interestInputLayout;
 
-    ImageView mAddInterestImageView;
-    TextView mChangeTextView;
     private CollectionReference mUsersCollection;
 
 
@@ -106,17 +106,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             }
         });
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mProfileImageStorage = FirebaseStorage.getInstance().getReference().child("profile_image");
-        mUsersCollection = FirebaseFirestore.getInstance().collection("users");
-
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if(mFirebaseUser != null){
-            Log.i(TAG, "User not null, name: "+mFirebaseUser.getDisplayName());
-        } else {
-            Log.i(TAG, "User is null");
-        }
-
+        mProfileImageStorage = FirebaseStorage.getInstance().getReference().child(ContentUtils.FIREBASE_STORAGE_PROFILE_IMAGE);
+        mUsersCollection = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_USERS);
 
         mInterestRecyclerView = findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
@@ -131,8 +122,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         mobileInputEditText = findViewById(R.id.mobile_edit_text);
         aboutEditText = findViewById(R.id.about_edit_text);
         interestInputEditText = findViewById(R.id.interest_edit_text);
-        mAddInterestImageView = findViewById(R.id.add_interest_image_view);
-        mChangeTextView = findViewById(R.id.change_image_text_view);
+        ImageView addInterestImageView = findViewById(R.id.add_interest_image_view);
+        TextView changeTextView = findViewById(R.id.change_image_text_view);
         mImageProgressBar = findViewById(R.id.image_progress);
         mImageProgressBar.setVisibility(View.VISIBLE);
 
@@ -142,6 +133,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         mobileInputLayout = findViewById(R.id.mobile_input_layout);
         aboutInputLayout = findViewById(R.id.about_input_layout);
         interestInputLayout = findViewById(R.id.interest_text_input_layout);
+
+        displayDetails();
 
 
         nameInputEditText.addTextChangedListener(new TextWatcher() {
@@ -159,6 +152,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             public void afterTextChanged(Editable s) {
                 if(!s.toString().trim().equals("")){
                     nameInputLayout.setError(null);
+                    isDataChanged = true;
                 }
             }
         });
@@ -178,6 +172,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             public void afterTextChanged(Editable s) {
                 if(!s.toString().trim().equals("")){
                     mobileInputLayout.setError(null);
+                    isDataChanged = true;
                 }
             }
         });
@@ -197,11 +192,12 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             public void afterTextChanged(Editable s) {
                 if(!s.toString().trim().equals("")){
                     aboutInputLayout.setError(null);
+                    isDataChanged = true;
                 }
             }
         });
 
-        mAddInterestImageView.setOnClickListener(new View.OnClickListener() {
+        addInterestImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String interest = interestInputEditText.getText().toString();
@@ -211,6 +207,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
                     interestInputLayout.setError(null);
                     mInterestArrayList.add(interest);
                     mInterestAdapter.notifyItemInserted(mInterestArrayList.size()-1);
+                    isDataChanged = true;
                 }
             }
         });
@@ -230,25 +227,29 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
                 } else if(mInterestArrayList.isEmpty()){
                     interestInputLayout.setError("Show off some of your skills!");
                 } else {
-                    View dialogView = getLayoutInflater().inflate(R.layout.progress_dialog_layout, null);
-                    TextView progressTextView = dialogView.findViewById(R.id.progress_text_view);
-                    progressTextView.setText("Saving details");
-                    AlertDialog dialog = new AlertDialog.Builder(EditUserProfileActivity.this)
-                            .setView(dialogView)
-                            .setCancelable(false)
-                            .create();
-                    dialog.show();
-                    mUser.setName(name);
-                    mUser.setMobileNo(mobileNo);
-                    mUser.setAbout(about);
-                    mUser.setInterestMap(ContentUtils.getMapFromArrayList(mInterestArrayList));
-                    saveDetails(mUser, dialog);
+                    if(isDataChanged) {
+                        View dialogView = getLayoutInflater().inflate(R.layout.progress_dialog_layout, null);
+                        TextView progressTextView = dialogView.findViewById(R.id.progress_text_view);
+                        progressTextView.setText("Saving details");
+                        AlertDialog dialog = new AlertDialog.Builder(EditUserProfileActivity.this)
+                                .setView(dialogView)
+                                .setCancelable(false)
+                                .create();
+                        dialog.show();
+                        mUser.setName(name);
+                        mUser.setMobileNo(mobileNo);
+                        mUser.setAbout(about);
+                        mUser.setInterestMap(ContentUtils.getMapFromArrayList(mInterestArrayList));
+                        saveDetails(mUser, dialog);
+                    } else {
+                        Toast.makeText(EditUserProfileActivity.this, "No changes to save", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }
         });
 
-        mChangeTextView.setOnClickListener(new View.OnClickListener() {
+        changeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mImageProgressBar.setVisibility(View.VISIBLE);
@@ -260,7 +261,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             }
         });
 
-        displayDetails();
     }
 
     @Override
@@ -270,24 +270,30 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
+                isDataChanged = true;
                 isImageChanged = true;
                 changedImageUri = result.getUri();
                 mImageProgressBar.setVisibility(View.VISIBLE);
 
-                Picasso.with(EditUserProfileActivity.this)
+                RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                        .load(changedImageUri);
+
+                requestBuilder
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mImageProgressBar.setVisibility(View.INVISIBLE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                mImageProgressBar.setVisibility(View.INVISIBLE);
+                                return false;
+                            }
+                        })
                         .load(changedImageUri)
-                        .into(mProfileImageView, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                mImageProgressBar.setVisibility(View.INVISIBLE);
-                            }
-
-                            @Override
-                            public void onError() {
-                                mImageProgressBar.setVisibility(View.INVISIBLE);
-                            }
-                        });
-
+                        .into(mProfileImageView);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -305,6 +311,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         int position = mInterestRecyclerView.getChildAdapterPosition(view);
         mInterestArrayList.remove(position);
         mInterestAdapter.notifyItemRemoved(position);
+        isDataChanged = true;
     }
 
 
@@ -313,21 +320,24 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
         mInterestArrayList.addAll(ContentUtils.getArrayListFromMap(mUser.getInterestMap()));
         mInterestAdapter.notifyDataSetChanged();
 
-        Picasso.with(this)
-                .load(mUser.getImageUrl())
-                .error(R.drawable.user)
-                .placeholder(R.drawable.user)
-                .into(mProfileImageView, new Callback() {
+        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
+                .load(mUser.getImageUrl());
+
+        requestBuilder
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public void onSuccess() {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         mImageProgressBar.setVisibility(View.INVISIBLE);
+                        return false;
                     }
 
                     @Override
-                    public void onError() {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         mImageProgressBar.setVisibility(View.INVISIBLE);
+                        return false;
                     }
-                });
+                })
+                .into(mProfileImageView);
 
         nameInputEditText.setText(mUser.getName());
 

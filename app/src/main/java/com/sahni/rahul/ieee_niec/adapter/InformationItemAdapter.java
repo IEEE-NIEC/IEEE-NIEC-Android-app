@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnInformationItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,9 +42,11 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         Information info = mArrayList.get(position);
         holder.textView.setText(info.getTitle());
         if (info.getImageUrlArrayList() != null) {
-            Picasso.with(mContext)
+
+            GlideApp.with(mContext)
                     .load(info.getImageUrlArrayList().get(0))
                     .placeholder(R.drawable.place)
+                    .error(R.drawable.place)
                     .into(holder.imageView);
         }
 

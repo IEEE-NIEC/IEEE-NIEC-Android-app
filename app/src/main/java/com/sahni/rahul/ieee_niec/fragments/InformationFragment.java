@@ -128,13 +128,13 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
 
         switch (mInfoType) {
             case ContentUtils.EVENTS:
-                mCollectionReference = FirebaseFirestore.getInstance().collection("events");
+                mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_EVENTS);
                 break;
             case ContentUtils.ACHIEVEMENTS:
-                mCollectionReference = FirebaseFirestore.getInstance().collection("achievements");
+                mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_ACHIEVEMENTS);
                 break;
             case ContentUtils.PROJECTS:
-                mCollectionReference = FirebaseFirestore.getInstance().collection("projects");
+                mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_PROJECTS);
                 break;
         }
 
@@ -171,7 +171,7 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
              * bit of a hack to remove bug which hides some part of recycler view's last item.
              * This bug is only encountered when CollapsingToolbarLayout is used with RecyclerView
              */
-            mInfoRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
+//            mInfoRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
         }
     }
 

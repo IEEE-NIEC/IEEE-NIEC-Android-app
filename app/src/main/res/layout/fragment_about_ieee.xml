@@ -15,7 +15,8 @@
             android:id="@+id/about_ieee_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|enterAlways">
+            <!--enterAlways to used to remove weird bug of collapsingToolbarLayout with exitUntilCollapsed scrollFlag-->
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
                 android:id="@+id/about_ieee_toolbar"

@@ -46,9 +46,12 @@ public class ContentUtils {
     public static final String SEARCH_BY = "search_by";
     public static final String SEARCH_BY_NAME = "search_by_name";
     public static final String SEARCH_BY_INTEREST = "search_by_interest";
-    public static final String MALE = "Male";
-    public static final String FEMALE = "Female";
-    public static final String OTHER_SEX = "Other";
+
+    public static final String FIRESTORE_EVENTS = "events";
+    public static final String FIRESTORE_ACHIEVEMENTS = "achievements";
+    public static final String FIRESTORE_PROJECTS = "projects";
+    public static final String FIRESTORE_USERS = "users";
+    public static final String FIREBASE_STORAGE_PROFILE_IMAGE = "profile_image";
 
 
 

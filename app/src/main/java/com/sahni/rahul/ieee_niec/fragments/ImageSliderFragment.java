@@ -1,6 +1,7 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,21 +57,25 @@ public class ImageSliderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView imageView = view.findViewById(R.id.slider_image_view);
+        final ImageView imageView = view.findViewById(R.id.slider_image_view);
         final ProgressBar progressBar = view.findViewById(R.id.slider_progress_bar);
-        Picasso.with(getActivity())
-                .load(mImageUrl)
-                .error(R.drawable.place)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        progressBar.setVisibility(View.GONE);
-                    }
 
-                    @Override
-                    public void onError() {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+        RequestBuilder<Drawable> requestBuilder = Glide.with(getActivity())
+                .load(mImageUrl);
+
+        requestBuilder.listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                progressBar.setVisibility(View.GONE);
+                imageView.setImageResource(R.drawable.place);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                progressBar.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(imageView);
     }
 }
