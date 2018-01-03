@@ -22,12 +22,12 @@ import android.view.ViewGroup;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.IeeeResourcesAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnIeeeResourcesClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Resources;
 
 import java.util.ArrayList;
 
-public class IeeeResourcesFragment extends Fragment implements OnIeeeResourcesClickListener {
+public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewItemClickListener {
 
     private ArrayList<Resources> mArrayList;
     private RecyclerView mRecyclerView;
@@ -78,7 +78,7 @@ public class IeeeResourcesFragment extends Fragment implements OnIeeeResourcesCl
     }
 
     @Override
-    public void onIeeeResourcesClicked(View view) {
+    public void onItemClicked(View view) {
         int position = mRecyclerView.getChildAdapterPosition(view);
 
         Uri uri = Uri.parse((mArrayList.get(position).getmUrl()));

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.interfaces.OnIeeeResourcesClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Resources;
 
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class IeeeResourcesAdapter extends RecyclerView.Adapter<IeeeResourcesAdap
 
     private Context mContext;
     private ArrayList<Resources> mArrayList;
-    private OnIeeeResourcesClickListener mListener;
+    private OnRecyclerViewItemClickListener mListener;
 
-    public IeeeResourcesAdapter(Context mContext, ArrayList<Resources> mArrayList, OnIeeeResourcesClickListener listener) {
+    public IeeeResourcesAdapter(Context mContext, ArrayList<Resources> mArrayList, OnRecyclerViewItemClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.mListener = listener;
@@ -53,7 +53,7 @@ public class IeeeResourcesAdapter extends RecyclerView.Adapter<IeeeResourcesAdap
         ImageView imageView;
         TextView textView;
 
-        public ResourcesViewHolder(final View itemView, final OnIeeeResourcesClickListener listener) {
+        public ResourcesViewHolder(final View itemView, final OnRecyclerViewItemClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.resources_image_view);
             textView = itemView.findViewById(R.id.resources_text_view);
@@ -61,7 +61,7 @@ public class IeeeResourcesAdapter extends RecyclerView.Adapter<IeeeResourcesAdap
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
-                        listener.onIeeeResourcesClicked(itemView);
+                        listener.onItemClicked(itemView);
                     }
                 }
             });

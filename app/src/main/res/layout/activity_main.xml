@@ -8,33 +8,34 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!--<include-->
-        <!--layout="@layout/app_bar_main"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+  <!--<include-->
+  <!--layout="@layout/app_bar_main"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="match_parent" />-->
 
 
-    <include layout="@layout/content_main"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        />
-    <!--<FrameLayout-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--android:id="@+id/main_frame_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--/>-->
+  <include layout="@layout/content_main"
+      android:layout_height="match_parent"
+      android:layout_width="match_parent"
+      />
+  <!--<FrameLayout-->
+  <!--android:fitsSystemWindows="true"-->
+  <!--android:id="@+id/main_frame_layout"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="match_parent"-->
+  <!--/>-->
 
-    <android.support.design.widget.NavigationView
-
-        app:itemTextColor="@android:color/black"
-        app:itemIconTint="@android:color/black"
-        android:fitsSystemWindows="true"
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+  <android.support.design.widget.NavigationView
+      app:itemTextAppearance="@style/NavigationDrawerTextStyle"
+      app:itemTextColor="@android:color/black"
+      app:itemIconTint="@android:color/black"
+      android:fitsSystemWindows="true"
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      app:headerLayout="@layout/nav_header_main"
+      app:menu="@menu/activity_main_drawer"
+      />
 
 </android.support.v4.widget.DrawerLayout>

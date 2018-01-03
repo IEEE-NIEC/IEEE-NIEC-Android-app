@@ -65,12 +65,10 @@
     <!--<include layout="@layout/content_home_fragment"/>-->
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/item_recycler_view"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         tools:listitem="@layout/home_recycler_layout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

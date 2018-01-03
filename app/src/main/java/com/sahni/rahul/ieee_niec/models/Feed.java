@@ -9,13 +9,13 @@ import android.os.Parcelable;
 
 public class Feed implements Parcelable{
 
-    private String mFeedImageUrl;
+    private String feedImageUrl;
 
     public Feed() {
     }
 
     protected Feed(Parcel in) {
-        mFeedImageUrl = in.readString();
+        feedImageUrl = in.readString();
     }
 
     public static final Creator<Feed> CREATOR = new Creator<Feed>() {
@@ -38,15 +38,15 @@ public class Feed implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mFeedImageUrl);
+        parcel.writeString(feedImageUrl);
     }
 
 
-    public String getmFeedImageUrl() {
-        return mFeedImageUrl;
+    public String getFeedImageUrl() {
+        return feedImageUrl;
     }
 
-    public void setmFeedImageUrl(String mFeedImageUrl) {
-        this.mFeedImageUrl = mFeedImageUrl;
+    public void setFeedImageUrl(String feedImageUrl) {
+        this.feedImageUrl = feedImageUrl;
     }
 }

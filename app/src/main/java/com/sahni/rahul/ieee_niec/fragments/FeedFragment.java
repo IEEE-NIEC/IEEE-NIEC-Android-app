@@ -80,7 +80,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView imageView = view.findViewById(R.id.home_slider_image_view);
         final ProgressBar progressBar = view.findViewById(R.id.home_slider_progress);
-        final String imageUrl = mFeed.getmFeedImageUrl();
+        final String imageUrl = mFeed.getFeedImageUrl();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,21 +90,6 @@ public class FeedFragment extends Fragment {
         });
 
         if(imageUrl != null) {
-//            Picasso.with(getActivity())
-//                    .load(imageUrl)
-//                    .error(R.drawable.place)
-//                    .into(imageView, new Callback() {
-//                        @Override
-//                        public void onSuccess() {
-//                            progressBar.setVisibility(View.GONE);
-//                        }
-//
-//                        @Override
-//                        public void onError() {
-//                            progressBar.setVisibility(View.GONE);
-//                        }
-//                    });
-
             RequestBuilder<Drawable> requestBuilder = Glide.with(getActivity())
                     .load(imageUrl);
 

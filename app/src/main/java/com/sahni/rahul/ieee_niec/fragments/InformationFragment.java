@@ -222,7 +222,7 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                     if(e == null){
-                        if (!documentSnapshots.isEmpty()) {
+                        if (documentSnapshots != null && !documentSnapshots.isEmpty()) {
                             mInfoArrayList.clear();
                             for (DocumentSnapshot documents : documentSnapshots.getDocuments()) {
                                 Information information = documents.toObject(Information.class);

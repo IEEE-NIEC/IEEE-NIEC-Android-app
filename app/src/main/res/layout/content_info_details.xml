@@ -20,12 +20,13 @@
             android:id="@+id/info_details_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="serif"
+            android:fontFamily="@font/josefin_sans_bold"
             android:text="rahul sahni dsdf"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
         <TextView
+            android:fontFamily="@font/josefin_sans_light"
             android:id="@+id/info_details_description_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

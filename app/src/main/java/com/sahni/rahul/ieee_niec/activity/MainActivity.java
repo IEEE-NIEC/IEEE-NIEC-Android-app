@@ -1,6 +1,7 @@
 package com.sahni.rahul.ieee_niec.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -23,6 +24,7 @@ import com.sahni.rahul.ieee_niec.fragments.InformationFragment;
 import com.sahni.rahul.ieee_niec.fragments.SearchUserFragment;
 import com.sahni.rahul.ieee_niec.fragments.UserProfileFragment;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.helpers.NotificationHelper;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeSliderInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionListener;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private static final String IEEE_RESOURCES_TAG = "ieee_resources_tag";
     private static final String FRAGMENT_TAG_KEY = "fragment_tag_key";
 
+
     private NavigationView mNavigationView;
 
     private String currentFragmentTag;
@@ -67,47 +70,80 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate");
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationHelper.createNotificationChannel(this, getString(R.string.default_notification_channel_id));
+        }
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState != null) {
-            String fragmentTag = savedInstanceState.getString(FRAGMENT_TAG_KEY);
-            if (fragmentTag != null) {
-                switch (fragmentTag) {
-                    case HOME_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_home);
-                        break;
-                    case EVENTS_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_events);
-                        break;
-                    case ACHIEVEMENTS_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_achieve);
-                        break;
-                    case PROJECTS_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_project);
-                        break;
-                    case ABOUT_IEEE_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_ieee);
-                        break;
-                    case IEEE_RESOURCES_TAG:
-                        displaySelectedFragment(R.id.nav_resource);
-                        break;
-                    case USER_PROFILE_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_my_profile);
-                        break;
-                    case SEARCH_USER_FRAGMENT_TAG:
-                        displaySelectedFragment(R.id.nav_search);
-                        break;
+        Intent intent = getIntent();
+        String dataPayloadType = null;
+        if(intent == null){
+            Log.i(TAG, "onCreate: intent null");
+        } else {
+            dataPayloadType = intent.getStringExtra(ContentUtils.NOTIFICATION_DATA_PAYLOAD_KEY);
+            Log.i(TAG, "onCreate: dataPayloadType ="+(dataPayloadType == null ? " null" : dataPayloadType));
+        }
 
-                }
-            } else {
-                Log.i(TAG, "onCreate: FRAGMENT_TAG is null");
+        if(dataPayloadType != null){
+            switch (dataPayloadType) {
+                case ContentUtils.FEEDS_DATA_PAYLOAD:
+                    displaySelectedFragment(R.id.nav_home);
+                    break;
+                case ContentUtils.EVENTS_DATA_PAYLOAD:
+                    displaySelectedFragment(R.id.nav_events);
+                    break;
+                case ContentUtils.ACHIEVEMENT_DATA_PAYLOAD:
+                    displaySelectedFragment(R.id.nav_achieve);
+                    break;
+                case ContentUtils.PROJECT_DATA_PAYLOAD:
+                    displaySelectedFragment(R.id.nav_project);
+                    break;
+                default:
+                    displaySelectedFragment(R.id.nav_home);
             }
         } else {
-            Log.i(TAG, "onCreate: savedInstanceState bundle is null");
-            displaySelectedFragment(R.id.nav_home);
-            mNavigationView.setCheckedItem(R.id.nav_home);
 
+            if (savedInstanceState != null) {
+                String fragmentTag = savedInstanceState.getString(FRAGMENT_TAG_KEY);
+                if (fragmentTag != null) {
+                    switch (fragmentTag) {
+                        case HOME_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_home);
+                            break;
+                        case EVENTS_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_events);
+                            break;
+                        case ACHIEVEMENTS_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_achieve);
+                            break;
+                        case PROJECTS_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_project);
+                            break;
+                        case ABOUT_IEEE_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_ieee);
+                            break;
+                        case IEEE_RESOURCES_TAG:
+                            displaySelectedFragment(R.id.nav_resource);
+                            break;
+                        case USER_PROFILE_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_my_profile);
+                            break;
+                        case SEARCH_USER_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_search);
+                            break;
+
+                    }
+                } else {
+                    Log.i(TAG, "onCreate: FRAGMENT_TAG is null");
+                }
+            } else {
+                Log.i(TAG, "onCreate: savedInstanceState bundle is null");
+                displaySelectedFragment(R.id.nav_home);
+                mNavigationView.setCheckedItem(R.id.nav_home);
+
+            }
         }
 
 
@@ -161,7 +197,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        displaySelectedFragment(item.getItemId());
+        if(item.getItemId() == R.id.nav_about_app){
+            startActivity(new Intent(this, AboutAppActivity.class));
+        } else {
+            displaySelectedFragment(item.getItemId());
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

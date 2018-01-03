@@ -51,7 +51,21 @@ public class ContentUtils {
     public static final String FIRESTORE_ACHIEVEMENTS = "achievements";
     public static final String FIRESTORE_PROJECTS = "projects";
     public static final String FIRESTORE_USERS = "users";
+    public static final String FIRESTORE_FEEDS = "feeds";
     public static final String FIREBASE_STORAGE_PROFILE_IMAGE = "profile_image";
+
+    public static final String NOTIFICATION_DATA_PAYLOAD_KEY = "data_key";
+    public static final String NOTIFICATION_TITLE_KEY = "title";
+    public static final String FEEDS_DATA_PAYLOAD = "feed";
+    public static final String EVENTS_DATA_PAYLOAD = "event";
+    public static final String ACHIEVEMENT_DATA_PAYLOAD = "achievement";
+    public static final String PROJECT_DATA_PAYLOAD = "project";
+
+    public static final String WEBSITE_URL = "http://www.ieeeniec.com";
+    public static final String FACEBOOK_URL = "https://www.facebook.com/ieeeniec";
+    public static final String INSTAGRAM_URL = "https://www.instagram.com/ieeeniec";
+    public static final String TWITTER_URL = "https://www.twitter.com/ieeeniec";
+    public static final String GOOGLE_PLUS_URL = "https://plus.google.com/102106854753581893748";
 
 
 

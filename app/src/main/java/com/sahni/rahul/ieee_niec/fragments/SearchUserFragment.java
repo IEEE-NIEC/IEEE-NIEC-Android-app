@@ -73,7 +73,7 @@ public class SearchUserFragment extends Fragment implements OnSearchUserResultCl
                     String query = textView.getText().toString();
                     if(!query.trim().equals("")){
                         for(int j = 0; j < mPagerAdapter.getCount(); j++){
-                        ((SearchByNameOrInterestFragment) mPagerAdapter.fragments[j]).update(query);
+                            ((SearchByNameOrInterestFragment) mPagerAdapter.fragments[j]).update(query);
                         }
                     }
                 }

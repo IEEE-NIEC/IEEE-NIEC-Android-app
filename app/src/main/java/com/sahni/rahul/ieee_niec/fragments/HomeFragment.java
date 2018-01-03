@@ -17,17 +17,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.FeedPagerAdapter;
 import com.sahni.rahul.ieee_niec.adapter.HomeItemsAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
-import com.sahni.rahul.ieee_niec.interfaces.OnHomeItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Feed;
 import com.sahni.rahul.ieee_niec.models.HomeItems;
 
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import me.relex.circleindicator.CircleIndicator;
 
 
-public class HomeFragment extends Fragment implements OnHomeItemClickListener{
+public class HomeFragment extends Fragment implements OnRecyclerViewItemClickListener {
 
     private static String TAG = "HomeFragment";
     private RecyclerView mRecyclerView;
@@ -47,7 +49,9 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
     private FeedPagerAdapter mFeedAdapter;
     private ArrayList<Feed> mFeedArrayList;
 
-    private DatabaseReference mFeedReference;
+//    private DatabaseReference mFeedReference;
+    private CollectionReference mFeedReference;
+    private ListenerRegistration mListenerRegistration;
 
 
     private OnHomeFragmentInteractionListener listener;
@@ -99,7 +103,7 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
 
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        mFeedReference = FirebaseDatabase.getInstance().getReference().child("feeds");
+        mFeedReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_FEEDS);
 //        mFeedReference.keepSynced(true);
 
 
@@ -115,7 +119,7 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve_art));
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.colorfulightbulb1));
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology1));
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources_new));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_new_untitled_1, R.drawable.resources_new));
         mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);
@@ -129,30 +133,14 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         CircleIndicator circleIndicator =view.findViewById(R.id.circle_indicator);
         circleIndicator.setViewPager(mFeedViewPager);
         mFeedAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-
-        mFeedReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG,"onDataChange: child count = "+ dataSnapshot.getChildrenCount());
-                mFeedArrayList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Feed feed = snapshot.getValue(Feed.class);
-                    mFeedArrayList.add(feed);
-
-                }
-                mFeedAdapter.notifyDataSetChanged();
-                mRecyclerView.setPadding(0,0,0, 0);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+        attachFeedSnapshotListener();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -171,17 +159,48 @@ public class HomeFragment extends Fragment implements OnHomeItemClickListener{
         Log.i(TAG, "onDetach");
         super.onDetach();
         listener = null;
-        mFeedReference = null;
+//        mFeedReference = null;
+    }
+
+    private void attachFeedSnapshotListener(){
+        mListenerRegistration = mFeedReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.w(TAG, "attachFeedSnapshotListener: error: "+e);
+                } else {
+                    if(documentSnapshots != null && !documentSnapshots.isEmpty()){
+                        mFeedArrayList.clear();
+                        for(DocumentSnapshot documentSnapshot : documentSnapshots){
+                            Feed feed = documentSnapshot.toObject(Feed.class);
+                            mFeedArrayList.add(feed);
+                        }
+                        mFeedAdapter.notifyDataSetChanged();
+                        mRecyclerView.setPadding(0,0,0,0);
+                    }
+                }
+            }
+        });
+    }
+
+    private void detachFeedSnapshotListener(){
+        if(mListenerRegistration != null){
+            mListenerRegistration.remove();
+        }
     }
 
     @Override
-    public void onHomeItemClicked(View view) {
+    public void onPause() {
+        super.onPause();
+        detachFeedSnapshotListener();
+    }
+
+    @Override
+    public void onItemClicked(View view) {
         if(listener != null){
             int position = mRecyclerView.getChildAdapterPosition(view);
             HomeItems homeItems = mHomeItemsArrayList.get(position);
             listener.onHomeFragmentInteraction(homeItems.getTitle());
         }
     }
-
-
 }

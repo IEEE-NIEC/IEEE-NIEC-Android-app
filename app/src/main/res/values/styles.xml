@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/font</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,7 +17,7 @@
 
     <style name="BlackStatusBarTheme" parent="AppTheme.NoActionBar" />
 
-    <style name="ColoredStatusBarTheme" parent="AppTheme.NoActionBar"/>
+    <style name="ColoredStatusBarTheme" parent="AppTheme.NoActionBar" />
 
 
     <style name="AppTheme.WhiteAccent">
@@ -59,6 +60,10 @@
     <style name="HintFont" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColorHint">@android:color/black</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="NavigationDrawerTextStyle">
+        <item name="android:fontFamily">@font/josefin_sans_regular</item>
     </style>
 
 

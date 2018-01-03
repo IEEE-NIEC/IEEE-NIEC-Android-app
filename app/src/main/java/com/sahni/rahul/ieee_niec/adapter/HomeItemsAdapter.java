@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.interfaces.OnHomeItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.HomeItems;
 
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
 
     private Context context;
     private ArrayList<HomeItems> arrayList;
-    private OnHomeItemClickListener listener;
+    private OnRecyclerViewItemClickListener listener;
 
-    public HomeItemsAdapter(Context context, ArrayList<HomeItems> arrayList, OnHomeItemClickListener listener) {
+    public HomeItemsAdapter(Context context, ArrayList<HomeItems> arrayList, OnRecyclerViewItemClickListener listener) {
         this.context = context;
         this.arrayList = arrayList;
         this.listener = listener;
@@ -62,7 +62,7 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
         ImageView bgImageView;
 
 
-        public ItemViewHolder(View itemView, final OnHomeItemClickListener listener) {
+        public ItemViewHolder(View itemView, final OnRecyclerViewItemClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.item_image_view);
             textView = itemView.findViewById(R.id.item_text_view);
@@ -72,7 +72,7 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
                 public void onClick(View view) {
 
                     if(listener != null){
-                        listener.onHomeItemClicked(view);
+                        listener.onItemClicked(view);
                     }
                 }
             });

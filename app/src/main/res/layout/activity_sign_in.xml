@@ -18,7 +18,7 @@
             android:id="@+id/image_view"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/iee_niec_logo"
             android:layout_centerHorizontal="true"/>
 
 
