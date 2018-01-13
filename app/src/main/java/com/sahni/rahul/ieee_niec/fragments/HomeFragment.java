@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
         mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);
-        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
+//        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
 
         mFeedViewPager = view.findViewById(R.id.home_slider_view_pager);
         mFeedArrayList = new ArrayList<>();

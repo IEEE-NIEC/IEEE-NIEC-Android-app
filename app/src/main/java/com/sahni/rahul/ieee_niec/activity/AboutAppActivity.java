@@ -17,8 +17,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sahni.rahul.ieee_niec.BuildConfig;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SocialRecyclerAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -72,6 +74,9 @@ public class AboutAppActivity extends AppCompatActivity{
         final ImageView gmailImageView = findViewById(R.id.gmail_image_view);
         ImageView phoneImageView = findViewById(R.id.phone_image_view);
         ImageView githubImageView = findViewById(R.id.github_image_view);
+
+        TextView versiontextView = findViewById(R.id.version_text_view);
+        versiontextView.setText("Version "+ BuildConfig.VERSION_NAME);
 
         gmailImageView.setOnClickListener(new View.OnClickListener() {
             @Override

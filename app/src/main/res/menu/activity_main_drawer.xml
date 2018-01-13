@@ -3,67 +3,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"
-        app:showAsAction="collapseActionView" />
-    <item
-        android:id="@+id/nav_events"
-        android:icon="@drawable/ic_events_bw"
-        android:title="Events" />
-    <item
-        android:id="@+id/nav_achieve"
-        android:icon="@drawable/ic_achieve_bw"
-        android:title="Achievements" />
-    <item
-        android:id="@+id/nav_project"
-        android:icon="@drawable/ic_project_bw"
-        android:title="Projects" />
-    <item
-        android:id="@+id/nav_ieee"
-        android:icon="@drawable/ic_ieeenew1"
-        android:title="About IEEE"/>
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home"
+            app:showAsAction="collapseActionView" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events_bw"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_achieve"
+            android:icon="@drawable/ic_achieve_bw"
+            android:title="Achievements" />
+        <item
+            android:id="@+id/nav_project"
+            android:icon="@drawable/ic_project_bw"
+            android:title="Projects" />
+        <item
+            android:id="@+id/nav_ieee"
+            android:icon="@drawable/ic_ieeenew1"
+            android:title="About IEEE" />
 
-    <item
-        android:id="@+id/nav_resource"
-        android:icon="@drawable/ic_resources_bw"
-        android:title="IEEE Resources" />
+        <item
+            android:id="@+id/nav_resource"
+            android:icon="@drawable/ic_resources_bw"
+            android:title="IEEE Resources" />
 
-    <item
-        android:id="@+id/nav_contact"
-        android:title="Account">
+        <item
+            android:id="@+id/nav_contact"
+            android:title="Account">
 
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_my_profile"
-                    android:icon="@drawable/ic_person_black"
-                    android:title="My profile"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/nav_search"
-                    android:icon="@drawable/ic_search_black"
-                    android:title="Search"
-                    app:showAsAction="never" />
-            </group>
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_my_profile"
+                        android:icon="@drawable/ic_person_black"
+                        android:title="My profile"
+                        app:showAsAction="never" />
+                    <item
+                        android:id="@+id/nav_search"
+                        android:icon="@drawable/ic_search_black"
+                        android:title="Search"
+                        app:showAsAction="never" />
+                </group>
 
-        </menu>
-    </item>
-    <item android:title="About">
-        <menu>
-            <group>
-                <item
-                    android:icon="@drawable/ic_about_app"
-                    android:checked="false"
-                    android:id="@+id/nav_about_app"
-                    android:checkable="false"
-                    android:title="About App" />
-            </group>
-        </menu>
-    </item>
+            </menu>
+        </item>
+        <item android:title="About">
+            <menu>
+                <group>
+                    <item
+                        android:id="@+id/nav_execomm"
+                        android:checkable="true"
+                        android:icon="@drawable/ic_people"
+                        android:title="Our Team" />
+                    <item
+                        android:id="@+id/nav_about_app"
+                        android:checkable="false"
+                        android:icon="@drawable/ic_about_app"
+                        android:title="About App" />
+                </group>
+            </menu>
+        </item>
 
 
     </group>
 
-    </menu>
+</menu>

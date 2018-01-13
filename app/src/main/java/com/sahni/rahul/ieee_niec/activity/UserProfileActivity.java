@@ -10,8 +10,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +26,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.rubensousa.gravitysnaphelper.GravityPagerSnapHelper;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -78,6 +82,8 @@ public class UserProfileActivity extends AppCompatActivity {
         mInterestArrayList = new ArrayList<>();
         interestRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mInterestAdapter = new InterestAdapter(this, mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
+        SnapHelper snapHelper = new GravityPagerSnapHelper(Gravity.START);
+        snapHelper.attachToRecyclerView(interestRecyclerView);
         interestRecyclerView.setAdapter(mInterestAdapter);
 
         FabSpeedDial fabSpeedDial = findViewById(R.id.fab_speed_dial);

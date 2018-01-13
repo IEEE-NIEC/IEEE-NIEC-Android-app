@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "957359963001-lv52b97otaptsqfp2soj9npdk2vr228a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sahni.rahul.ieee_niec",
+            "certificate_hash": "a48c8cb4bed5a419d1853afc5d96f699303f5934"
+          }
+        },
+        {
           "client_id": "957359963001-co8ss5d26m2kcdm69fuiakblfuub2gim.apps.googleusercontent.com",
           "client_type": 3
         },

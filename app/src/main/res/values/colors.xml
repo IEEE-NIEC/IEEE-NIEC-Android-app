@@ -5,6 +5,7 @@
     <color name="colorAccent">#c1620c</color>
     <color name="colorRed">#D00300</color>
     <color name="notification_color">#0376A3</color>
+    <color name="card_view_below">#EEEEEE</color>
     <color name="cardview_dark_background">#FF424242</color>
     <color name="cardview_light_background">#FFFFFFFF</color>
     <color name="cardview_shadow_end_color">#03000000</color>

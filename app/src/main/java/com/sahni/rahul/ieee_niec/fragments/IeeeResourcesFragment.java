@@ -74,7 +74,6 @@ public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewIte
         IeeeResourcesAdapter adapter = new IeeeResourcesAdapter(getContext(), mArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
     }
 
     @Override

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,8 +26,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
-import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.UpdateSearchFragmentDetails;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchByNameOrInterestFragment extends Fragment implements UpdateSearchFragmentDetails, OnSearchUserResultClickListener {
+public class SearchByNameOrInterestFragment extends Fragment implements UpdateSearchFragmentDetails, OnRecyclerViewItemClickListener {
 
     public static final String TAG = "SearchByNameOrInterest";
     private String mSearchBy;
@@ -44,6 +46,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
     private ArrayList<User> mUserArrayList;
     private ProgressBar mProgressbar;
     private TextView mHintTextView;
+    private CardView cardView;
 
     private CollectionReference mUserCollection;
 
@@ -84,6 +87,8 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
 
         mHintTextView = view.findViewById(R.id.search_user_hint_text_view);
         mProgressbar = view.findViewById(R.id.search_user_progress_bar);
+        cardView = view.findViewById(R.id.user_card_view);
+        cardView.setVisibility(View.INVISIBLE);
         mProgressbar.setVisibility(View.INVISIBLE);
         if (mSearchBy.equals(ContentUtils.SEARCH_BY_NAME)) {
             mHintTextView.setText("Search users by name");
@@ -94,6 +99,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
         mSearchUserRecyclerView = view.findViewById(R.id.search_user_recycler_view);
         mSearchUserAdapter = new SearchUserAdapter(getContext(), mUserArrayList, this);
         mSearchUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mSearchUserRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mSearchUserRecyclerView.setAdapter(mSearchUserAdapter);
 
     }
@@ -102,6 +108,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
     public void update(final String query) {
         mUserArrayList.clear();
         mSearchUserAdapter.notifyDataSetChanged();
+        cardView.setVisibility(View.INVISIBLE);
         mProgressbar.setVisibility(View.VISIBLE);
         mHintTextView.setVisibility(View.INVISIBLE);
 
@@ -118,6 +125,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                                 mHintTextView.setText("No user found");
                             } else {
                                 mHintTextView.setVisibility(View.INVISIBLE);
+                                cardView.setVisibility(View.VISIBLE);
                                 for (DocumentSnapshot document : documentSnapshots.getDocuments()) {
                                     User user = document.toObject(User.class);
                                     mUserArrayList.add(user);
@@ -132,6 +140,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.i(TAG, "update: onFailure: " + e.getMessage());
+                            cardView.setVisibility(View.INVISIBLE);
                             mProgressbar.setVisibility(View.INVISIBLE);
                             mHintTextView.setVisibility(View.VISIBLE);
                             mHintTextView.setText("Oops! , there was a problem from our side. Please try again later.");
@@ -158,9 +167,11 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                                 }
                                 Log.i(TAG, "update: " + mUserArrayList.size());
                                 if (mUserArrayList.isEmpty()) {
+                                    cardView.setVisibility(View.INVISIBLE);
                                     mHintTextView.setVisibility(View.VISIBLE);
                                     mHintTextView.setText("No user found");
                                 } else {
+                                    cardView.setVisibility(View.VISIBLE);
                                     mSearchUserAdapter.notifyDataSetChanged();
                                 }
                             }
@@ -170,6 +181,10 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.i(TAG, "update: onFailure: " + e.getMessage());
+                            cardView.setVisibility(View.INVISIBLE);
+                            mProgressbar.setVisibility(View.INVISIBLE);
+                            mHintTextView.setVisibility(View.VISIBLE);
+                            mHintTextView.setText("Oops! , there was a problem from our side. Please try again later.");
                         }
                     });
 
@@ -177,7 +192,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
     }
 
     @Override
-    public void onSearchUserResultClicked(View view) {
+    public void onItemClicked(View view) {
         int position = mSearchUserRecyclerView.getChildAdapterPosition(view);
         User user = mUserArrayList.get(position);
         if(mListener != null){

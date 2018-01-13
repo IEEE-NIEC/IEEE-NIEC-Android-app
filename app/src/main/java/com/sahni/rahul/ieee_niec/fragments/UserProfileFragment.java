@@ -13,7 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.rubensousa.gravitysnaphelper.GravityPagerSnapHelper;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -118,6 +121,8 @@ public class UserProfileFragment extends Fragment {
         mInterestArrayList = new ArrayList<>();
         mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
+        SnapHelper snapHelper = new GravityPagerSnapHelper(Gravity.START);
+        snapHelper.attachToRecyclerView(mInterestRecyclerView);
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
         displayDetails();

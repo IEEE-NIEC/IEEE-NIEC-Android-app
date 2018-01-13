@@ -18,7 +18,7 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"/>
         <TextView
-            android:fontFamily="@font/josefin_sans_bold"
+            android:textStyle="bold"
             android:text="TextView"
             android:textColor="@android:color/black"
             android:id="@+id/info_text_view"

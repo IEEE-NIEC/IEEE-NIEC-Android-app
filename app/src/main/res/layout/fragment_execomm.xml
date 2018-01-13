@@ -2,38 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/card_view_below"
-    tools:context="com.sahni.rahul.ieee_niec.fragments.IeeeResourcesFragment">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.sahni.rahul.ieee_niec.fragments.ExecommFragment">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/ieee_resources_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
-                android:fitsSystemWindows="false"
-                android:id="@+id/resources_toolbar"
+                android:id="@+id/execomm_toolbar"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
 
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/resources_recycler_view"
-        tools:listitem="@layout/ieee_resources_item_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+    <include layout="@layout/content_execomm_fragment"/>
+
 
 
 </android.support.design.widget.CoordinatorLayout>

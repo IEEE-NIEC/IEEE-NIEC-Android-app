@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
 
 import java.util.ArrayList;
 
-public class GetUserDetailsActivity extends AppCompatActivity implements OnRemoveInterestClickListener {
+public class GetUserDetailsActivity extends AppCompatActivity implements OnRecyclerViewItemClickListener {
 
     private User mUser;
     private RecyclerView mInterestRecyclerView;
@@ -226,7 +226,7 @@ public class GetUserDetailsActivity extends AppCompatActivity implements OnRemov
     }
 
     @Override
-    public void onRemovedClicked(View view) {
+    public void onItemClicked(View view) {
         int position = mInterestRecyclerView.getChildAdapterPosition(view);
         mInterestArrayList.remove(position);
         mInterestAdapter.notifyItemRemoved(position);

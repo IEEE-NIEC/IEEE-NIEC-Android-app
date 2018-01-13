@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.glide.GlideApp;
-import com.sahni.rahul.ieee_niec.interfaces.OnInformationItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
 
     private Context mContext;
     private ArrayList<Information> mArrayList;
-    private OnInformationItemClickListener mListener;
+    private OnRecyclerViewItemClickListener mListener;
 
-    public InformationItemAdapter(Context mContext, ArrayList<Information> mArrayList, OnInformationItemClickListener listener) {
+    public InformationItemAdapter(Context mContext, ArrayList<Information> mArrayList, OnRecyclerViewItemClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.mListener = listener;
@@ -82,10 +82,9 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         private View holderView;
         private ImageView imageView;
         private TextView textView;
-        private OnInformationItemClickListener listener;
 
 
-        public InfoViewHolder(View itemView, final OnInformationItemClickListener listener) {
+        public InfoViewHolder(View itemView, final OnRecyclerViewItemClickListener listener) {
             super(itemView);
             holderView = itemView;
             imageView = itemView.findViewById(R.id.info_image_view);
@@ -94,7 +93,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
-                        listener.onInformationItemClicked(view);
+                        listener.onItemClicked(view);
                     }
                 }
             });

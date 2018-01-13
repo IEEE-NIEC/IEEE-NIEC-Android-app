@@ -34,7 +34,7 @@ import com.sahni.rahul.ieee_niec.adapter.InformationItemAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.helpers.EndlessRecyclerViewScrollListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
-import com.sahni.rahul.ieee_niec.interfaces.OnInformationItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import static com.sahni.rahul.ieee_niec.helpers.ContentUtils.INFO_KEY;
 
 
-public class InformationFragment extends Fragment implements OnInformationItemClickListener {
+public class InformationFragment extends Fragment implements OnRecyclerViewItemClickListener {
 
     private static final String TAG = "InformationFragment";
     private RecyclerView mInfoRecyclerView;
@@ -269,7 +269,7 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
         if (context instanceof OnInfoFragmentInteractionListener) {
             mListener = (OnInfoFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnInformationItemClickListener");
+            throw new RuntimeException(context.toString() + " must implement OnInfoFragmentInteractionListener");
         }
     }
 
@@ -289,13 +289,11 @@ public class InformationFragment extends Fragment implements OnInformationItemCl
 
 
     @Override
-    public void onInformationItemClicked(View view) {
+    public void onItemClicked(View view) {
         if (mListener != null) {
             int position = mInfoRecyclerView.getChildAdapterPosition(view);
             Information info = mInfoArrayList.get(position);
             mListener.onInfoFragmentInteraction(info);
-
-
         }
     }
 }

@@ -21,10 +21,10 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserPagerAdapter;
-import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserResultClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 
 
-public class SearchUserFragment extends Fragment implements OnSearchUserResultClickListener {
+public class SearchUserFragment extends Fragment implements OnRecyclerViewItemClickListener {
 
     private static final String TAG = "SearchUserFragment";
     private ViewPager mViewPager;
@@ -160,7 +160,7 @@ public class SearchUserFragment extends Fragment implements OnSearchUserResultCl
     }
 
     @Override
-    public void onSearchUserResultClicked(View view) {
+    public void onItemClicked(View view) {
 //        int position = mUserRecyclerView.getChildAdapterPosition(view);
 //        User user = mUserArrayList.get(position);
 //        mListener.onSearchUserFragmentInteraction(user);

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.fragments.AboutIeeeFragment;
+import com.sahni.rahul.ieee_niec.fragments.ExecommFragment;
 import com.sahni.rahul.ieee_niec.fragments.HomeFragment;
 import com.sahni.rahul.ieee_niec.fragments.IeeeResourcesFragment;
 import com.sahni.rahul.ieee_niec.fragments.InformationDetailsFragment;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private static final String SEARCH_USER_FRAGMENT_TAG = "search_user_fragment";
     private static final String ABOUT_IEEE_FRAGMENT_TAG = "about_ieee_fragment";
     private static final String IEEE_RESOURCES_TAG = "ieee_resources_tag";
+    private static final String EXECOMM_FRAGMENT_TAG = "execomm_fragment";
     private static final String FRAGMENT_TAG_KEY = "fragment_tag_key";
 
 
@@ -133,6 +135,9 @@ public class MainActivity extends AppCompatActivity
                         case SEARCH_USER_FRAGMENT_TAG:
                             displaySelectedFragment(R.id.nav_search);
                             break;
+                        case EXECOMM_FRAGMENT_TAG:
+                            displaySelectedFragment(R.id.nav_execomm);
+                            break;
 
                     }
                 } else {
@@ -162,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         InformationFragment projectsFragment = (InformationFragment) fm.findFragmentByTag(PROJECTS_FRAGMENT_TAG);
         AboutIeeeFragment ieeeFragment = (AboutIeeeFragment) fm.findFragmentByTag(ABOUT_IEEE_FRAGMENT_TAG);
         IeeeResourcesFragment ieeeResourcesFragment = (IeeeResourcesFragment) fm.findFragmentByTag(IEEE_RESOURCES_TAG);
+        ExecommFragment execommFragment = (ExecommFragment) fm.findFragmentByTag(EXECOMM_FRAGMENT_TAG);
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -173,7 +179,8 @@ public class MainActivity extends AppCompatActivity
                 || (achievementsFragment != null && achievementsFragment.isVisible())
                 || (projectsFragment != null && projectsFragment.isVisible())
                 || (ieeeFragment != null && ieeeFragment.isVisible())
-                || (ieeeResourcesFragment != null && ieeeResourcesFragment.isVisible())) {
+                || (ieeeResourcesFragment != null && ieeeResourcesFragment.isVisible())
+                || (execommFragment != null && execommFragment.isVisible())) {
             ft.setCustomAnimations(R.anim.slide_back_from_left, R.anim.fade_translate_down);
             ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
             mNavigationView.setCheckedItem(R.id.nav_home);
@@ -291,6 +298,15 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                 }
+                break;
+
+            case R.id.nav_execomm:
+                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
+                ft.replace(R.id.main_frame_layout, ExecommFragment.newInstance(), EXECOMM_FRAGMENT_TAG).addToBackStack(null).commit();
+                ft.addToBackStack(null);
+                mNavigationView.setCheckedItem(R.id.nav_execomm);
+                currentFragmentTag = EXECOMM_FRAGMENT_TAG;
+                break;
         }
     }
 

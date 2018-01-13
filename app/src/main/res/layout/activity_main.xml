@@ -26,7 +26,6 @@
   <!--/>-->
 
   <android.support.design.widget.NavigationView
-      app:itemTextAppearance="@style/NavigationDrawerTextStyle"
       app:itemTextColor="@android:color/black"
       app:itemIconTint="@android:color/black"
       android:fitsSystemWindows="true"

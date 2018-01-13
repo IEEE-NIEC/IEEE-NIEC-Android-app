@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 
 import java.util.ArrayList;
 
@@ -23,9 +23,9 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
     private Context mContext;
     private ArrayList<String> mArrayList;
     private int type;
-    private OnRemoveInterestClickListener listener;
+    private OnRecyclerViewItemClickListener listener;
 
-    public InterestAdapter(Context mContext, ArrayList<String> mArrayList, int type, OnRemoveInterestClickListener listener) {
+    public InterestAdapter(Context mContext, ArrayList<String> mArrayList, int type, OnRecyclerViewItemClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.type = type;
@@ -54,7 +54,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
         TextView textView;
         ImageView editImageView;
 
-        public InterestViewHolder(final View itemView, int type, final OnRemoveInterestClickListener listener) {
+        public InterestViewHolder(final View itemView, int type, final OnRecyclerViewItemClickListener listener) {
             super(itemView);
             textView = itemView.findViewById(R.id.interest_item_text_view);
             editImageView = itemView.findViewById(R.id.remove_interest_image_view);
@@ -74,7 +74,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
                     @Override
                     public void onClick(View view) {
                         if(listener != null){
-                            listener.onRemovedClicked(itemView);
+                            listener.onItemClicked(itemView);
                         }
                     }
                 });

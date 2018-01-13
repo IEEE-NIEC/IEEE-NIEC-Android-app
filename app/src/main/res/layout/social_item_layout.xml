@@ -18,7 +18,6 @@
         app:srcCompat="@drawable/iee_niec_logo" />
 
     <TextView
-        android:fontFamily="@font/josefin_sans_regular"
         android:id="@+id/social_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

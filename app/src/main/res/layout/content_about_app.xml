@@ -7,6 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sahni.rahul.ieee_niec.activity.AboutAppActivity"
     tools:showIn="@layout/activity_about_app"
+    android:background="@color/card_view_below"
     >
 
     <android.support.constraint.ConstraintLayout
@@ -20,7 +21,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/josefin_sans_bold"
             android:text="Rahul Sahni"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/josefin_sans_bold"
             android:text="App developed by"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +64,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:fontFamily="@font/josefin_sans_bold"
                     android:text="Connect with us"
                     android:textStyle="bold" />
                 <android.support.v7.widget.RecyclerView

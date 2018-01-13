@@ -44,14 +44,14 @@ import com.google.firebase.storage.UploadTask;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.InterestAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.interfaces.OnRemoveInterestClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 
-public class EditUserProfileActivity extends AppCompatActivity implements OnRemoveInterestClickListener {
+public class EditUserProfileActivity extends AppCompatActivity implements OnRecyclerViewItemClickListener {
 
     private static final String TAG = "EditUserProfileActivity";
     private static final int PICK_IMAGE_REQUEST = 1001;
@@ -205,8 +205,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
                     interestInputLayout.setError("Can't be blank!");
                 } else {
                     interestInputLayout.setError(null);
+                    interestInputEditText.setText("");
                     mInterestArrayList.add(interest);
                     mInterestAdapter.notifyItemInserted(mInterestArrayList.size()-1);
+                    mInterestRecyclerView.smoothScrollToPosition(mInterestArrayList.size()-1);
                     isDataChanged = true;
                 }
             }
@@ -307,7 +309,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
     }
 
     @Override
-    public void onRemovedClicked(View view) {
+    public void onItemClicked(View view) {
         int position = mInterestRecyclerView.getChildAdapterPosition(view);
         mInterestArrayList.remove(position);
         mInterestAdapter.notifyItemRemoved(position);
@@ -443,4 +445,5 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRemo
                 });
         builder.create().show();
     }
+
 }
