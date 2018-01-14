@@ -59,7 +59,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
 
     private EventListener<QuerySnapshot> mEventListener;
 
-    private static final int NO_OF_INFO_TO_FETCH = 5;
+    private static final int NO_OF_INFO_TO_FETCH = 10;
     private boolean isMoreDataAvailable = true;
 
 //    int mScrollPosition = 0;

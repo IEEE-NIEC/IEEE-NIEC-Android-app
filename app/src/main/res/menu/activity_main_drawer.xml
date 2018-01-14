@@ -30,6 +30,11 @@
             android:icon="@drawable/ic_resources_bw"
             android:title="IEEE Resources" />
 
+        <item android:id="@+id/nav_join_ieee"
+            android:checkable="false"
+            android:title="Join IEEE"
+            android:icon="@drawable/ic_join"
+            />
         <item
             android:id="@+id/nav_contact"
             android:title="Account">

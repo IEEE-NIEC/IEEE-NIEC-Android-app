@@ -1,6 +1,8 @@
 package com.sahni.rahul.ieee_niec.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -204,10 +207,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        if(item.getItemId() == R.id.nav_about_app){
+        int id = item.getItemId();
+        if(id == R.id.nav_about_app){
             startActivity(new Intent(this, AboutAppActivity.class));
-        } else {
-            displaySelectedFragment(item.getItemId());
+        } else if(id == R.id.nav_join_ieee){
+            Uri uri = Uri.parse(ContentUtils.JOIN_IEEE_URL);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            PackageManager packageManager = getPackageManager();
+            if(intent.resolveActivity(packageManager) != null){
+                startActivity(intent);
+            } else{
+                Toast.makeText(this, "Please install browser to continue", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            displaySelectedFragment(id);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

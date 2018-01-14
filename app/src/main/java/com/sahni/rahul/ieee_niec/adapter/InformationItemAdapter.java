@@ -2,6 +2,7 @@ package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 public class InformationItemAdapter extends RecyclerView.Adapter<InformationItemAdapter.InfoViewHolder> {
 
+    private static final String TAG = "InformationItemAdapter";
     private Context mContext;
     private ArrayList<Information> mArrayList;
     private OnRecyclerViewItemClickListener mListener;
@@ -42,12 +44,22 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         Information info = mArrayList.get(position);
         holder.textView.setText(info.getTitle());
         if (info.getImageUrlArrayList() != null) {
+            String firstImageUrl = info.getImageUrlArrayList().get(0);
+            Log.d(TAG, "first url ="+firstImageUrl);
 
-            GlideApp.with(mContext)
-                    .load(info.getImageUrlArrayList().get(0))
-                    .placeholder(R.drawable.place)
-                    .error(R.drawable.place)
-                    .into(holder.imageView);
+            if(firstImageUrl != null &&
+                    (!firstImageUrl.equals("null"))) {
+                holder.imageView.setVisibility(View.VISIBLE);
+                GlideApp.with(mContext)
+                        .load(firstImageUrl)
+                        .placeholder(R.drawable.place)
+                        .error(R.drawable.place)
+                        .into(holder.imageView);
+            } else {
+                holder.imageView.setVisibility(View.GONE);
+            }
+        } else {
+            holder.imageView.setVisibility(View.GONE);
         }
 
 //        ViewCompat.setTransitionName(holder.imageView, info.getTitle());

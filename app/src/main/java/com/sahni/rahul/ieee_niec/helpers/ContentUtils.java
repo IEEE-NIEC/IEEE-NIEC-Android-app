@@ -67,6 +67,7 @@ public class ContentUtils {
     public static final String INSTAGRAM_URL = "https://www.instagram.com/ieeeniec";
     public static final String TWITTER_URL = "https://www.twitter.com/ieeeniec";
     public static final String GOOGLE_PLUS_URL = "https://plus.google.com/102106854753581893748";
+    public static final String JOIN_IEEE_URL = "https://goo.gl/forms/pGTEhdkBEc5ZiTgR2";
 
 
 
@@ -126,5 +127,11 @@ public class ContentUtils {
                 Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.apply();
+    }
+
+    public static String formatString(String description){
+        description = description.replace("\\n", "\n").replace("\\r", "\r");
+        return description;
+
     }
 }

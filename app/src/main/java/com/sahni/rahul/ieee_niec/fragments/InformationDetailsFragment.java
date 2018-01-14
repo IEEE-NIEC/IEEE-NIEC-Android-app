@@ -73,12 +73,16 @@ public class InformationDetailsFragment extends Fragment {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+//        toolbar.setTitle(mInfo.getTitle());
+
         AppBarLayout appBarLayout = view.findViewById(R.id.info_details_appbar);
+//        appBarLayout.setExpanded(false);
         final CollapsingToolbarLayout toolbarLayout = view.findViewById(R.id.info_details_collapsing_toolbar);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.d(TAG, "onOffsetChanged: vertical offset="+verticalOffset);
                 int scrollRange = appBarLayout.getTotalScrollRange();
                 if(scrollRange + verticalOffset == 0){
                     toolbarLayout.setTitle(mInfo.getTitle());
@@ -91,18 +95,43 @@ public class InformationDetailsFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.info_details_image_view);
         TextView titleTextView = view.findViewById(R.id.info_details_title_text_view);
         TextView descriptionTextView = view.findViewById(R.id.info_details_description_text_view);
-//        Picasso.with(getActivity())
-//                .load(mInfo.getImageUrlArrayList().get(0))
-//                .placeholder(R.drawable.place)
-//                .error(R.drawable.place)
-//                .into(imageView);
-        GlideApp.with(this)
-                .load(mInfo.getImageUrlArrayList().get(0))
-                .placeholder(R.drawable.place)
-                .error(R.drawable.place)
-                .into(imageView);
+
+        if(mInfo.getImageUrlArrayList() != null){
+            String firstImageUrl = mInfo.getImageUrlArrayList().get(0);
+            if(firstImageUrl != null &&
+                    (!firstImageUrl.equals("null"))) {
+                imageView.setVisibility(View.VISIBLE);
+                GlideApp.with(this)
+                        .load(mInfo.getImageUrlArrayList().get(0))
+                        .placeholder(R.drawable.place)
+                        .error(R.drawable.place)
+                        .into(imageView);
+            } else {
+//                appBarLayout.scrollTo(0,0);
+                Log.d(TAG, "scroll range:"+appBarLayout.getTotalScrollRange());
+//                appBarLayout.setExpanded(false);
+                toolbar.setTitle(mInfo.getTitle());
+//                toolbarLayout.setTitle(mInfo.getTitle());
+                imageView.setVisibility(View.GONE);
+//                appBarLayout.setExpanded(false);
+            }
+        } else {
+            Log.d(TAG, "scroll range:"+appBarLayout.getTotalScrollRange());
+//            appBarLayout.scrollTo(0,0);
+//            appBarLayout.setExpanded(false);
+            toolbar.setTitle(mInfo.getTitle());
+            imageView.setVisibility(View.GONE);
+            toolbar.setTitle(mInfo.getTitle());
+//            toolbarLayout.setTitle(mInfo.getTitle());
+//            appBarLayout.setExpanded(false);
+        }
         titleTextView.setText(mInfo.getTitle());
-        descriptionTextView.setText(mInfo.getDescription());
+        String description = mInfo.getDescription();
+        description = ContentUtils.formatString(description);
+        if(description.contains("\\n")){
+            Log.d(TAG, "contains endl \\n ");
+        }
+        descriptionTextView.setText(description);
         Log.i(TAG, "desc: "+mInfo.getDescription());
 
         imageView.setOnClickListener(new View.OnClickListener() {
