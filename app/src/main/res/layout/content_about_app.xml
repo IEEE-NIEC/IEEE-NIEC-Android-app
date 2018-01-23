@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sahni.rahul.ieee_niec.activity.AboutAppActivity"
     tools:showIn="@layout/activity_about_app"
     android:background="@color/card_view_below"
+    android:fillViewport="true"
     >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/textView4"
@@ -75,11 +77,12 @@
         </android.support.v7.widget.CardView>
 
         <ImageView
-            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/gmail_image_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
+            android:foreground="?attr/selectableItemBackground"
             app:layout_constraintEnd_toStartOf="@+id/phone_image_view"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -88,28 +91,29 @@
             app:srcCompat="@drawable/ic_gmail" />
 
         <ImageView
-            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/phone_image_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/github_image_view"
+            android:layout_marginStart="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/gmail_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/gmail_image_view"
             app:layout_constraintTop_toTopOf="@+id/gmail_image_view"
             app:srcCompat="@drawable/call" />
 
-        <ImageView
-            android:foreground="?attr/selectableItemBackground"
-            android:id="@+id/github_image_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/phone_image_view"
-            app:layout_constraintTop_toTopOf="@+id/gmail_image_view"
-            app:srcCompat="@drawable/github" />
+        <!--<ImageView-->
+        <!--android:foreground="?attr/selectableItemBackground"-->
+        <!--android:id="@+id/github_image_view"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.5"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/phone_image_view"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/gmail_image_view"-->
+        <!--app:srcCompat="@drawable/github" />-->
 
 
     </android.support.constraint.ConstraintLayout>

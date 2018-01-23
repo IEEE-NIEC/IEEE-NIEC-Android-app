@@ -58,8 +58,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:layout_margin="16dp"
+            android:gravity="center"
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:id="@+id/no_info_text_view"
@@ -73,7 +75,6 @@
             android:layout_centerInParent="true"/>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
             android:fitsSystemWindows="false"
             android:id="@+id/information_recycler_view"
             android:layout_width="match_parent"

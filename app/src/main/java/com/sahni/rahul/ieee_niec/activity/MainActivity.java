@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
     private NavigationView mNavigationView;
 
-    private String currentFragmentTag;
+    private String currentFragmentTag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,95 +231,112 @@ public class MainActivity extends AppCompatActivity
 
     void displaySelectedFragment(int menuItemId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser;
 
         switch (menuItemId) {
 
             case R.id.nav_home:
-//                ft.add()
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_home);
-                currentFragmentTag = HOME_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(HOME_FRAGMENT_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_home);
+                    currentFragmentTag = HOME_FRAGMENT_TAG;
+                }
                 break;
 
             case R.id.nav_events:
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_events);
-                currentFragmentTag = EVENTS_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(EVENTS_FRAGMENT_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.EVENTS), EVENTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_events);
+                    currentFragmentTag = EVENTS_FRAGMENT_TAG;
+                }
                 break;
 
             case R.id.nav_achieve:
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_achieve);
-                currentFragmentTag = ACHIEVEMENTS_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(ACHIEVEMENTS_FRAGMENT_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.ACHIEVEMENTS), ACHIEVEMENTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_achieve);
+                    currentFragmentTag = ACHIEVEMENTS_FRAGMENT_TAG;
+                }
                 break;
 
             case R.id.nav_project:
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_project);
-                currentFragmentTag = PROJECTS_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(PROJECTS_FRAGMENT_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, InformationFragment.newInstance(ContentUtils.PROJECTS), PROJECTS_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_project);
+                    currentFragmentTag = PROJECTS_FRAGMENT_TAG;
+                }
                 break;
 
             case R.id.nav_ieee:
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, new AboutIeeeFragment(), ABOUT_IEEE_FRAGMENT_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_ieee);
-                currentFragmentTag = ABOUT_IEEE_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(ABOUT_IEEE_FRAGMENT_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, new AboutIeeeFragment(), ABOUT_IEEE_FRAGMENT_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_ieee);
+                    currentFragmentTag = ABOUT_IEEE_FRAGMENT_TAG;
+                }
                 break;
 
             case R.id.nav_resource:
-                ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                ft.replace(R.id.main_frame_layout, new IeeeResourcesFragment(), IEEE_RESOURCES_TAG).addToBackStack(null).commit();
-                mNavigationView.setCheckedItem(R.id.nav_resource);
-                currentFragmentTag = IEEE_RESOURCES_TAG;
+                if(!currentFragmentTag.equals(IEEE_RESOURCES_TAG)) {
+                    ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                    ft.replace(R.id.main_frame_layout, new IeeeResourcesFragment(), IEEE_RESOURCES_TAG).addToBackStack(null).commit();
+                    mNavigationView.setCheckedItem(R.id.nav_resource);
+                    currentFragmentTag = IEEE_RESOURCES_TAG;
+                }
                 break;
 
 
             case R.id.nav_my_profile:
-
-                if (firebaseUser != null) {
-                    mUser = ContentUtils.getUserDataFromSharedPref(this);
-                    if (mUser != null) {
-                        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                        ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
-                        mNavigationView.setCheckedItem(R.id.nav_my_profile);
-                        currentFragmentTag = USER_PROFILE_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(USER_PROFILE_FRAGMENT_TAG)) {
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (firebaseUser != null) {
+                        mUser = ContentUtils.getUserDataFromSharedPref(this);
+                        if (mUser != null) {
+                            ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                            ft.replace(R.id.main_frame_layout, UserProfileFragment.newInstance(mUser), USER_PROFILE_FRAGMENT_TAG).addToBackStack(null).commit();
+                            mNavigationView.setCheckedItem(R.id.nav_my_profile);
+                            currentFragmentTag = USER_PROFILE_FRAGMENT_TAG;
+                        } else {
+                            startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
+                        }
                     } else {
                         startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                     }
-                } else {
-                    startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                 }
                 break;
 
             case nav_search:
-
-                if (firebaseUser != null) {
-                    mUser = ContentUtils.getUserDataFromSharedPref(this);
-                    if (mUser != null) {
-                        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
-                        ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
-                        ft.addToBackStack(null);
-                        mNavigationView.setCheckedItem(R.id.nav_search);
-                        currentFragmentTag = SEARCH_USER_FRAGMENT_TAG;
+                if(!currentFragmentTag.equals(SEARCH_USER_FRAGMENT_TAG)) {
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (firebaseUser != null) {
+                        mUser = ContentUtils.getUserDataFromSharedPref(this);
+                        if (mUser != null) {
+                            ft.setCustomAnimations(R.anim.fade_translate_up, R.anim.slide_to_left);
+                            ft.replace(R.id.main_frame_layout, SearchUserFragment.newInstance(), SEARCH_USER_FRAGMENT_TAG).addToBackStack(null).commit();
+                            ft.addToBackStack(null);
+                            mNavigationView.setCheckedItem(R.id.nav_search);
+                            currentFragmentTag = SEARCH_USER_FRAGMENT_TAG;
+                        } else {
+                            startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
+                        }
                     } else {
                         startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                     }
-                } else {
-                    startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
                 }
                 break;
 
             case R.id.nav_execomm:
+                if(!currentFragmentTag.equals(EXECOMM_FRAGMENT_TAG)){
                 ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left);
                 ft.replace(R.id.main_frame_layout, ExecommFragment.newInstance(), EXECOMM_FRAGMENT_TAG).addToBackStack(null).commit();
                 ft.addToBackStack(null);
                 mNavigationView.setCheckedItem(R.id.nav_execomm);
                 currentFragmentTag = EXECOMM_FRAGMENT_TAG;
+                }
                 break;
         }
     }

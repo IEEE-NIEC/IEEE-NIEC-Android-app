@@ -63,10 +63,9 @@
         <item name="android:textColorHint">@android:color/black</item>
         <item name="android:textSize">12sp</item>
     </style>
-
-    <!--<style name="NavigationDrawerTextStyle">-->
-        <!--<item name="android:fontFamily">@font/josefin_sans_regular</item>-->
-    <!--</style>-->
-
+    
+    <style name="SplashTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 
 </resources>

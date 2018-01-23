@@ -73,7 +73,6 @@ public class AboutAppActivity extends AppCompatActivity{
 
         final ImageView gmailImageView = findViewById(R.id.gmail_image_view);
         ImageView phoneImageView = findViewById(R.id.phone_image_view);
-        ImageView githubImageView = findViewById(R.id.github_image_view);
 
         TextView versiontextView = findViewById(R.id.version_text_view);
         versiontextView.setText("Version "+ BuildConfig.VERSION_NAME);
@@ -107,12 +106,6 @@ public class AboutAppActivity extends AppCompatActivity{
             }
         });
 
-        githubImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleUrl("https://www.github.com/rahulsahni06");
-            }
-        });
 
         final RecyclerView recyclerView = findViewById(R.id.social_recycler_view);
         final ArrayList<Social> arrayList = new ArrayList<>();

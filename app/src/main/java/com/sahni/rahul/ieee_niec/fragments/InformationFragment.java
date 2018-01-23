@@ -234,10 +234,10 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
                             mInfoAdapter.notifyDataSetChanged();
                         } else {
                             isMoreDataAvailable = false;
-                            Log.i(TAG, "fetchData: No result available");
+                            mNoInfoTextView.setText("Please check your internet connection or try again later");
                             mNoInfoTextView.setVisibility(View.VISIBLE);
                             mProgressBar.setVisibility(View.GONE);
-                            mNoInfoTextView.setText("No "+mInfoType+ " found!");
+//                            mNoInfoTextView.setText("No "+mInfoType+ " found!");
                         }
                     } else {
                         mNoInfoTextView.setVisibility(View.VISIBLE);
