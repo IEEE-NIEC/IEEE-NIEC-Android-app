@@ -64,7 +64,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
 
 //    int mScrollPosition = 0;
 
-    private int mLastItemId;
+    private float mLastItemId;
 
     private CollectionReference mCollectionReference;
 

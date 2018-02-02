@@ -43,7 +43,7 @@ public class InformationImageSliderActivity extends AppCompatActivity {
 
         Information information = getIntent().getParcelableExtra(ContentUtils.INFO_KEY);
         if (information != null) {
-            for(String url : information.getImageUrlArrayList()){
+            for(String url : information.getImageList()){
                 Log.i(TAG, "Url ="+url);
                 if(url != null){
                     mArrayList.add(url);

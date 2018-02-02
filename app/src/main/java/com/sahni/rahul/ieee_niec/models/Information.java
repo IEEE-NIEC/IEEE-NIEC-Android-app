@@ -11,21 +11,21 @@ import java.util.ArrayList;
 
 public class Information implements Parcelable{
 
-    private int id;
+    private float id;
     private String title;
     private String description;
-
-//    @SerializedName("url")
-    private ArrayList<String> imageUrlArrayList;
+    private ArrayList<String> imageList;
+    private String date;
 
     public Information() {
     }
 
     protected Information(Parcel in) {
-        id = in.readInt();
+        id = in.readFloat();
         title = in.readString();
         description = in.readString();
-        imageUrlArrayList = in.createStringArrayList();
+        imageList = in.createStringArrayList();
+        date = in.readString();
     }
 
     public static final Creator<Information> CREATOR = new Creator<Information>() {
@@ -40,36 +40,24 @@ public class Information implements Parcelable{
         }
     };
 
-    public int getId() {
+    public float getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public ArrayList<String> getImageList() {
+        return imageList;
     }
 
-    public ArrayList<String> getImageUrlArrayList() {
-        return imageUrlArrayList;
-    }
-
-    public void setImageUrlArrayList(ArrayList<String> imageUrlArrayList) {
-        this.imageUrlArrayList = imageUrlArrayList;
+    public String getDate() {
+        return date;
     }
 
     @Override
@@ -79,9 +67,10 @@ public class Information implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
+        parcel.writeFloat(id);
         parcel.writeString(title);
         parcel.writeString(description);
-        parcel.writeStringList(imageUrlArrayList);
+        parcel.writeStringList(imageList);
+        parcel.writeString(date);
     }
 }

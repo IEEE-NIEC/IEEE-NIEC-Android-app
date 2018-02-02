@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,16 +72,14 @@ public class InformationDetailsFragment extends Fragment {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-//        toolbar.setTitle(mInfo.getTitle());
-
         AppBarLayout appBarLayout = view.findViewById(R.id.info_details_appbar);
-//        appBarLayout.setExpanded(false);
+
         final CollapsingToolbarLayout toolbarLayout = view.findViewById(R.id.info_details_collapsing_toolbar);
+
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                Log.d(TAG, "onOffsetChanged: vertical offset="+verticalOffset);
                 int scrollRange = appBarLayout.getTotalScrollRange();
                 if(scrollRange + verticalOffset == 0){
                     toolbarLayout.setTitle(mInfo.getTitle());
@@ -95,44 +92,57 @@ public class InformationDetailsFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.info_details_image_view);
         TextView titleTextView = view.findViewById(R.id.info_details_title_text_view);
         TextView descriptionTextView = view.findViewById(R.id.info_details_description_text_view);
+        TextView dateTextView = view.findViewById(R.id.date_text_view);
 
-        if(mInfo.getImageUrlArrayList() != null){
-            String firstImageUrl = mInfo.getImageUrlArrayList().get(0);
+        AppBarLayout.LayoutParams layoutParams = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ContentUtils.convertDpToPixel(100, getActivity()));
+        layoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL|
+                AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED|
+                AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+        );
+
+        /*
+         problem due to using AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED flag
+         so setting padding equal to toolbar height
+         */
+        descriptionTextView.setPadding(0,0,0,ContentUtils.convertDpToPixel(56, getActivity()));
+
+        if(mInfo.getImageList() != null){
+            String firstImageUrl = mInfo.getImageList().get(0);
             if(firstImageUrl != null &&
                     (!firstImageUrl.equals("null"))) {
                 imageView.setVisibility(View.VISIBLE);
                 GlideApp.with(this)
-                        .load(mInfo.getImageUrlArrayList().get(0))
+                        .load(mInfo.getImageList().get(0))
                         .placeholder(R.drawable.place)
                         .error(R.drawable.place)
                         .into(imageView);
+
+                /**
+                 * removing padding
+                 */
+                descriptionTextView.setPadding(0,0,0,0);
             } else {
-//                appBarLayout.scrollTo(0,0);
-                Log.d(TAG, "scroll range:"+appBarLayout.getTotalScrollRange());
-//                appBarLayout.setExpanded(false);
-                toolbar.setTitle(mInfo.getTitle());
-//                toolbarLayout.setTitle(mInfo.getTitle());
                 imageView.setVisibility(View.GONE);
-//                appBarLayout.setExpanded(false);
+                toolbarLayout.setLayoutParams(layoutParams);
+                toolbarLayout.setTitle(mInfo.getTitle());
             }
         } else {
-            Log.d(TAG, "scroll range:"+appBarLayout.getTotalScrollRange());
-//            appBarLayout.scrollTo(0,0);
-//            appBarLayout.setExpanded(false);
-            toolbar.setTitle(mInfo.getTitle());
+            toolbarLayout.setLayoutParams(layoutParams);
             imageView.setVisibility(View.GONE);
-            toolbar.setTitle(mInfo.getTitle());
-//            toolbarLayout.setTitle(mInfo.getTitle());
-//            appBarLayout.setExpanded(false);
+            toolbarLayout.setTitle(mInfo.getTitle());
         }
+
         titleTextView.setText(mInfo.getTitle());
+        String date = mInfo.getDate();
+        if(date != null && !date.equals("null")){
+            dateTextView.setText("" + mInfo.getDate());
+        } else {
+            dateTextView.setVisibility(View.GONE);
+        }
         String description = mInfo.getDescription();
         description = ContentUtils.formatString(description);
-        if(description.contains("\\n")){
-            Log.d(TAG, "contains endl \\n ");
-        }
         descriptionTextView.setText(description);
-        Log.i(TAG, "desc: "+mInfo.getDescription());
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

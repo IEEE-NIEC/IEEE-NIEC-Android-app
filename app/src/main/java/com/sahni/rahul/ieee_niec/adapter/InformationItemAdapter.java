@@ -43,8 +43,9 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
     public void onBindViewHolder(final InfoViewHolder holder, int position) {
         Information info = mArrayList.get(position);
         holder.textView.setText(info.getTitle());
-        if (info.getImageUrlArrayList() != null) {
-            String firstImageUrl = info.getImageUrlArrayList().get(0);
+        holder.dateTextView.setText(info.getDate());
+        if (info.getImageList() != null) {
+            String firstImageUrl = info.getImageList().get(0);
             Log.d(TAG, "first url ="+firstImageUrl);
 
             if(firstImageUrl != null &&
@@ -94,6 +95,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         private View holderView;
         private ImageView imageView;
         private TextView textView;
+        private TextView dateTextView;
 
 
         public InfoViewHolder(View itemView, final OnRecyclerViewItemClickListener listener) {
@@ -101,6 +103,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
             holderView = itemView;
             imageView = itemView.findViewById(R.id.info_image_view);
             textView = itemView.findViewById(R.id.info_text_view);
+            dateTextView = itemView.findViewById(R.id.date_text_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
