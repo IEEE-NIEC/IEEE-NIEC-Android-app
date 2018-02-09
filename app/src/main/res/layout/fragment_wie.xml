@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/text_horizontal_margin"
+    android:paddingRight="@dimen/text_horizontal_margin"
     android:orientation="vertical"
     app:layout_scrollFlags="scroll">
 
@@ -27,14 +27,14 @@
             android:id="@+id/wie_intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/vertical_margin"
             android:text="IEEE Women in Engineering (WIE) is an international professional organisation dedicated to women engineers and scientists.Its mission is to faciliate the recruitment and retention of women engineers and scientists." />
 
         <TextView
             android:id="@+id/wie_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/vertical_margin"
             android:text="Overview"
             style="@style/TitleFont"/>
 
@@ -43,7 +43,7 @@
             android:id="@+id/wie_overview2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/vertical_margin"
             android:text="The pivotal role of IEEE-WIE is to provide the opportunities and leading women in various technical disciplines around the globe and encourage them to follow their dreams to build a vibrant future." />
 
         <TextView
@@ -51,7 +51,7 @@
             android:id="@+id/wie_overview3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/vertical_margin"
             android:text="It strives to:" />
         <TextView
             android:textColor="@android:color/black"

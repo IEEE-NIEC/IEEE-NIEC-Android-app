@@ -23,11 +23,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.UpdateSearchFragmentDetails;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchByNameOrInterestFragment extends Fragment implements UpdateSearchFragmentDetails, OnRecyclerViewItemClickListener {
+public class SearchByNameOrInterestFragment extends Fragment implements UpdateSearchFragmentDetails, OnRecyclerViewItemClickListener, OnSharedElementClickListener {
 
     public static final String TAG = "SearchByNameOrInterest";
     private String mSearchBy;
@@ -99,7 +101,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
         mSearchUserRecyclerView = view.findViewById(R.id.search_user_recycler_view);
         mSearchUserAdapter = new SearchUserAdapter(getContext(), mUserArrayList, this);
         mSearchUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mSearchUserRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mSearchUserRecyclerView.addItemDecoration(new MyRecyclerDivider(getActivity(), DividerItemDecoration.VERTICAL));
         mSearchUserRecyclerView.setAdapter(mSearchUserAdapter);
 
     }
@@ -196,7 +198,7 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
         int position = mSearchUserRecyclerView.getChildAdapterPosition(view);
         User user = mUserArrayList.get(position);
         if(mListener != null){
-            mListener.onSearchUserFragmentInteraction(user);
+            mListener.onSearchUserFragmentInteraction(user, null);
         }
 
     }
@@ -212,4 +214,12 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
         }
     }
 
+    @Override
+    public void onSharedElementClicked(View view, View sharedView) {
+        int position = mSearchUserRecyclerView.getChildAdapterPosition(view);
+        User user = mUserArrayList.get(position);
+        if(mListener != null){
+            mListener.onSearchUserFragmentInteraction(user, sharedView);
+        }
+    }
 }

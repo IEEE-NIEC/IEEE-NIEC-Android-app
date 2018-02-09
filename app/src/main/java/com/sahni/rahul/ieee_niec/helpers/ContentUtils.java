@@ -54,7 +54,9 @@ public class ContentUtils {
     public static final String FIRESTORE_FEEDS = "feeds";
     public static final String FIRESTORE_EXECOMM = "execomm";
     public static final String FIREBASE_STORAGE_PROFILE_IMAGE = "profile_image";
-
+    public static final  String FIRESTORE_PAST_EXECOMM = "pastExecomm";
+    public static final  String FIRESTORE_PAST_EXECOMM_SESSION = "session";
+    public static final  String FIRESTORE_PAST_EXECOMM_SESSION_YEAR = "year";
     public static final String NOTIFICATION_DATA_PAYLOAD_KEY = "data_key";
     public static final String NOTIFICATION_TITLE_KEY = "title";
     public static final String FEEDS_DATA_PAYLOAD = "feed";

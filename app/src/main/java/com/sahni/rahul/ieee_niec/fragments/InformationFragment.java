@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,6 +38,7 @@ import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.helpers.EndlessRecyclerViewScrollListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
 
 import java.util.ArrayList;
@@ -42,7 +46,7 @@ import java.util.ArrayList;
 import static com.sahni.rahul.ieee_niec.helpers.ContentUtils.INFO_KEY;
 
 
-public class InformationFragment extends Fragment implements OnRecyclerViewItemClickListener {
+public class InformationFragment extends Fragment implements OnRecyclerViewItemClickListener, OnSharedElementClickListener {
 
     private static final String TAG = "InformationFragment";
     private RecyclerView mInfoRecyclerView;
@@ -94,6 +98,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
 //        mScrollPosition = bundle.getInt(SCROLL_POSITION_KEY);
 //        Log.i(TAG, "onCreate: scroll position: "+mScrollPosition);
 //        Log.i(TAG, "")
+        Log.i(TAG, "onCreate");
     }
 
     @Override
@@ -119,6 +124,8 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
         mProgressBar.setVisibility(View.INVISIBLE);
         mLoadMoreProgress.setVisibility(View.INVISIBLE);
 
+        ImageView appbarImageView = view.findViewById(R.id.app_bar_image_view);
+
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 getActivity(), drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -128,12 +135,15 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
 
         switch (mInfoType) {
             case ContentUtils.EVENTS:
+                appbarImageView.setImageResource(R.drawable.events_new);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_EVENTS);
                 break;
             case ContentUtils.ACHIEVEMENTS:
+                appbarImageView.setImageResource(R.drawable.new_achieve);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_ACHIEVEMENTS);
                 break;
             case ContentUtils.PROJECTS:
+                appbarImageView.setImageResource(R.drawable.new_project2);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_PROJECTS);
                 break;
         }
@@ -234,7 +244,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
                             mInfoAdapter.notifyDataSetChanged();
                         } else {
                             isMoreDataAvailable = false;
-                            mNoInfoTextView.setText("Please check your internet connection or try again later");
+                            mNoInfoTextView.setText(R.string.error);
                             mNoInfoTextView.setVisibility(View.VISIBLE);
                             mProgressBar.setVisibility(View.GONE);
 //                            mNoInfoTextView.setText("No "+mInfoType+ " found!");
@@ -248,7 +258,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
                 }
             };
 
-          mListenerRegistration = mCollectionReference.orderBy("id", Query.Direction.DESCENDING)
+            mListenerRegistration = mCollectionReference.orderBy("id", Query.Direction.DESCENDING)
 //                .endAt(NO_OF_INFO_TO_FETCH)
                     .limit(NO_OF_INFO_TO_FETCH)
                     .addSnapshotListener(mEventListener);
@@ -285,6 +295,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
     public void onPause() {
         super.onPause();
         detachCollectionSnapshotListener();
+        Log.i(TAG, "onPause");
     }
 
 
@@ -293,7 +304,16 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
         if (mListener != null) {
             int position = mInfoRecyclerView.getChildAdapterPosition(view);
             Information info = mInfoArrayList.get(position);
-            mListener.onInfoFragmentInteraction(info);
+            mListener.onInfoFragmentInteraction(view, info);
+        }
+    }
+
+    @Override
+    public void onSharedElementClicked(View view, View sharedView) {
+        if (mListener != null) {
+            int position = mInfoRecyclerView.getChildAdapterPosition(view);
+            Information info = mInfoArrayList.get(position);
+            mListener.onInfoFragmentInteraction(sharedView, info);
         }
     }
 }

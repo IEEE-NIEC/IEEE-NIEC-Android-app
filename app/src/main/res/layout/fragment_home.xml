@@ -1,15 +1,13 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.sahni.rahul.ieee_niec.fragments.HomeFragment"
-    android:orientation="vertical"
     android:background="@color/card_view_below"
-    >
+    android:orientation="vertical"
+    tools:context="com.sahni.rahul.ieee_niec.fragments.HomeFragment">
 
     <android.support.design.widget.AppBarLayout
-        android:background="@android:color/white"
         android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,56 +17,83 @@
             android:id="@+id/home_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:background="@drawable/splash_scrim">
 
             <LinearLayout
-                app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
-                android:layout_height="305dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                >
+                app:layout_collapseMode="parallax">
 
                 <android.support.v4.view.ViewPager
-                    android:layout_marginTop="8dp"
                     android:id="@+id/home_slider_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
-                    />
+                    android:layout_marginTop="8dp" />
 
                 <me.relex.circleindicator.CircleIndicator
-                    android:layout_margin="7dp"
                     android:id="@+id/circle_indicator"
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
             </LinearLayout>
 
 
-
             <android.support.v7.widget.Toolbar
-                app:layout_collapseMode="pin"
+                app:titleTextAppearance="@font/nunito_bold"
                 android:id="@+id/home_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
 
 
     </android.support.design.widget.AppBarLayout>
 
 
     <!--<include layout="@layout/content_home_fragment"/>-->
+    <!--<android.support.v4.widget.NestedScrollView-->
+    <!--android:paddingTop="8dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+    <!--<android.support.v7.widget.CardView-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/item_recycler_view"-->
+    <!--tools:listitem="@layout/home_recycler_layout"-->
+    <!--/>-->
 
-    <android.support.v7.widget.RecyclerView
+    <!--</android.support.v7.widget.CardView>-->
+    <!--</android.support.v4.widget.NestedScrollView>-->
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/item_recycler_view"
-        tools:listitem="@layout/home_recycler_layout"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginTop="4dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/item_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/home_recycler_layout" />
+
+    </android.support.v7.widget.CardView>
+
 
 </android.support.design.widget.CoordinatorLayout>

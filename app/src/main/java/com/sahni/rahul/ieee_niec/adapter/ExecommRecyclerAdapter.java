@@ -1,8 +1,10 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnExecommItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Execomm;
 
@@ -51,34 +52,43 @@ public class ExecommRecyclerAdapter extends RecyclerView.Adapter<ExecommRecycler
         Execomm execomm = arrayList.get(position);
         holder.nameTextView.setText(execomm.getName());
         holder.designationTextView.setText(execomm.getDesignation());
+        holder.progressBar.setVisibility(View.VISIBLE);
+        String phone = execomm.getPhoneNo();
+        String email = execomm.getEmailId();
+        if(phone != null){
+            holder.phoneImageView.setVisibility(View.VISIBLE);
+        } else {
+            holder.phoneImageView.setVisibility(View.GONE);
+        }
 
+        if(email != null){
+            holder.emailImageView.setVisibility(View.VISIBLE);
+        } else {
+            holder.emailImageView.setVisibility(View.GONE);
+        }
 
-        RequestBuilder<Drawable> requestBuilder = Glide.with(context)
+        RequestBuilder<Bitmap> requestBuilder = Glide.with(context)
+                .asBitmap()
                 .load(execomm.getPhotoUrl());
 
-        requestBuilder.listener(new RequestListener<Drawable>() {
+        requestBuilder.listener(new RequestListener<Bitmap>() {
             @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                 holder.progressBar.setVisibility(View.GONE);
                 holder.userPhotoImageView.setImageResource(R.drawable.user);
                 return true;
             }
 
             @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory
+                        .create(context.getResources(), resource);
+                drawable.setCircular(true);
                 holder.progressBar.setVisibility(View.GONE);
-                return false;
+                holder.userPhotoImageView.setImageDrawable(drawable);
+                return true;
             }
         }).into(holder.userPhotoImageView);
-
-
-//        GlideApp.with(context)
-//                .load(execomm.getPhotoUrl())
-//                .placeholder(R.drawable.user)
-//                .optionalCircleCrop()
-////                .circleCrop()
-//                .error(R.drawable.user)
-//                .into(holder.userPhotoImageView);
     }
 
     @Override

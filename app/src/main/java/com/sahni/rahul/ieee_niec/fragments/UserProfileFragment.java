@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,11 +16,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -111,8 +114,9 @@ public class UserProfileFragment extends Fragment {
 
         mImageProgressBar = view.findViewById(R.id.image_progress_bar);
 
-        FabSpeedDial fabSpeedDial = view.findViewById(R.id.fab_speed_dial);
-
+        final FabSpeedDial fabSpeedDial = view.findViewById(R.id.fab_speed_dial);
+        final CoordinatorLayout layout = view.findViewById(R.id.user_profile_main_layout);
+        FrameLayout frameLayout = view.findViewById(R.id.fab_container);
         mUserImageView = view.findViewById(R.id.user_image_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
         mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
@@ -126,6 +130,17 @@ public class UserProfileFragment extends Fragment {
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
         displayDetails();
+//        frameLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(fabSpeedDial.isMenuOpen()){
+//                    layout.setAlpha(0.5f);
+//                } else {
+//                    layout.setAlpha(1);
+//                }
+//            }
+//        });
 
         fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
             @Override
@@ -183,8 +198,9 @@ public class UserProfileFragment extends Fragment {
 
             @Override
             public void onMenuClosed() {
-
+                layout.setAlpha(1);
             }
+
         });
 
     }

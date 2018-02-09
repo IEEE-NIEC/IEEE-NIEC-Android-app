@@ -1,6 +1,8 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
+
 
 import java.util.ArrayList;
 
@@ -25,9 +30,9 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
     private static final String TAG = "InformationItemAdapter";
     private Context mContext;
     private ArrayList<Information> mArrayList;
-    private OnRecyclerViewItemClickListener mListener;
+    private OnSharedElementClickListener mListener;
 
-    public InformationItemAdapter(Context mContext, ArrayList<Information> mArrayList, OnRecyclerViewItemClickListener listener) {
+    public InformationItemAdapter(Context mContext, ArrayList<Information> mArrayList, OnSharedElementClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.mListener = listener;
@@ -44,6 +49,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         Information info = mArrayList.get(position);
         holder.textView.setText(info.getTitle());
         holder.dateTextView.setText(info.getDate());
+        ViewCompat.setTransitionName(holder.cardView, info.getTitle());
         if (info.getImageList() != null) {
             String firstImageUrl = info.getImageList().get(0);
             Log.d(TAG, "first url ="+firstImageUrl);
@@ -55,6 +61,7 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
                         .load(firstImageUrl)
                         .placeholder(R.drawable.place)
                         .error(R.drawable.place)
+                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .into(holder.imageView);
             } else {
                 holder.imageView.setVisibility(View.GONE);
@@ -96,19 +103,21 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         private ImageView imageView;
         private TextView textView;
         private TextView dateTextView;
+        private CardView cardView;
 
 
-        public InfoViewHolder(View itemView, final OnRecyclerViewItemClickListener listener) {
+        public InfoViewHolder(View itemView, final OnSharedElementClickListener listener) {
             super(itemView);
             holderView = itemView;
             imageView = itemView.findViewById(R.id.info_image_view);
             textView = itemView.findViewById(R.id.info_text_view);
             dateTextView = itemView.findViewById(R.id.date_text_view);
+            cardView = itemView.findViewById(R.id.info_card_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
-                        listener.onItemClicked(view);
+                        listener.onSharedElementClicked(view, cardView);
                     }
                 }
             });

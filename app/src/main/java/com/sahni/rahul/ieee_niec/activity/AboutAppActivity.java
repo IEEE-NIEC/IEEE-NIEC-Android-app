@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahni.rahul.ieee_niec.BuildConfig;
+import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SocialRecyclerAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -122,7 +123,7 @@ public class AboutAppActivity extends AppCompatActivity{
             }
         });
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new MyRecyclerDivider(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }

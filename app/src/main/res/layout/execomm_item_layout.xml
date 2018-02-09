@@ -3,56 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/execomm_card_view"
+    <FrameLayout
+        android:id="@+id/execomm_frame_layout"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <RelativeLayout
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/execomm_image_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/execomm_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-            <ProgressBar
-                android:id="@+id/execomm_progress_bar"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/execomm_progress_bar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal" />
 
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/execomm_name_text_view"
-        android:layout_width="280dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         android:text="TextView"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toEndOf="@+id/execomm_card_view"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/execomm_designation_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/execomm_frame_layout"
+        app:layout_constraintTop_toTopOf="@+id/execomm_frame_layout"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/execomm_designation_text_view"
-        android:layout_width="280dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
         android:text="TextView"
-        android:textSize="13sp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/execomm_phone_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/execomm_name_text_view"
         app:layout_constraintTop_toBottomOf="@+id/execomm_name_text_view" />
 
@@ -60,10 +65,10 @@
         android:id="@+id/execomm_phone_image_view"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
         android:foreground="?attr/selectableItemBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/execomm_frame_layout"
         app:layout_constraintStart_toStartOf="@+id/execomm_name_text_view"
         app:layout_constraintTop_toBottomOf="@+id/execomm_designation_text_view"
         app:srcCompat="@drawable/call" />
@@ -74,6 +79,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:foreground="?attr/selectableItemBackground"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/execomm_phone_image_view"
         app:layout_constraintStart_toEndOf="@+id/execomm_phone_image_view"
         app:layout_constraintTop_toTopOf="@+id/execomm_phone_image_view"

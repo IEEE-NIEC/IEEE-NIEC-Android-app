@@ -1,5 +1,7 @@
 package com.sahni.rahul.ieee_niec.models;
 
+import android.util.Log;
+
 /**
  * Created by sahni on 03-Jan-18.
  */
@@ -40,5 +42,11 @@ public class Execomm {
 
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "name ="+name+"\npost= "+designation+"\nphone ="+phoneNo+
+                "\nemail ="+emailId;
     }
 }

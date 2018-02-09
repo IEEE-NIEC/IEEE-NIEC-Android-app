@@ -1,6 +1,7 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -52,6 +53,8 @@ public class AboutIeeeFragment extends Fragment {
                 getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+//        Typeface typeface = Typeface.
 
 //        toolbar.setTitle("About IEEE");
 

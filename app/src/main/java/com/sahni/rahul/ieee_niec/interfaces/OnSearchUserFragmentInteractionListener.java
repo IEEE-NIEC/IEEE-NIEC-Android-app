@@ -1,5 +1,7 @@
 package com.sahni.rahul.ieee_niec.interfaces;
 
+import android.view.View;
+
 import com.sahni.rahul.ieee_niec.models.User;
 
 /**
@@ -8,5 +10,5 @@ import com.sahni.rahul.ieee_niec.models.User;
 
 public interface OnSearchUserFragmentInteractionListener {
 
-    void onSearchUserFragmentInteraction(User user);
+    void onSearchUserFragmentInteraction(User user, View sharedView);
 }

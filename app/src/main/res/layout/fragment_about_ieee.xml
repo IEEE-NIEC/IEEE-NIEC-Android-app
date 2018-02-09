@@ -15,8 +15,16 @@
             android:id="@+id/about_ieee_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            app:layout_scrollFlags="scroll|enterAlways">
-            <!--enterAlways to used to remove weird bug of collapsingToolbarLayout with exitUntilCollapsed scrollFlag-->
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:contentScrim="?attr/colorPrimary">
+            <!--enterAlways to used to remove weird bug of collapsingToolbarLayout
+            with exitUntilCollapsed scrollFlag-->
+            <ImageView
+                app:layout_collapseMode="parallax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_technology"
+                android:layout_gravity="center_vertical"/>
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
                 android:id="@+id/about_ieee_toolbar"

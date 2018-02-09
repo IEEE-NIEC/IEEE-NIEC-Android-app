@@ -78,14 +78,14 @@ public class FeedFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView imageView = view.findViewById(R.id.home_slider_image_view);
+        final ImageView imageView = view.findViewById(R.id.home_slider_image_view);
         final ProgressBar progressBar = view.findViewById(R.id.home_slider_progress);
         final String imageUrl = mFeed.getFeedImageUrl();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onHomeSliderInteraction(imageUrl);
+                mListener.onHomeSliderInteraction(imageView, imageUrl);
             }
         });
 

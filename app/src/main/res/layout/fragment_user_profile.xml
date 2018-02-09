@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.sahni.rahul.ieee_niec.fragments.UserProfileFragment"
     android:fitsSystemWindows="true"
+    android:id="@+id/user_profile_main_layout"
     android:background="@color/card_view_below">
 
     <android.support.design.widget.AppBarLayout
@@ -68,6 +69,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/fab_container"
         android:padding="16dp">
 
         <io.github.yavski.fabspeeddial.FabSpeedDial

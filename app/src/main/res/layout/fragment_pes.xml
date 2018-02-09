@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
+    android:paddingEnd="@dimen/text_horizontal_margin"
+    android:paddingStart="@dimen/text_horizontal_margin"
+    android:paddingBottom="8dp"
     tools:context="com.sahni.rahul.ieee_niec.fragments.IeeePesFragment">
 
     <LinearLayout

@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/text_horizontal_margin"
+    android:paddingRight="@dimen/text_horizontal_margin"
     android:fillViewport="true"
     tools:context="com.sahni.rahul.ieee_niec.fragments.IeeeCsFragments">
 

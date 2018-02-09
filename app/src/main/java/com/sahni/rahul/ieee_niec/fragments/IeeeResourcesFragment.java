@@ -3,6 +3,7 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 
 public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewItemClickListener {
 
+    public static final String TAG = "IeeeResourcesFragment";
     private ArrayList<Resources> mArrayList;
     private RecyclerView mRecyclerView;
 
@@ -74,6 +77,23 @@ public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewIte
         IeeeResourcesAdapter adapter = new IeeeResourcesAdapter(getContext(), mArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setPadding(0,0,0,ContentUtils.convertDpToPixel(56f, getActivity()));
+
+//        Rect rect = new Rect();
+//        mRecyclerView.getDrawingRect(rect);
+//        Log.d(TAG, "Top ="+rect.top);
+//        Log.d(TAG, "Bottom ="+rect.bottom);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Rect rect = new Rect();
+                mRecyclerView.getDrawingRect(rect);
+                Log.d(TAG, "Top ="+rect.top);
+                Log.d(TAG, "Bottom ="+rect.bottom);
+            }
+        });
     }
 
     @Override

@@ -1,8 +1,12 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,7 @@ import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
+import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
 
 import java.util.ArrayList;
@@ -32,9 +37,9 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
 
     private Context mContext;
     private ArrayList<User> mArrayList;
-    private OnRecyclerViewItemClickListener mListener;
+    private OnSharedElementClickListener mListener;
 
-    public SearchUserAdapter(Context mContext, ArrayList<User> mArrayList, OnRecyclerViewItemClickListener listener) {
+    public SearchUserAdapter(Context mContext, ArrayList<User> mArrayList, OnSharedElementClickListener listener) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
         this.mListener = listener;
@@ -50,24 +55,32 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
     public void onBindViewHolder(final SearchUserViewHolder holder, int position) {
         User user = mArrayList.get(position);
         holder.textView.setText(user.getName());
+        ViewCompat.setTransitionName(holder.imageView, user.getEmailId());
 
-        RequestBuilder<Drawable> requestBuilder = Glide.with(mContext)
+        RequestBuilder<Bitmap> builder = Glide.with(mContext)
+                .asBitmap()
                 .load(user.getImageUrl());
 
-        requestBuilder.listener(new RequestListener<Drawable>() {
+        builder.listener(new RequestListener<Bitmap>() {
             @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                 holder.progressBar.setVisibility(View.GONE);
                 holder.imageView.setImageResource(R.drawable.user);
                 return true;
             }
 
             @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                 holder.progressBar.setVisibility(View.GONE);
-                return false;
+                RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory
+                        .create(mContext.getResources(), resource);
+                drawable.setCircular(true);
+                holder.imageView.setImageDrawable(drawable);
+                return true;
             }
         }).into(holder.imageView);
+
+
 
 //        if(user.getImageUrl() != null) {
 //            if(!user.getImageUrl().isEmpty()) {
@@ -97,7 +110,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
         TextView textView;
         ProgressBar progressBar;
 
-         SearchUserViewHolder(final View itemView, final OnRecyclerViewItemClickListener listener) {
+         SearchUserViewHolder(final View itemView, final OnSharedElementClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.search_user_image_view);
             textView = itemView.findViewById(R.id.search_user_text_view);
@@ -105,7 +118,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
-                     listener.onItemClicked(itemView);
+                     listener.onSharedElementClicked(itemView, imageView);
                  }
              });
         }

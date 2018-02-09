@@ -3,10 +3,12 @@ package com.sahni.rahul.ieee_niec.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,7 +57,9 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        mUser = getIntent().getParcelableExtra(ContentUtils.USER_KEY);
+        Intent intent = getIntent();
+        String transitionName = intent.getStringExtra(ContentUtils.TRANSITION_NAME);
+        mUser = intent.getParcelableExtra(ContentUtils.USER_KEY);
 
         Toolbar toolbar = findViewById(R.id.user_toolbar);
         toolbar.setTitle(mUser.getName());
@@ -72,11 +77,12 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         mUserImageView = findViewById(R.id.user_image_view);
-//        mNameTextView = view.findViewById(R.id.user_name_text_view);
         mEmailTextView = findViewById(R.id.user_email_text_view);
         mMobileTextView = findViewById(R.id.user_mobile_text_view);
         mAboutTextView = findViewById(R.id.about_text_view);
         mImageProgressBar = findViewById(R.id.image_progress_bar);
+
+        ViewCompat.setTransitionName(mUserImageView, transitionName);
 
         RecyclerView interestRecyclerView = findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
@@ -124,22 +130,6 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void displayDetails() {
-//        Picasso.with(this)
-//                .load(mUser.getImageUrl())
-//                .into(mUserImageView, new Callback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        mImageProgressBar.setVisibility(View.INVISIBLE);
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//                        Log.i(TAG, "displayDetails: error loading image");
-//                        mImageProgressBar.setVisibility(View.INVISIBLE);
-//                        mUserImageView.setImageResource(R.drawable.user);
-//                    }
-//                });
-
         RequestBuilder<Drawable> requestBuilder = Glide.with(this)
                 .load(mUser.getImageUrl());
 
@@ -158,16 +148,10 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         }).into(mUserImageView);
 
-
-
-//        mNameTextView.setText("" + mUser.getName());
         mEmailTextView.setText("" + mUser.getEmailId());
         mMobileTextView.setText("" + mUser.getMobileNo());
         mInterestArrayList.clear();
         mInterestArrayList.addAll(ContentUtils.getArrayListFromMap(mUser.getInterestMap()));
-//        if(mUser.getInterestArrayList().isEmpty()){
-//            Log.i(TAG,)
-//        }
         mInterestAdapter.notifyDataSetChanged();
         mAboutTextView.setText(mUser.getAbout());
     }

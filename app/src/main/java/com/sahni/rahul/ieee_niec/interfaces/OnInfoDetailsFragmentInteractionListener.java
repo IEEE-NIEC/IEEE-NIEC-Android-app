@@ -1,5 +1,7 @@
 package com.sahni.rahul.ieee_niec.interfaces;
 
+import android.view.View;
+
 import com.sahni.rahul.ieee_niec.models.Information;
 
 /**
@@ -8,5 +10,5 @@ import com.sahni.rahul.ieee_niec.models.Information;
 
 public interface OnInfoDetailsFragmentInteractionListener {
 
-    void onInfoDetailsInteraction(Information information);
+    void onInfoDetailsInteraction(View view, Information information);
 }

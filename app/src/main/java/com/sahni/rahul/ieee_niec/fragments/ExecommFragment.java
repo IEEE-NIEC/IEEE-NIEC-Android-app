@@ -32,13 +32,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.activity.PastExecommActivity;
 import com.sahni.rahul.ieee_niec.adapter.ExecommRecyclerAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnExecommItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Execomm;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +58,8 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
     private ExecommRecyclerAdapter adapter;
     private ProgressBar progressBar;
     private TextView errorTextView;
+
+    private TextView pastTeamTextView;
 
     private CardView cardView;
 
@@ -97,15 +102,26 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
         cardView = view.findViewById(R.id.execomm_card_view);
         cardView.setVisibility(View.INVISIBLE);
 
+        pastTeamTextView = view.findViewById(R.id.past_text_view);
+        pastTeamTextView.setVisibility(View.GONE);
+
+//        TextView pastTextView = view.findViewById(R.id.past_text_view);
+        pastTeamTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), PastExecommActivity.class));
+            }
+        });
+
         execommArrayList = new ArrayList<>();
 //        getData();
         progressBar.setVisibility(View.VISIBLE);
         adapter = new ExecommRecyclerAdapter(getActivity(), execommArrayList, this);
         execommRecyclerView = view.findViewById(R.id.execomm_recycler_view);
         execommRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        execommRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        execommRecyclerView.addItemDecoration(new MyRecyclerDivider(getActivity(), DividerItemDecoration.VERTICAL));
         execommRecyclerView.setAdapter(adapter);
-
+        execommRecyclerView.setNestedScrollingEnabled(false);
         attachCollectionSnapshotListener();
     }
 
@@ -129,6 +145,7 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
                                 execommArrayList.add(execomm);
                             }
                             cardView.setVisibility(View.VISIBLE);
+                            pastTeamTextView.setVisibility(View.VISIBLE);
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "attachCollectionSnapshotListener: document is null or empty");
@@ -137,6 +154,7 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
                     } else {
                         Log.d(TAG, "attachCollectionSnapshotListener: error: "+e);
                         cardView.setVisibility(View.INVISIBLE);
+                        pastTeamTextView.setVisibility(View.GONE);
                         errorTextView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -195,12 +213,5 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
         super.onPause();
         detachCollectionSnapshotListener();
         Log.d(TAG, "onPause");
-    }
-
-
-    private void getData(){
-        for(int i =0; i<10; i++){
-            execommArrayList.add(new Execomm("name "+i, "post "+i, "123", "asd", "null"));
-        }
     }
 }

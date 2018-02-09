@@ -7,13 +7,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.transition.TransitionInflater;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -397,28 +401,49 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onInfoFragmentInteraction(Information info) {
+    public void onInfoFragmentInteraction(View sharedView, Information info) {
 
-        Log.i(TAG, "onInfoFragmentInteraction: clicked");
+//        Log.i(TAG, "onInfoFragmentInteraction: transition Name"+ ViewCompat.getTransitionName(view));
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left, R.anim.slide_back_from_left, R.anim.fade_translate_down);
-        ft.replace(R.id.main_frame_layout, InformationDetailsFragment.newInstance(info), "InformationDetailsFragment")
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+        ft.setCustomAnimations(R.anim.fade_translate_up,R.anim.slide_to_left,
+                R.anim.slide_back_from_left, R.anim.fade_translate_down)
+                .replace(R.id.main_frame_layout, InformationDetailsFragment.newInstance(info, null),
+                        "InformationDetailsFragment")
+                .addToBackStack("InformationDetailsFragment")
                 .commit();
-        ft.addToBackStack(null);
+        } else {
+            String transitionName = ViewCompat.getTransitionName(sharedView);
+            InformationDetailsFragment fragment = InformationDetailsFragment.newInstance(info, transitionName);
+            fragment.setSharedElementEnterTransition(TransitionInflater.from(this).
+                    inflateTransition(android.R.transition.move));
+            ft.addSharedElement(sharedView, transitionName).
+                    replace(R.id.main_frame_layout, fragment,
+                            "InformationDetailsFragment")
+                    .addToBackStack("InformationDetailsFragment")
+                    .commit();
+        }
     }
 
     @Override
-    public void onInfoDetailsInteraction(Information information) {
+    public void onInfoDetailsInteraction(View view, Information information) {
         Intent intent = new Intent(this, InformationImageSliderActivity.class);
         intent.putExtra(ContentUtils.INFO_KEY, information);
         startActivity(intent);
     }
 
     @Override
-    public void onSearchUserFragmentInteraction(User user) {
+    public void onSearchUserFragmentInteraction(User user, View sharedView) {
+
+        String transitionName = ViewCompat.getTransitionName(sharedView);
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra(ContentUtils.USER_KEY, user);
-        startActivity(intent);
+        intent.putExtra(ContentUtils.TRANSITION_NAME, transitionName);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this, sharedView, transitionName);
+        startActivity(intent, optionsCompat.toBundle());
     }
 
 
@@ -452,11 +477,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onHomeSliderInteraction(String imageUrl) {
+    public void onHomeSliderInteraction(View view, String imageUrl) {
         Log.i(TAG, "onHomeSliderInteraction: " + imageUrl);
         Intent intent = new Intent(this, ShowFeedImageActivity.class);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, view, ViewCompat.getTransitionName(view));
         intent.putExtra(ContentUtils.IMAGE_URL_KEY, imageUrl);
-        startActivity(intent);
+        startActivity(intent, options.toBundle());
     }
 
 

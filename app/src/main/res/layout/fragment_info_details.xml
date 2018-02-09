@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/info_details_root_layout"
     tools:context="com.sahni.rahul.ieee_niec.fragments.InformationDetailsFragment">
 
     <android.support.design.widget.AppBarLayout

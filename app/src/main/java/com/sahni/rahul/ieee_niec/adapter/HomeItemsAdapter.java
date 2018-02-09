@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.HomeItems;
 
@@ -40,7 +41,10 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         HomeItems homeItems = arrayList.get(position);
         holder.imageView.setImageResource(homeItems.getDrawableId());
-        holder.bgImageView.setImageResource(homeItems.getBgDrawableId());
+//        holder.bgImageView.setImageResource(homeItems.getBgDrawableId());
+        GlideApp.with(context)
+                .load(homeItems.getBgDrawableId())
+                .into(holder.bgImageView);
 //        Picasso.with(context)
 //                .load(homeItems.getDrawableId())
 //                .into(holder.imageView);
