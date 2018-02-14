@@ -36,9 +36,8 @@
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/circle_indicator"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal" />
             </LinearLayout>
 
 
@@ -55,28 +54,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <!--<include layout="@layout/content_home_fragment"/>-->
-    <!--<android.support.v4.widget.NestedScrollView-->
-    <!--android:paddingTop="8dp"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:id="@+id/item_recycler_view"-->
-    <!--tools:listitem="@layout/home_recycler_layout"-->
-    <!--/>-->
-
-    <!--</android.support.v7.widget.CardView>-->
-    <!--</android.support.v4.widget.NestedScrollView>-->
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
