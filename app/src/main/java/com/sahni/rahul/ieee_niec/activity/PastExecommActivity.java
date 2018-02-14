@@ -27,7 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.ExecommRecyclerAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -35,7 +35,6 @@ import com.sahni.rahul.ieee_niec.interfaces.OnExecommItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Execomm;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class PastExecommActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnExecommItemClickListener {

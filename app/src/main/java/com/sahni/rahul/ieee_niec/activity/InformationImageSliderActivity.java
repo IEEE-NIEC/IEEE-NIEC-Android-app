@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.adapter.ImageSliderPagerAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.models.Information;
@@ -55,8 +56,10 @@ public class InformationImageSliderActivity extends AppCompatActivity {
         CircleIndicator circleIndicator = findViewById(R.id.circle_indicator);
         ImageSliderPagerAdapter pagerAdapter = new ImageSliderPagerAdapter(getSupportFragmentManager(), mArrayList);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         circleIndicator.setViewPager(viewPager);
         pagerAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+        ContentUtils.syncIndicatorWithViewPager(viewPager, circleIndicator);
 
 
     }

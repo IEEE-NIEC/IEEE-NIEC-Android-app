@@ -23,7 +23,7 @@
                 app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_technology"
+                android:src="@drawable/technology_ieee"
                 android:layout_gravity="center_vertical"/>
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"

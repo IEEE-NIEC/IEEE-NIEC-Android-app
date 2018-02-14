@@ -43,7 +43,6 @@
 
 
             <android.support.v7.widget.Toolbar
-                app:titleTextAppearance="@font/nunito_bold"
                 android:id="@+id/home_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

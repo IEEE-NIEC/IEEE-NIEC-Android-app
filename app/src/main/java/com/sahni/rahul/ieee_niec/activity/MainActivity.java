@@ -32,7 +32,6 @@ import com.sahni.rahul.ieee_niec.fragments.InformationFragment;
 import com.sahni.rahul.ieee_niec.fragments.SearchUserFragment;
 import com.sahni.rahul.ieee_niec.fragments.UserProfileFragment;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
-import com.sahni.rahul.ieee_niec.helpers.NotificationHelper;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeSliderInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionListener;
@@ -80,9 +79,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Log.i(TAG, "onCreate");
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationHelper.createNotificationChannel(this, getString(R.string.default_notification_channel_id));
-        }
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -108,6 +104,9 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case ContentUtils.PROJECT_DATA_PAYLOAD:
                     displaySelectedFragment(R.id.nav_project);
+                    break;
+                case ContentUtils.EXECOMM_DATA_PAYLOAD:
+                    displaySelectedFragment(R.id.nav_execomm);
                     break;
                 default:
                     displaySelectedFragment(R.id.nav_home);

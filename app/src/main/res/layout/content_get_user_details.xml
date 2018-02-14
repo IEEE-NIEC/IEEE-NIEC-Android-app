@@ -7,8 +7,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.sahni.rahul.ieee_niec.activity.GetUserDetailsActivity"
     android:orientation="vertical"
-    android:layout_marginStart="@dimen/horizontal_margin"
-    android:layout_marginEnd="@dimen/horizontal_margin"
+    android:layout_marginStart="@dimen/text_horizontal_margin"
+    android:layout_marginEnd="@dimen/text_horizontal_margin"
     android:fillViewport="true">
 
     <android.support.constraint.ConstraintLayout

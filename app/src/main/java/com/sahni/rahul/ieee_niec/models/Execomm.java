@@ -1,7 +1,5 @@
 package com.sahni.rahul.ieee_niec.models;
 
-import android.util.Log;
-
 /**
  * Created by sahni on 03-Jan-18.
  */

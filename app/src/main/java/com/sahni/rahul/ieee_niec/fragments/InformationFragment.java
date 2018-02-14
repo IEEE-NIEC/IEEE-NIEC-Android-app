@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
@@ -135,15 +133,15 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
 
         switch (mInfoType) {
             case ContentUtils.EVENTS:
-                appbarImageView.setImageResource(R.drawable.events_new);
+                appbarImageView.setImageResource(R.drawable.events);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_EVENTS);
                 break;
             case ContentUtils.ACHIEVEMENTS:
-                appbarImageView.setImageResource(R.drawable.new_achieve);
+                appbarImageView.setImageResource(R.drawable.achieve);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_ACHIEVEMENTS);
                 break;
             case ContentUtils.PROJECTS:
-                appbarImageView.setImageResource(R.drawable.new_project2);
+                appbarImageView.setImageResource(R.drawable.project);
                 mCollectionReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_PROJECTS);
                 break;
         }

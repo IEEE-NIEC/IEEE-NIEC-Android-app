@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/new_resource"/>
+                android:src="@drawable/resources"/>
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
                 android:id="@+id/resources_toolbar"

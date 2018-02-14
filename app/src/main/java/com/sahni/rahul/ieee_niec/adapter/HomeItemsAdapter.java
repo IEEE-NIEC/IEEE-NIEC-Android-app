@@ -41,16 +41,9 @@ public class HomeItemsAdapter extends RecyclerView.Adapter<HomeItemsAdapter.Item
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         HomeItems homeItems = arrayList.get(position);
         holder.imageView.setImageResource(homeItems.getDrawableId());
-//        holder.bgImageView.setImageResource(homeItems.getBgDrawableId());
         GlideApp.with(context)
                 .load(homeItems.getBgDrawableId())
                 .into(holder.bgImageView);
-//        Picasso.with(context)
-//                .load(homeItems.getDrawableId())
-//                .into(holder.imageView);
-//        Picasso.with(context)
-//                .load(homeItems.getBgDrawableId())
-//                .into(holder.bgImageView);
         holder.textView.setText(homeItems.getTitle());
     }
 

@@ -3,7 +3,9 @@ package com.sahni.rahul.ieee_niec.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.models.User;
@@ -11,6 +13,8 @@ import com.sahni.rahul.ieee_niec.models.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by sahni on 27-Aug-17.
@@ -57,12 +61,15 @@ public class ContentUtils {
     public static final  String FIRESTORE_PAST_EXECOMM = "pastExecomm";
     public static final  String FIRESTORE_PAST_EXECOMM_SESSION = "session";
     public static final  String FIRESTORE_PAST_EXECOMM_SESSION_YEAR = "year";
+
+
     public static final String NOTIFICATION_DATA_PAYLOAD_KEY = "data_key";
     public static final String NOTIFICATION_TITLE_KEY = "title";
     public static final String FEEDS_DATA_PAYLOAD = "feed";
     public static final String EVENTS_DATA_PAYLOAD = "event";
     public static final String ACHIEVEMENT_DATA_PAYLOAD = "achievement";
     public static final String PROJECT_DATA_PAYLOAD = "project";
+    public static final String EXECOMM_DATA_PAYLOAD = "execomm";
 
     public static final String WEBSITE_URL = "http://www.ieeeniec.com";
     public static final String FACEBOOK_URL = "https://www.facebook.com/ieeeniec";
@@ -135,5 +142,16 @@ public class ContentUtils {
         description = description.replace("\\n", "\n").replace("\\r", "\r");
         return description;
 
+    }
+
+    public static void syncIndicatorWithViewPager(ViewPager viewPager, CircleIndicator circleIndicator){
+        if(viewPager == null || circleIndicator == null) {
+            return;
+        }
+        if (viewPager.getAdapter().getCount() > 1) {
+            circleIndicator.setVisibility(View.VISIBLE);
+        } else {
+            circleIndicator.setVisibility(View.INVISIBLE);
+        }
     }
 }

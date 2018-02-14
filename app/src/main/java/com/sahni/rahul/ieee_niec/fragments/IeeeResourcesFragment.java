@@ -3,7 +3,6 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,35 +63,20 @@ public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewIte
         mRecyclerView = view.findViewById(R.id.resources_recycler_view);
         mArrayList = new ArrayList<>();
 
-        mArrayList.add(new Resources("IEEE Collabratec™\tis an integrated online community where technology professionals can network, collaborate, and create — all in one central hub."
+        mArrayList.add(new Resources("IEEE Collabratec™ is an integrated online community where technology professionals can network, collaborate, and create — all in one central hub."
                 ,R.drawable.ieee_collabratec,"https://ieee-collabratec.ieee.org/"));
-        mArrayList.add(new Resources("IEEE ResumeLab is an online service that allows IEEE members to develop a resume or curriculum vitae using a wide array of resume templates."
-                ,R.drawable.ieee_resume,"http://www.ieee.org/membership_services/membership/resumelab.html"));
-        mArrayList.add(new Resources("Welcome to IEEE Transmitter™ Here you will find a collection of articles, videos, infographics, inspiration and more all curated by IEEE."
-                ,R.drawable.ieee_transmitter,"https://transmitter.ieee.org/"));
         mArrayList.add(new Resources("IEEE Xplore® Digital Library is a powerful resource for discovery of and access to scientific and technical content published by the IEEE (Institute of Electrical and Electronics Engineers) and its publishing partners."
                 ,R.drawable.ieee_xplore,"http://ieeexplore.ieee.org/Xplore/home.jsp"));
+        mArrayList.add(new Resources("IEEE Transmitter™, in this you will find a collection of articles, videos, infographics, inspiration and more all curated by IEEE."
+                ,R.drawable.ieee_transmitter,"https://transmitter.ieee.org/"));
+        mArrayList.add(new Resources("IEEE ResumeLab is an online service that allows IEEE members to develop a resume or curriculum vitae using a wide array of resume templates."
+                ,R.drawable.ieee_resume,"http://www.ieee.org/membership_services/membership/resumelab.html"));
 
         IeeeResourcesAdapter adapter = new IeeeResourcesAdapter(getContext(), mArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setPadding(0,0,0,ContentUtils.convertDpToPixel(56f, getActivity()));
 
-//        Rect rect = new Rect();
-//        mRecyclerView.getDrawingRect(rect);
-//        Log.d(TAG, "Top ="+rect.top);
-//        Log.d(TAG, "Bottom ="+rect.bottom);
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Rect rect = new Rect();
-                mRecyclerView.getDrawingRect(rect);
-                Log.d(TAG, "Top ="+rect.top);
-                Log.d(TAG, "Bottom ="+rect.bottom);
-            }
-        });
     }
 
     @Override

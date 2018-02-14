@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
+import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.adapter.FeedPagerAdapter;
 import com.sahni.rahul.ieee_niec.adapter.HomeItemsAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
     private ViewPager mFeedViewPager;
     private FeedPagerAdapter mFeedAdapter;
     private ArrayList<Feed> mFeedArrayList;
+    private CircleIndicator mCircleIndicator;
 
 //    private DatabaseReference mFeedReference;
     private CollectionReference mFeedReference;
@@ -118,11 +119,11 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
 
         mRecyclerView = view.findViewById(R.id.item_recycler_view);
         mHomeItemsArrayList = new ArrayList<>();
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.events_new));
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.new_achieve));
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.PROJECTS, R.drawable.ic_projectt,R.drawable.new_project2));
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.new_technology));
-        mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_new_untitled_1, R.drawable.new_resource));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.EVENTS, R.drawable.ic_events, R.drawable.events));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ACHIEVEMENTS, R.drawable.ic_achieve, R.drawable.achieve));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.PROJECTS, R.drawable.ic_project,R.drawable.project));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology_ieee));
+        mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources));
         mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);
@@ -133,10 +134,12 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
         mFeedArrayList = new ArrayList<>();
         mFeedAdapter = new FeedPagerAdapter(getChildFragmentManager(), mFeedArrayList);
         mFeedViewPager.setAdapter(mFeedAdapter);
+        mFeedViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
-        CircleIndicator circleIndicator =view.findViewById(R.id.circle_indicator);
-        circleIndicator.setViewPager(mFeedViewPager);
-        mFeedAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+        mCircleIndicator =view.findViewById(R.id.circle_indicator);
+        mCircleIndicator.setViewPager(mFeedViewPager);
+        mFeedAdapter.registerDataSetObserver(mCircleIndicator.getDataSetObserver());
+        mCircleIndicator.setVisibility(View.GONE);
         attachFeedSnapshotListener();
     }
 
@@ -180,6 +183,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
                             mFeedArrayList.add(feed);
                         }
                         mFeedAdapter.notifyDataSetChanged();
+                        ContentUtils.syncIndicatorWithViewPager(mFeedViewPager, mCircleIndicator);
                         mRecyclerView.setPadding(0,0,0,0);
                     }
                 }
@@ -205,6 +209,11 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
             int position = mRecyclerView.getChildAdapterPosition(view);
             HomeItems homeItems = mHomeItemsArrayList.get(position);
             listener.onHomeFragmentInteraction(homeItems.getTitle());
+        }
+    }
+
+    private void syncIndicatorWithViewPager(){
+        if(mFeedViewPager.getChildCount() > 1){
         }
     }
 }

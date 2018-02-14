@@ -23,7 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.MyRecyclerDivider;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserAdapter;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;

@@ -5,9 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="@dimen/horizontal_margin"
+    android:layout_marginStart="@dimen/horizontal_margin"
     android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <LinearLayout
@@ -20,13 +20,13 @@
             android:id="@+id/resources_image_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/ieee_xplore"/>
+            android:src="@drawable/ieee_xplore"
+            android:background="@android:color/black"/>
         <TextView
             android:id="@+id/resources_text_view"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="TextView"/>
 
