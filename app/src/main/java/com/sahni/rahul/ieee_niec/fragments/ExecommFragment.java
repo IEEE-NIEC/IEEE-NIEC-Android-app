@@ -101,7 +101,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
         pastTeamTextView = view.findViewById(R.id.past_text_view);
         pastTeamTextView.setVisibility(View.GONE);
 
-//        TextView pastTextView = view.findViewById(R.id.past_text_view);
         pastTeamTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +109,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
         });
 
         execommArrayList = new ArrayList<>();
-//        getData();
         progressBar.setVisibility(View.VISIBLE);
         adapter = new ExecommRecyclerAdapter(getActivity(), execommArrayList, this);
         execommRecyclerView = view.findViewById(R.id.execomm_recycler_view);
@@ -120,12 +118,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
         execommRecyclerView.setNestedScrollingEnabled(false);
         attachCollectionSnapshotListener();
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        attachCollectionSnapshotListener();
-//    }
 
     private void attachCollectionSnapshotListener(){
         if(eventListener == null){
@@ -142,10 +134,13 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
                             }
                             cardView.setVisibility(View.VISIBLE);
                             pastTeamTextView.setVisibility(View.VISIBLE);
+                            errorTextView.setVisibility(View.INVISIBLE);
                             adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "attachCollectionSnapshotListener: document is null or empty");
                             errorTextView.setVisibility(View.VISIBLE);
+                            cardView.setVisibility(View.INVISIBLE);
+                            pastTeamTextView.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         Log.d(TAG, "attachCollectionSnapshotListener: error: "+e);
@@ -156,10 +151,9 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
                 }
             };
         }
-        listenerRegistration = execommCollectionReference.addSnapshotListener(eventListener);
-//        if(listenerRegistration == null) {
-//            listenerRegistration = execommCollectionReference.addSnapshotListener(eventListener);
-//        }
+        listenerRegistration = execommCollectionReference
+                .orderBy("id")
+                .addSnapshotListener(eventListener);
     }
 
     private void detachCollectionSnapshotListener(){
@@ -208,6 +202,5 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
     public void onPause() {
         super.onPause();
         detachCollectionSnapshotListener();
-        Log.d(TAG, "onPause");
     }
 }

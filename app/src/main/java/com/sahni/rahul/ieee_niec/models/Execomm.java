@@ -5,6 +5,7 @@ package com.sahni.rahul.ieee_niec.models;
  */
 
 public class Execomm {
+    private float id;
     private String name;
     private String designation;
     private String phoneNo;
@@ -14,12 +15,17 @@ public class Execomm {
     public Execomm() {
     }
 
-    public Execomm(String name, String designation, String phoneNo, String emailId, String photoUrl) {
+    public Execomm(float id, String name, String designation, String phoneNo, String emailId, String photoUrl) {
+        this.id = id;
         this.name = name;
         this.designation = designation;
         this.phoneNo = phoneNo;
         this.emailId = emailId;
         this.photoUrl = photoUrl;
+    }
+
+    public float getId() {
+        return id;
     }
 
     public String getName() {
@@ -44,7 +50,7 @@ public class Execomm {
 
     @Override
     public String toString() {
-        return "name ="+name+"\npost= "+designation+"\nphone ="+phoneNo+
+        return "id ="+id+"\nname ="+name+"\npost= "+designation+"\nphone ="+phoneNo+
                 "\nemail ="+emailId;
     }
 }
