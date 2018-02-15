@@ -17,12 +17,10 @@
         />
     <ImageView
         android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/iee_niec_logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ieee_niec_logo_low"
         android:adjustViewBounds="true"
-        android:maxHeight="80dp"
-        android:minHeight="80dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:id="@+id/imageView" />
 </RelativeLayout>

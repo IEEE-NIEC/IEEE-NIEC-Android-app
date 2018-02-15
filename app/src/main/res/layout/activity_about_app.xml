@@ -39,7 +39,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/iee_niec_logo"
+                    android:src="@drawable/ieee_niec_logo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

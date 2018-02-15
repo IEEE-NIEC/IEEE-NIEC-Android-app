@@ -2,8 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/colorPrimary"/>
     <item>
-        <bitmap android:src="@drawable/new_iee_niec_logo"
+        <bitmap android:src="@drawable/ieee_niec_logo"
             android:gravity="center"/>
     </item>
+    <item android:drawable="@drawable/splash_scrim"/>
 
 </layer-list>

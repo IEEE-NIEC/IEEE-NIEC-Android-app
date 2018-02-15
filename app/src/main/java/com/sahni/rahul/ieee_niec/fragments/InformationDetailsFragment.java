@@ -137,8 +137,7 @@ public class InformationDetailsFragment extends Fragment {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         startPostponedEnterTransition();
-                        //Todo handle when image loading fails, hide imageView(maybe)
-                        imageView.setImageResource(R.drawable.place);
+                        imageView.setVisibility(View.GONE);
                         return true;
                     }
 

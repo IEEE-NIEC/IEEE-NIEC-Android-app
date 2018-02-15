@@ -110,7 +110,7 @@ public class AboutAppActivity extends AppCompatActivity{
 
         final RecyclerView recyclerView = findViewById(R.id.social_recycler_view);
         final ArrayList<Social> arrayList = new ArrayList<>();
-        arrayList.add(new Social("Visit our site", R.drawable.iee_niec_logo, ContentUtils.WEBSITE_URL));
+        arrayList.add(new Social("Visit our site", R.drawable.ieee_niec_logo_low, ContentUtils.WEBSITE_URL));
         arrayList.add(new Social("Like us on facebook", R.drawable.fb, ContentUtils.FACEBOOK_URL));
         arrayList.add(new Social("Follow us on instagram", R.drawable.ic_instagram, ContentUtils.INSTAGRAM_URL));
         arrayList.add(new Social("Follow us on twitter", R.drawable.tw1, ContentUtils.TWITTER_URL));
