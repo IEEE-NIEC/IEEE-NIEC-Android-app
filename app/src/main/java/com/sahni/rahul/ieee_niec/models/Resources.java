@@ -12,10 +12,17 @@ public class Resources {
 
     private String mUrl;
 
-    public Resources(String mTitle, int mImageResId, String mUrl) {
+    private int bgColorId;
+
+    public Resources(String mTitle, int mImageResId, String mUrl, int bgColorId) {
         this.mTitle = mTitle;
         this.mImageResId = mImageResId;
         this.mUrl = mUrl;
+        this.bgColorId = bgColorId;
+    }
+
+    public int getBgColorId() {
+        return bgColorId;
     }
 
     public String getmTitle() {

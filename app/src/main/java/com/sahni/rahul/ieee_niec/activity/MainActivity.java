@@ -324,10 +324,10 @@ public class MainActivity extends AppCompatActivity
                             mNavigationView.setCheckedItem(R.id.nav_search);
                             currentFragmentTag = SEARCH_USER_FRAGMENT_TAG;
                         } else {
-                            startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
+                            startActivityForResult(new Intent(this, SignInActivity.class), SEARCH_USER_RC);
                         }
                     } else {
-                        startActivityForResult(new Intent(this, SignInActivity.class), MY_PROFILE_RC);
+                        startActivityForResult(new Intent(this, SignInActivity.class), SEARCH_USER_RC);
                     }
                 }
                 break;
@@ -350,10 +350,12 @@ public class MainActivity extends AppCompatActivity
         if ((requestCode == MY_PROFILE_RC || requestCode == EDIT_PROFILE_RC) && resultCode == RESULT_OK) {
             mUser = data.getParcelableExtra(ContentUtils.USER_KEY);
             loadUserFragment = true;
+            loadSearchUserFragment = false;
             Log.i(TAG, "onActivityResult: name: " + mUser.getName() + " \n email: " + mUser.getEmailId() +
                     "\n id: " + mUser.getuId());
         } else if (requestCode == SEARCH_USER_RC && resultCode == RESULT_OK) {
             loadSearchUserFragment = true;
+            loadUserFragment = false;
         }
     }
 

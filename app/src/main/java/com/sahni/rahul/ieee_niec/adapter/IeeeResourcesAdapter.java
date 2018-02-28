@@ -1,10 +1,7 @@
 package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.v7.graphics.Palette;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.glide.GlideApp;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Resources;
 
@@ -47,22 +42,7 @@ public class IeeeResourcesAdapter extends RecyclerView.Adapter<IeeeResourcesAdap
         Resources resources = mArrayList.get(position);
         holder.textView.setText(resources.getmTitle());
         holder.imageView.setImageResource(resources.getmImageResId());
-        try {
-            Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), resources.getmImageResId());
-            Palette.from(bitmap)
-                    .generate(new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(@NonNull Palette palette) {
-                            Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-                            if(vibrantSwatch != null){
-                                holder.imageView.setBackgroundColor(vibrantSwatch.getRgb());
-                            }
-                        }
-                    });
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
+        holder.imageView.setBackgroundColor(ContextCompat.getColor(mContext, resources.getBgColorId()));
     }
 
     @Override

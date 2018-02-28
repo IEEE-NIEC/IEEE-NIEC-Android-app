@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.sahni.rahul.ieee_niec.fragments.UserProfileFragment"
-    android:fitsSystemWindows="true"
     android:id="@+id/user_profile_main_layout"
     android:background="@color/card_view_below">
 
@@ -70,20 +69,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fab_container"
-        android:padding="16dp">
-
-        <io.github.yavski.fabspeeddial.FabSpeedDial
-            android:id="@+id/fab_speed_dial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:fabGravity="bottom_end"
-            app:fabMenu="@menu/fab_menu"
-            app:miniFabDrawableTint="@android:color/white"
-            app:miniFabBackgroundTintList="@array/fab_menu_item_color"
-            app:miniFabTitleTextColorList="@array/fab_menu_item_color" />
-
+        android:visibility="invisible"
+        android:background="@color/cardview_shadow_start_color">
     </FrameLayout>
+    <io.github.yavski.fabspeeddial.FabSpeedDial
+        android:layout_margin="4dp"
+        android:id="@+id/fab_speed_dial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:fabGravity="bottom_end"
+        app:fabMenu="@menu/fab_menu"
+        app:miniFabDrawableTint="@android:color/white"
+        app:miniFabBackgroundTintList="@array/fab_menu_item_color"
+        app:miniFabTitleTextColorList="@array/fab_menu_item_color" />
 
 
 

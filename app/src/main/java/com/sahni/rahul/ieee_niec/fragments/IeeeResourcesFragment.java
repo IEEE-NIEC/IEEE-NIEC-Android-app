@@ -64,13 +64,14 @@ public class IeeeResourcesFragment extends Fragment implements OnRecyclerViewIte
         mArrayList = new ArrayList<>();
 
         mArrayList.add(new Resources("IEEE Collabratec™ is an integrated online community where technology professionals can network, collaborate, and create — all in one central hub."
-                ,R.drawable.ieee_collabratec,"https://ieee-collabratec.ieee.org/"));
+                ,R.drawable.ieee_collabratec,"https://ieee-collabratec.ieee.org/", R.color.collabratec_color));
         mArrayList.add(new Resources("IEEE Xplore® Digital Library is a powerful resource for discovery of and access to scientific and technical content published by the IEEE (Institute of Electrical and Electronics Engineers) and its publishing partners."
-                ,R.drawable.ieee_xplore,"http://ieeexplore.ieee.org/Xplore/home.jsp"));
+                ,R.drawable.ieee_xplore,"http://ieeexplore.ieee.org/Xplore/home.jsp", R.color.xplore_color));
         mArrayList.add(new Resources("IEEE Transmitter™, in this you will find a collection of articles, videos, infographics, inspiration and more all curated by IEEE."
-                ,R.drawable.ieee_transmitter,"https://transmitter.ieee.org/"));
+                ,R.drawable.ieee_transmitter,"https://transmitter.ieee.org/", R.color.transmitter_color));
         mArrayList.add(new Resources("IEEE ResumeLab is an online service that allows IEEE members to develop a resume or curriculum vitae using a wide array of resume templates."
-                ,R.drawable.ieee_resume,"http://www.ieee.org/membership_services/membership/resumelab.html"));
+                ,R.drawable.ieee_resume,"http://www.ieee.org/membership_services/membership/resumelab.html",
+                R.color.resume_lab_color));
 
         IeeeResourcesAdapter adapter = new IeeeResourcesAdapter(getContext(), mArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

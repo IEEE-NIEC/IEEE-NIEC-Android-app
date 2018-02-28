@@ -42,7 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/ColoredStatusBarTheme" />
         <activity
             android:name=".activity.EditUserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"

@@ -49,7 +49,7 @@
                     <item
                         android:id="@+id/nav_search"
                         android:icon="@drawable/ic_search_black"
-                        android:title="Search"
+                        android:title="Find People"
                         app:showAsAction="never" />
                 </group>
 

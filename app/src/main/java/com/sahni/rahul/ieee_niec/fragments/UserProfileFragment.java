@@ -1,6 +1,7 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -16,11 +17,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -116,7 +117,7 @@ public class UserProfileFragment extends Fragment {
 
         final FabSpeedDial fabSpeedDial = view.findViewById(R.id.fab_speed_dial);
         final CoordinatorLayout layout = view.findViewById(R.id.user_profile_main_layout);
-        FrameLayout frameLayout = view.findViewById(R.id.fab_container);
+        final FrameLayout frameLayout = view.findViewById(R.id.fab_container);
         mUserImageView = view.findViewById(R.id.user_image_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
         mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
@@ -130,26 +131,28 @@ public class UserProfileFragment extends Fragment {
         mInterestRecyclerView.setAdapter(mInterestAdapter);
 
         displayDetails();
-//        frameLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(fabSpeedDial.isMenuOpen()){
-//                    layout.setAlpha(0.5f);
-//                } else {
-//                    layout.setAlpha(1);
-//                }
-//            }
-//        });
 
         fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
             @Override
             public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = fabSpeedDial.getRight();
+                    int cy = fabSpeedDial.getBottom();
+                    int radius = (int) Math.hypot(frameLayout.getWidth(), frameLayout.getHeight());
+                    Animator animator = ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy,
+                            0, radius);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    animator.setDuration(400);
+                    animator.start();
+                } else {
+                    frameLayout.setVisibility(View.VISIBLE);
+                }
                 return true;
             }
 
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
+                frameLayout.setVisibility(View.INVISIBLE);
                 int id = menuItem.getItemId();
                 if (id == R.id.fab_edit) {
                     if (mProfileInteractionListener != null) {
@@ -198,7 +201,38 @@ public class UserProfileFragment extends Fragment {
 
             @Override
             public void onMenuClosed() {
-                layout.setAlpha(1);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = fabSpeedDial.getRight();
+                    int cy = fabSpeedDial.getBottom();
+                    int radius = (int) Math.hypot(frameLayout.getWidth(), frameLayout.getHeight());
+                    Animator animator = ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy,
+                            radius, 0);
+                    animator.setDuration(400);
+                    animator.start();
+                    animator.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            frameLayout.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                } else {
+                    frameLayout.setVisibility(View.INVISIBLE);
+                }
             }
 
         });

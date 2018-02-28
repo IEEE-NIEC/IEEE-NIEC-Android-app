@@ -17,7 +17,6 @@
             android:text="interest"
             android:padding="16dp"
             android:textColor="@android:color/black"
-            android:minHeight="50dp"
             android:minWidth="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
