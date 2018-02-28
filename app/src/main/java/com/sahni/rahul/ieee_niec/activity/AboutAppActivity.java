@@ -21,9 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sahni.rahul.ieee_niec.BuildConfig;
-import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SocialRecyclerAdapter;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Social;
