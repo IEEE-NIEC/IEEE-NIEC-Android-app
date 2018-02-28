@@ -68,7 +68,16 @@ public class AboutAppActivity extends AppCompatActivity{
         shareFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AboutAppActivity.this, "Share link not implemented yet!", Toast.LENGTH_SHORT).show();
+                String appLink = "https://play.google.com/store/apps/details?id=" +
+                        getApplicationContext().getPackageName();
+                String shareAppMsg = "Checkout the new IEEE-NIEC Android App\n\n" + appLink;
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, shareAppMsg);
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivity(intent);
+                }
+
             }
         });
 
