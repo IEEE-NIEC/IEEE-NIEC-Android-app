@@ -2,7 +2,6 @@ package com.sahni.rahul.ieee_niec.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -22,8 +21,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.glide.GlideApp;
-import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -79,24 +76,6 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.Se
                 return true;
             }
         }).into(holder.imageView);
-
-
-
-//        if(user.getImageUrl() != null) {
-//            if(!user.getImageUrl().isEmpty()) {
-////                Picasso.with(mContext)
-////                        .load(user.getImageUrl())
-////                        .error(R.drawable.user)
-////                        .placeholder(R.drawable.user)
-////                        .into(holder.imageView);
-//
-//                GlideApp.with(mContext)
-//                        .load(user.getImageUrl())
-//                        .error(R.drawable.user)
-//                        .placeholder(R.drawable.user)
-//                        .into(holder.imageView);
-//            }
-//        }
     }
 
     @Override

@@ -5,12 +5,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.adapter.ImageSliderPagerAdapter;
+import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.models.Information;
 
@@ -20,7 +19,6 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class InformationImageSliderActivity extends AppCompatActivity {
 
-    private static final String TAG ="InfoImageActivity";
     private ArrayList<String> mArrayList = new ArrayList<>();
 
     @Override
@@ -45,7 +43,6 @@ public class InformationImageSliderActivity extends AppCompatActivity {
         Information information = getIntent().getParcelableExtra(ContentUtils.INFO_KEY);
         if (information != null) {
             for(String url : information.getImageList()){
-                Log.i(TAG, "Url ="+url);
                 if(url != null){
                     mArrayList.add(url);
                 }

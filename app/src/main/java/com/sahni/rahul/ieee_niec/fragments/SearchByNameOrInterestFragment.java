@@ -10,7 +10,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserAdapter;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
@@ -141,7 +140,6 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.i(TAG, "update: onFailure: " + e.getMessage());
                             cardView.setVisibility(View.INVISIBLE);
                             mProgressbar.setVisibility(View.INVISIBLE);
                             mHintTextView.setVisibility(View.VISIBLE);
@@ -167,7 +165,6 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                                         mUserArrayList.add(user);
                                     }
                                 }
-                                Log.i(TAG, "update: " + mUserArrayList.size());
                                 if (mUserArrayList.isEmpty()) {
                                     cardView.setVisibility(View.INVISIBLE);
                                     mHintTextView.setVisibility(View.VISIBLE);
@@ -182,7 +179,6 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.i(TAG, "update: onFailure: " + e.getMessage());
                             cardView.setVisibility(View.INVISIBLE);
                             mProgressbar.setVisibility(View.INVISIBLE);
                             mHintTextView.setVisibility(View.VISIBLE);
@@ -206,11 +202,11 @@ public class SearchByNameOrInterestFragment extends Fragment implements UpdateSe
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "onAttach: "+context.toString());
         if(context instanceof OnSearchUserFragmentInteractionListener){
             mListener = (OnSearchUserFragmentInteractionListener) context;
         } else {
-            Log.w(TAG, "onAttach: "+context.toString()+ " doesn't implement OnSearchUserFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement" +
+                    "OnSearchUserFragmentInteractionListener");
         }
     }
 

@@ -2,16 +2,15 @@ package com.sahni.rahul.ieee_niec.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,9 +26,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.ExecommRecyclerAdapter;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnExecommItemClickListener;
 import com.sahni.rahul.ieee_niec.models.Execomm;
@@ -119,13 +118,7 @@ public class PastExecommActivity extends AppCompatActivity implements AdapterVie
                                 Collections.reverse(sessionList);
                                 spinnerAdapter.notifyDataSetChanged();
                                 spinner.setSelection(0);
-                                Log.d(TAG, "year: "+sessionList.toString());
-                            } else {
-                                Log.d(TAG, "addOnCompleteListener: Session data fetch Completed: document is null");
                             }
-                        } else {
-                            Log.d(TAG, "Fail: Session data fetch failed"+task.getException());
-                            Log.d(TAG, "addOnCompleteListener: Session data fetch incomplete");
                         }
                     }
                 });
@@ -153,18 +146,15 @@ public class PastExecommActivity extends AppCompatActivity implements AdapterVie
                         if (task.isSuccessful()) {
                             if (!snapshots.isEmpty()) {
                                 execommArrayList.addAll(snapshots.toObjects(Execomm.class));
-                                Log.d(TAG, "getExecommMembers: "+execommArrayList.get(0).toString());
                                 execommRecyclerAdapter.notifyDataSetChanged();
                                 cardView.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
                                 hintTextView.setVisibility(View.INVISIBLE);
                             } else {
-                                Log.d(TAG, "getExecommMembers: empty");
                                 showError();
                             }
                         } else {
                             showError();
-                            Log.d(TAG,"getExecommMembers: fail: "+task.getException());
                         }
                     }
                 });

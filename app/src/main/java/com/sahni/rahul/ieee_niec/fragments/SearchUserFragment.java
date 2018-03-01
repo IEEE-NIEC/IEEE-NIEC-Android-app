@@ -1,7 +1,6 @@
 package com.sahni.rahul.ieee_niec.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +19,11 @@ import android.widget.TextView;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.SearchUserPagerAdapter;
-import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 
 
-public class SearchUserFragment extends Fragment implements OnRecyclerViewItemClickListener {
+public class SearchUserFragment extends Fragment{
 
     private static final String TAG = "SearchUserFragment";
-    private ViewPager mViewPager;
     private SearchUserPagerAdapter mPagerAdapter;
 
 
@@ -56,10 +52,10 @@ public class SearchUserFragment extends Fragment implements OnRecyclerViewItemCl
 
         TabLayout tabLayout = view.findViewById(R.id.search_tab_layout);
 
-        mViewPager = view.findViewById(R.id.search_user_view_pager);
+        ViewPager viewPager = view.findViewById(R.id.search_user_view_pager);
         mPagerAdapter = new SearchUserPagerAdapter(getChildFragmentManager());
-        mViewPager.setAdapter(mPagerAdapter);
-        tabLayout.setupWithViewPager(mViewPager);
+        viewPager.setAdapter(mPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         final EditText searchEditText = view.findViewById(R.id.search_edit_text);
         ImageView hamburgerIcon = view.findViewById(R.id.hamburger_icon);
@@ -69,7 +65,6 @@ public class SearchUserFragment extends Fragment implements OnRecyclerViewItemCl
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_DONE) {
-                    Log.i(TAG, "onEditorAction: query = " + textView.getText().toString());
                     String query = textView.getText().toString();
                     if(!query.trim().equals("")){
                         for(int j = 0; j < mPagerAdapter.getCount(); j++){
@@ -91,79 +86,6 @@ public class SearchUserFragment extends Fragment implements OnRecyclerViewItemCl
         });
 
 
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnSearchUserFragmentInteractionListener) {
-//            mListener = (OnSearchUserFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString() + " must implement OnSearchUserFragmentInteractionListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        mListener = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG, "onDestroyView");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "onResume");
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.i(TAG, "onViewStateRestored");
-    }
-
-    @Override
-    public void onItemClicked(View view) {
-//        int position = mUserRecyclerView.getChildAdapterPosition(view);
-//        User user = mUserArrayList.get(position);
-//        mListener.onSearchUserFragmentInteraction(user);
     }
 
 

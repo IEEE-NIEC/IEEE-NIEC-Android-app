@@ -267,7 +267,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRecy
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG,"onActivityResult: ");
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
@@ -299,7 +298,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRecy
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
-                Log.i(TAG, "onActivityResult: Error"+error.getMessage());
 
             } else if(resultCode == RESULT_CANCELED){
                 mImageProgressBar.setVisibility(View.INVISIBLE);
@@ -367,11 +365,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRecy
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
-                            Log.i(TAG,"onActivityResult: failed: "+e.getMessage());
                             progressDialog.dismiss();
                             mImageProgressBar.setVisibility(View.GONE);
                             Snackbar.make(mProfileImageView,"Couldn't change image",Snackbar.LENGTH_SHORT).show();
-//                            Toast.makeText(EditUserProfileActivity.this, "Couldn't change image", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -390,7 +386,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRecy
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "saveDetails: Success");
                         ContentUtils.saveUserDataInSharedPref(user, EditUserProfileActivity.this);
                         progressDialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserProfileActivity.this)
@@ -413,7 +408,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements OnRecy
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "saveDetails: Failed: " + e.getMessage());
                         Snackbar.make(mProfileImageView, "Couldn't save data", Snackbar.LENGTH_SHORT).show();
                         progressDialog.dismiss();
 

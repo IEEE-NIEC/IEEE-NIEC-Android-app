@@ -3,9 +3,8 @@ package com.sahni.rahul.ieee_niec.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
@@ -16,20 +15,18 @@ public class SplashActivity extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "initial_setup";
     private static final String NOTIFICATION_CHANNEL_STATUS_KEY = "status";
     private static final String TAG = "SplashActivity";
-    private static int NOT_CREATED = 0;
-    private static int CREATED = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int CREATED = 1;
+        int NOT_CREATED = 0;
+
         Intent intent = getIntent();
         String dataPayloadType = null;
-        if(intent == null){
-            Log.i(TAG, "onCreate: intent null");
-        } else {
+        if(intent != null){
             dataPayloadType = intent.getStringExtra(ContentUtils.NOTIFICATION_DATA_PAYLOAD_KEY);
-            Log.i(TAG, "onCreate: dataPayloadType ="+(dataPayloadType == null ? " null" : dataPayloadType));
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);

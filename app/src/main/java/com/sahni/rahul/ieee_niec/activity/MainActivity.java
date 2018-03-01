@@ -15,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -77,18 +76,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "onCreate");
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
         String dataPayloadType = null;
-        if(intent == null){
-            Log.i(TAG, "onCreate: intent null");
-        } else {
+        if(intent != null){
             dataPayloadType = intent.getStringExtra(ContentUtils.NOTIFICATION_DATA_PAYLOAD_KEY);
-            Log.i(TAG, "onCreate: dataPayloadType ="+(dataPayloadType == null ? " null" : dataPayloadType));
         }
 
         if(dataPayloadType != null){
@@ -146,11 +141,8 @@ public class MainActivity extends AppCompatActivity
                             break;
 
                     }
-                } else {
-                    Log.i(TAG, "onCreate: FRAGMENT_TAG is null");
                 }
             } else {
-                Log.i(TAG, "onCreate: savedInstanceState bundle is null");
                 displaySelectedFragment(R.id.nav_home);
                 mNavigationView.setCheckedItem(R.id.nav_home);
 
@@ -197,7 +189,6 @@ public class MainActivity extends AppCompatActivity
             try {
                 super.onBackPressed();
             } catch (Exception e) {
-                Log.i(TAG, "onBackPressed: " + e.getMessage());
                 ft.setCustomAnimations(R.anim.slide_back_from_left, R.anim.fade_translate_down);
                 ft.replace(R.id.main_frame_layout, HomeFragment.newInstance(), HOME_FRAGMENT_TAG).addToBackStack(null).commit();
                 mNavigationView.setCheckedItem(R.id.nav_home);
@@ -209,7 +200,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         if(id == R.id.nav_about_app){
             startActivity(new Intent(this, AboutAppActivity.class));
@@ -351,8 +341,6 @@ public class MainActivity extends AppCompatActivity
             mUser = data.getParcelableExtra(ContentUtils.USER_KEY);
             loadUserFragment = true;
             loadSearchUserFragment = false;
-            Log.i(TAG, "onActivityResult: name: " + mUser.getName() + " \n email: " + mUser.getEmailId() +
-                    "\n id: " + mUser.getuId());
         } else if (requestCode == SEARCH_USER_RC && resultCode == RESULT_OK) {
             loadSearchUserFragment = true;
             loadUserFragment = false;
@@ -380,8 +368,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onHomeFragmentInteraction(String itemTitle) {
-        Log.i(TAG, "onHomeFragmentInteraction: clicked");
-
         switch (itemTitle) {
             case ContentUtils.EVENTS:
                 displaySelectedFragment(R.id.nav_events);
@@ -403,8 +389,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onInfoFragmentInteraction(View sharedView, Information info) {
-
-//        Log.i(TAG, "onInfoFragmentInteraction: transition Name"+ ViewCompat.getTransitionName(view));
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -472,14 +456,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.i(TAG, "onSaveInstanceState: " + currentFragmentTag);
         outState.putString(FRAGMENT_TAG_KEY, currentFragmentTag);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onHomeSliderInteraction(View view, String imageUrl) {
-        Log.i(TAG, "onHomeSliderInteraction: " + imageUrl);
         Intent intent = new Intent(this, ShowFeedImageActivity.class);
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, view, ViewCompat.getTransitionName(view));

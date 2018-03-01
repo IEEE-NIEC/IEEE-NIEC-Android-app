@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMessagingServ";
+//    private static final String TAG = "MyFirebaseMessagingServ";
     private boolean isDataAvailable = false;
 
     @Override
@@ -27,15 +26,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             showNotification(remoteMessage.getNotification().getBody(), remoteMessage.getData());
         }
     }
-
 
     private void showNotification(String messageBody, Map<String, String> dataPayload) {
 
@@ -55,8 +50,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationHelper.createNotificationChannel(this, getString(R.string.default_notification_channel_id));
         }
-
-//        RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.notification_layout);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                 .setContentText(messageBody)

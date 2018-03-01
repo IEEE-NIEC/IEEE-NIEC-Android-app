@@ -106,10 +106,7 @@ public class InformationDetailsFragment extends Fragment {
         TextView dateTextView = view.findViewById(R.id.date_text_view);
 
         CoordinatorLayout layout = view.findViewById(R.id.info_details_root_layout);
-//        NestedScrollView scrollView = view.findViewById(R.id.info_details_root_scroll_view);
-
         ViewCompat.setTransitionName(layout, transitionName);
-//        ViewCompat.setTransitionName(imageView, ContentUtils.TRANSITION_NAME);
 
         AppBarLayout.LayoutParams layoutParams = new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ContentUtils.convertDpToPixel(100, getActivity()));

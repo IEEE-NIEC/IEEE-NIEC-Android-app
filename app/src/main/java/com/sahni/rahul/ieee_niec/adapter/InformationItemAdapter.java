@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.request.target.Target;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.glide.GlideApp;
-import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSharedElementClickListener;
 import com.sahni.rahul.ieee_niec.models.Information;
-
 
 import java.util.ArrayList;
 
@@ -52,8 +49,6 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         ViewCompat.setTransitionName(holder.cardView, info.getTitle());
         if (info.getImageList() != null) {
             String firstImageUrl = info.getImageList().get(0);
-            Log.d(TAG, "first url ="+firstImageUrl);
-
             if(firstImageUrl != null &&
                     (!firstImageUrl.equals("null"))) {
                 holder.imageView.setVisibility(View.VISIBLE);
@@ -69,27 +64,6 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
         } else {
             holder.imageView.setVisibility(View.GONE);
         }
-
-//        ViewCompat.setTransitionName(holder.imageView, info.getTitle());
-
-//        holder.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(mListener != null){
-//                    mListener.onInformationItemClicked(holder.holderView, holder.imageView);
-//                }
-//            }
-//        });
-//        holder.holderView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(mListener != null){
-//                    mListener.onInformationItemClicked(view, holder.imageView);
-//                }
-//            }
-//        });
-
-
     }
 
     @Override
@@ -99,7 +73,6 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
 
     static class InfoViewHolder extends RecyclerView.ViewHolder {
 
-        private View holderView;
         private ImageView imageView;
         private TextView textView;
         private TextView dateTextView;
@@ -108,7 +81,6 @@ public class InformationItemAdapter extends RecyclerView.Adapter<InformationItem
 
         public InfoViewHolder(View itemView, final OnSharedElementClickListener listener) {
             super(itemView);
-            holderView = itemView;
             imageView = itemView.findViewById(R.id.info_image_view);
             textView = itemView.findViewById(R.id.info_text_view);
             dateTextView = itemView.findViewById(R.id.date_text_view);

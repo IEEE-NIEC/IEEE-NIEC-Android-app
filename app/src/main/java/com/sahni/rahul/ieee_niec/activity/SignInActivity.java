@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -39,7 +38,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.models.User;
@@ -54,8 +52,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 1;
     private ProgressBar mProgressBar;
-    private boolean isLoadUserDetailsDialog = false;
-    //    private User mUser;
     private SignInButton mSignInButton;
 
     private AlertDialog mAlertDialog;
@@ -106,8 +102,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-//                .enableAutoManage(this, this)
-//                .set
                 .build();
 
 
@@ -117,11 +111,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View view) {
                 signIn();
-
-
-//                startActivityForResult(AccountPicker.newChooseAccountIntent(null,
-//                        null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null),
-//                        RC_ACCPICK);
             }
         });
 
@@ -163,9 +152,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        Log.i(TAG, "onActivityResult: checking result code");
         if (requestCode == RC_SIGN_IN) {
-            Log.i(TAG, "onActivityResult: result code matched");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         } else if (requestCode == REQUEST_RESOLVE_ERROR) {
@@ -191,20 +178,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.getStatus());
         if (result.isSuccess()) {
             mSignInButton.setEnabled(false);
 
             final GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
-//            checkForUserDetailsOnline(acct);
-
-            Log.i(TAG, "handleSignInResult: name = " + acct.getDisplayName());
-            Log.i(TAG, "handleSignInResult: id token = " + acct.getIdToken());
-            Log.i(TAG, "handleSignInResult: photo url = " + acct.getPhotoUrl());
-
         } else {
-            Log.d(TAG, "handleSignInResult: " + result);
             mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
@@ -215,15 +194,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.i(TAG, "firebaseAuthWithGoogle: task complete");
                         if (task.isSuccessful()) {
-                            Log.i(TAG, "firebaseAuthWithGoogle: task successful");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             checkForUserDetailsOnline(firebaseUser);
 
 
                         } else {
-                            Log.i(TAG, "firebaseAuthWithGoogle: task unsuccessful");
                             mProgressBar.setVisibility(View.INVISIBLE);
                             mSignInButton.setEnabled(true);
                             Toast.makeText(SignInActivity.this, "Login failed, try again", Toast.LENGTH_SHORT).show();
@@ -233,7 +209,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "firebaseAuthWithGoogle: " + e);
                     }
                 });
     }
@@ -249,13 +224,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 User user = document.toObject(User.class);
-                                Log.i(TAG, "checkForUserDetailsOnline: success: " + user.getEmailId());
                                 Toast.makeText(SignInActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                                 saveDetailsLocally(user);
 
                             } else {
-                                Log.d(TAG, "No such document");
-
                                 User user = new User(
                                         firebaseUser.getUid(), firebaseUser.getDisplayName(),
                                         firebaseUser.getEmail(), firebaseUser.getPhotoUrl().toString()
@@ -264,7 +236,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                 getAdditionalDetailsFromUser(user);
                             }
                         } else {
-                            Log.i(TAG, "checkForUserDetailsOnline: failed: " + task.getException());
                             mProgressBar.setVisibility(View.INVISIBLE);
                             mSignInButton.setEnabled(true);
                             Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
@@ -291,7 +262,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void signOut() {
-//        mGoogleApiClient.connect();
         Auth.GoogleSignInApi.signOut(mGoogleApiClient)
                 .setResultCallback(
                         new ResultCallback<Status>() {
@@ -299,9 +269,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                             public void onResult(@NonNull Status status) {
                                 FirebaseAuth.getInstance().signOut();
                                 ContentUtils.deleteUserDataFromSharedPref(SignInActivity.this);
-//                                deleteUserData();
                                 Snackbar.make(mProgressBar, "Goodbye!", Snackbar.LENGTH_LONG).show();
-//                                Toast.makeText(SignInActivity.this, "Signed Out, Goodbye!", Toast.LENGTH_SHORT).show();
                                 mAlertDialog.dismiss();
                                 mSignInButton.setEnabled(true);
                             }
@@ -330,7 +298,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Log.i(TAG, "deleteAccount: couldn't delete: " + e.getMessage());
                                         }
                                     });
                         }
@@ -340,9 +307,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
 
     private void saveDetails(final User user) {
-        Gson gson = new Gson();
-        Log.i(TAG, "saveDetails: " + gson.toJson(user));
-
         mProgressBar.setVisibility(View.VISIBLE);
         mSignInButton.setEnabled(false);
 
@@ -351,7 +315,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "saveDetails: Success");
                         Toast.makeText(SignInActivity.this, "Welcome, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
                         saveDetailsLocally(user);
                     }
@@ -359,14 +322,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "saveDetails: Failed: " + e.getMessage());
                         mProgressBar.setVisibility(View.INVISIBLE);
                         mSignInButton.setEnabled(true);
                         Snackbar.make(mProgressBar, "Sign in failed!, Try Again", Snackbar.LENGTH_SHORT).show();
 
                     }
                 });
-//
     }
 
 
@@ -391,7 +352,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onBackPressed() {
         startActivity(new Intent(this, MainActivity.class));
-//        super.onBackPressed();
     }
 
 

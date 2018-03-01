@@ -198,13 +198,6 @@ public class GetUserDetailsActivity extends AppCompatActivity implements OnRecyc
                     mUser.setMobileNo(mobileNo);
                     mUser.setInterestMap(ContentUtils.getMapFromArrayList(mInterestArrayList));
                     mUser.setAbout(about);
-
-//                    if(mListener != null){
-//                        Bundle bundle = new Bundle();
-//                        bundle.putParcelable(ContentUtils.USER_KEY, mUser);
-//                        mListener.onUserDetailsDialogInteraction(bundle, GetUserDetailsDialogFragment.this);
-//                    }
-
                     Intent intent = new Intent();
                     intent.putExtra(ContentUtils.USER_KEY, mUser);
                     setResult(RESULT_OK, intent);

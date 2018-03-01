@@ -14,7 +14,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +38,6 @@ import com.sahni.rahul.ieee_niec.models.Execomm;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ExecommFragment extends Fragment implements OnExecommItemClickListener {
 
     private static final String TAG = "ExecommFragment";
@@ -71,7 +67,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_execomm, container, false);
     }
@@ -79,8 +74,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated");
-
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         final Toolbar toolbar = view.findViewById(R.id.execomm_toolbar);
         toolbar.setTitle("Our Team");
@@ -137,13 +130,11 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
                             errorTextView.setVisibility(View.INVISIBLE);
                             adapter.notifyDataSetChanged();
                         } else {
-                            Log.d(TAG, "attachCollectionSnapshotListener: document is null or empty");
                             errorTextView.setVisibility(View.VISIBLE);
                             cardView.setVisibility(View.INVISIBLE);
                             pastTeamTextView.setVisibility(View.INVISIBLE);
                         }
                     } else {
-                        Log.d(TAG, "attachCollectionSnapshotListener: error: "+e);
                         cardView.setVisibility(View.INVISIBLE);
                         pastTeamTextView.setVisibility(View.GONE);
                         errorTextView.setVisibility(View.VISIBLE);
@@ -159,11 +150,6 @@ public class ExecommFragment extends Fragment implements OnExecommItemClickListe
     private void detachCollectionSnapshotListener(){
         if(listenerRegistration != null){
             listenerRegistration.remove();
-            if(listenerRegistration == null){
-                Log.d(TAG,"detachCollectionSnapshotListener: listner = null");
-            } else {
-                Log.d(TAG,"detachCollectionSnapshotListener: listener not null");
-            }
         }
     }
 

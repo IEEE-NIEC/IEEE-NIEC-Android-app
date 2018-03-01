@@ -58,15 +58,6 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.Intere
             super(itemView);
             textView = itemView.findViewById(R.id.interest_item_text_view);
             editImageView = itemView.findViewById(R.id.remove_interest_image_view);
-//            editImageView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if(listener != null){
-//                        listener.onRemovedClicked(itemView);
-//                    }
-//                }
-//            });
-
             if(type == ContentUtils.SHOW_INTEREST){
                 editImageView.setVisibility(View.GONE);
             } else {

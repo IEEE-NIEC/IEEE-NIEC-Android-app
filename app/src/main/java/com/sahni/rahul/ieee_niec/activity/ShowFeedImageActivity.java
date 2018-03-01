@@ -47,21 +47,6 @@ public class ShowFeedImageActivity extends AppCompatActivity {
         final ImageView imageView = findViewById(R.id.show_feed_image_view);
         final ProgressBar progressBar = findViewById(R.id.show_feed_progress);
 
-//        Picasso.with(this)
-//                .load(imageUrl)
-//                .error(R.drawable.place)
-//                .into(imageView, new Callback() {
-//                    @Override
-//                    public void onSuccess() {
-//                        progressBar.setVisibility(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//                        progressBar.setVisibility(View.GONE);
-//                    }
-//                });
-
         RequestBuilder<Drawable> requestBuilder = Glide.with(this)
                 .load(imageUrl);
 

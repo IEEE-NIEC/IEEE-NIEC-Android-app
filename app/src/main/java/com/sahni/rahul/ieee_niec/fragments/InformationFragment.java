@@ -12,7 +12,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,8 @@ import java.util.ArrayList;
 import static com.sahni.rahul.ieee_niec.helpers.ContentUtils.INFO_KEY;
 
 
-public class InformationFragment extends Fragment implements OnRecyclerViewItemClickListener, OnSharedElementClickListener {
+public class InformationFragment extends Fragment implements OnRecyclerViewItemClickListener,
+        OnSharedElementClickListener {
 
     private static final String TAG = "InformationFragment";
     private RecyclerView mInfoRecyclerView;
@@ -57,14 +57,10 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
     private OnInfoFragmentInteractionListener mListener;
     private String mInfoType;
 
-    private AppBarLayout mAppBarLayout;
-
     private EventListener<QuerySnapshot> mEventListener;
 
     private static final int NO_OF_INFO_TO_FETCH = 10;
     private boolean isMoreDataAvailable = true;
-
-//    int mScrollPosition = 0;
 
     private float mLastItemId;
 
@@ -93,17 +89,11 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         mInfoType = bundle.getString(INFO_KEY);
-//        mScrollPosition = bundle.getInt(SCROLL_POSITION_KEY);
-//        Log.i(TAG, "onCreate: scroll position: "+mScrollPosition);
-//        Log.i(TAG, "")
-        Log.i(TAG, "onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
-
         return inflater.inflate(R.layout.fragment_information, container, false);
     }
 
@@ -114,7 +104,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
         final Toolbar toolbar = view.findViewById(R.id.information_toolbar);
         toolbar.setTitle(mInfoType);
 
-        mAppBarLayout = view.findViewById(R.id.info_appbar);
+        AppBarLayout mAppBarLayout = view.findViewById(R.id.info_appbar);
         mProgressBar = view.findViewById(R.id.information_progress_bar);
         mLoadMoreProgress = view.findViewById(R.id.load_more_progress);
         mNoInfoTextView = view.findViewById(R.id.no_info_text_view);
@@ -163,9 +153,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
         mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.i(TAG, "onLoadMore: total items :" + totalItemsCount);
                 if (isMoreDataAvailable) {
-                    Log.i(TAG, "onLoadMore: fetching more data");
                     fetchMoreData();
                 }
             }
@@ -212,10 +200,7 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
                                 mInfoAdapter.notifyDataSetChanged();
                             } else {
                                 isMoreDataAvailable = false;
-                                Log.i(TAG, "fetchData: No result available");
                             }
-                        } else {
-                            Log.i(TAG, "fetchData: Error in getting result");
                         }
                         mProgressBar.setVisibility(View.INVISIBLE);
                         mLoadMoreProgress.setVisibility(View.INVISIBLE);
@@ -245,19 +230,16 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
                             mNoInfoTextView.setText(R.string.error);
                             mNoInfoTextView.setVisibility(View.VISIBLE);
                             mProgressBar.setVisibility(View.GONE);
-//                            mNoInfoTextView.setText("No "+mInfoType+ " found!");
                         }
                     } else {
                         mNoInfoTextView.setVisibility(View.VISIBLE);
                         mProgressBar.setVisibility(View.GONE);
                         mNoInfoTextView.setText("Error getting "+mInfoType+"!. Please try again later");
-                        Log.i(TAG, "fetchDataFirstTime: error reading data: "+e.getMessage());
                     }
                 }
             };
 
             mListenerRegistration = mCollectionReference.orderBy("id", Query.Direction.DESCENDING)
-//                .endAt(NO_OF_INFO_TO_FETCH)
                     .limit(NO_OF_INFO_TO_FETCH)
                     .addSnapshotListener(mEventListener);
         }
@@ -273,7 +255,6 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "onAttach");
         if (context instanceof OnInfoFragmentInteractionListener) {
             mListener = (OnInfoFragmentInteractionListener) context;
         } else {
@@ -285,7 +266,6 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        Log.i(TAG, "onDetach");
     }
 
 
@@ -293,7 +273,6 @@ public class InformationFragment extends Fragment implements OnRecyclerViewItemC
     public void onPause() {
         super.onPause();
         detachCollectionSnapshotListener();
-        Log.i(TAG, "onPause");
     }
 
 

@@ -60,6 +60,7 @@
         android:layout_marginStart="16dp"
         android:gravity="center_horizontal"
         android:textSize="12sp"
+        android:textStyle="bold"
         android:text="Find people having similar skills like you and build something great together!"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

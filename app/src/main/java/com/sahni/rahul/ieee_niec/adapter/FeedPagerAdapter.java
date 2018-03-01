@@ -3,7 +3,6 @@ package com.sahni.rahul.ieee_niec.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import com.sahni.rahul.ieee_niec.fragments.FeedFragment;
 import com.sahni.rahul.ieee_niec.fragments.NoFeedFragment;
@@ -27,14 +26,6 @@ public class FeedPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.i(TAG, "position = " + position);
-        Log.i(TAG, "size = " + mFeedArrayList.size());
-//        if (position == mFeedArrayList.size()) {
-//            return NoFeedFragment.newInstance();
-//        } else {
-//            return FeedFragment.newInstance(mFeedArrayList.get(position));
-//        }
-
         if(position == mFeedArrayList.size()){
             return NoFeedFragment.newInstance();
         } else {

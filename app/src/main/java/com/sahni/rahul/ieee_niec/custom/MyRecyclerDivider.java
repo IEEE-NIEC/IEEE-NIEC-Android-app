@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -26,10 +25,10 @@ public class MyRecyclerDivider extends DividerItemDecoration {
         super(context, orientation);
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
-        if (mDivider == null) {
-            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this "
-                    + "DividerItemDecoration. Please set that attribute all call setDrawable()");
-        }
+//        if (mDivider == null) {
+//            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this "
+//                    + "DividerItemDecoration. Please set that attribute all call setDrawable()");
+//        }
         a.recycle();
         setOrientation(orientation);
     }

@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import com.sahni.rahul.ieee_niec.models.Feed;
 
 public class FeedFragment extends Fragment {
 
-//    private String mImageUrl;
     private Feed mFeed;
     private String TAG = "FeedFragment";
     private OnHomeSliderInteractionListener mListener;
@@ -39,7 +37,6 @@ public class FeedFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "onAttach: "+context.getClass());
         if(context instanceof OnHomeSliderInteractionListener){
             mListener = (OnHomeSliderInteractionListener) context;
         }
@@ -49,7 +46,6 @@ public class FeedFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.i(TAG, "onDetach");
         mListener = null;
     }
 

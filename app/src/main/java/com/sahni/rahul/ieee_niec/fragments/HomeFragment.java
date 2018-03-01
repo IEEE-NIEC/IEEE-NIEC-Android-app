@@ -25,11 +25,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
 import com.sahni.rahul.ieee_niec.R;
-import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.adapter.FeedPagerAdapter;
 import com.sahni.rahul.ieee_niec.adapter.HomeItemsAdapter;
+import com.sahni.rahul.ieee_niec.custom.MyRecyclerDivider;
+import com.sahni.rahul.ieee_niec.custom.ZoomOutPageTransformer;
 import com.sahni.rahul.ieee_niec.helpers.ContentUtils;
 import com.sahni.rahul.ieee_niec.interfaces.OnHomeFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnRecyclerViewItemClickListener;
@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     private static String TAG = "HomeFragment";
     private RecyclerView mRecyclerView;
-    private HomeItemsAdapter mHomeItemsAdapter;
     private ArrayList<HomeItems> mHomeItemsArrayList;
 
     private ViewPager mFeedViewPager;
@@ -53,7 +52,6 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
     private ArrayList<Feed> mFeedArrayList;
     private CircleIndicator mCircleIndicator;
 
-//    private DatabaseReference mFeedReference;
     private CollectionReference mFeedReference;
     private ListenerRegistration mListenerRegistration;
 
@@ -102,14 +100,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
             }
         });
 
-        Log.i(TAG, "Inside HomeFragment");
-        Log.i(TAG, "onViewCreated");
-
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
         mFeedReference = FirebaseFirestore.getInstance().collection(ContentUtils.FIRESTORE_FEEDS);
-//        mFeedReference.keepSynced(true);
-
 
         DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -124,7 +115,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.PROJECTS, R.drawable.ic_project,R.drawable.project));
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.ABOUT_IEEE, R.drawable.ic_ieeenew1, R.drawable.technology_ieee));
         mHomeItemsArrayList.add(new HomeItems(ContentUtils.IEEE_RESOURCES, R.drawable.ic_resources, R.drawable.resources));
-        mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
+        HomeItemsAdapter mHomeItemsAdapter = new HomeItemsAdapter(getActivity(), mHomeItemsArrayList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mHomeItemsAdapter);
 //        mRecyclerView.setPadding(0,0,0, ContentUtils.convertDpToPixel(56f,getContext()));
@@ -144,12 +135,6 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -163,10 +148,8 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     @Override
     public void onDetach() {
-        Log.i(TAG, "onDetach");
         super.onDetach();
         listener = null;
-//        mFeedReference = null;
     }
 
     private void attachFeedSnapshotListener(){
@@ -212,8 +195,4 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
         }
     }
 
-    private void syncIndicatorWithViewPager(){
-        if(mFeedViewPager.getChildCount() > 1){
-        }
-    }
 }

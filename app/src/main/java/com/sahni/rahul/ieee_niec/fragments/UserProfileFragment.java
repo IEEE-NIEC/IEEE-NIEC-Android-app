@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.internal.NavigationMenu;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -54,19 +53,14 @@ public class UserProfileFragment extends Fragment {
     private User mUser;
 
     private ImageView mUserImageView;
-    //    private TextView mNameTextView;
     private TextView mEmailTextView;
     private TextView mMobileTextView;
-    private RecyclerView mInterestRecyclerView;
     private ArrayList<String> mInterestArrayList;
     private InterestAdapter mInterestAdapter;
     private ProgressBar mImageProgressBar;
     private TextView mAboutTextView;
 
     private OnUserProfileInteractionListener mProfileInteractionListener;
-//    private OnSignOutClickListener mSignOutListener;
-//    private TextView mToolbarTextView;
-
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -116,19 +110,18 @@ public class UserProfileFragment extends Fragment {
         mImageProgressBar = view.findViewById(R.id.image_progress_bar);
 
         final FabSpeedDial fabSpeedDial = view.findViewById(R.id.fab_speed_dial);
-        final CoordinatorLayout layout = view.findViewById(R.id.user_profile_main_layout);
         final FrameLayout frameLayout = view.findViewById(R.id.fab_container);
         mUserImageView = view.findViewById(R.id.user_image_view);
         mEmailTextView = view.findViewById(R.id.user_email_text_view);
         mMobileTextView = view.findViewById(R.id.user_mobile_text_view);
         mAboutTextView = view.findViewById(R.id.about_text_view);
-        mInterestRecyclerView = view.findViewById(R.id.interest_recycler_view);
+        RecyclerView interestRecyclerView = view.findViewById(R.id.interest_recycler_view);
         mInterestArrayList = new ArrayList<>();
-        mInterestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        interestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mInterestAdapter = new InterestAdapter(getActivity(), mInterestArrayList, ContentUtils.SHOW_INTEREST, null);
         SnapHelper snapHelper = new GravityPagerSnapHelper(Gravity.START);
-        snapHelper.attachToRecyclerView(mInterestRecyclerView);
-        mInterestRecyclerView.setAdapter(mInterestAdapter);
+        snapHelper.attachToRecyclerView(interestRecyclerView);
+        interestRecyclerView.setAdapter(mInterestAdapter);
 
         displayDetails();
 
@@ -171,7 +164,6 @@ public class UserProfileFragment extends Fragment {
                             .setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-//                            Toast.makeText(getActivity(),"Sign out", Toast.LENGTH_SHORT).show();
                                     mProfileInteractionListener.signOut();
                                 }
                             });
@@ -190,7 +182,6 @@ public class UserProfileFragment extends Fragment {
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-//                            Toast.makeText(getActivity(),"Sign out", Toast.LENGTH_SHORT).show();
                                     mProfileInteractionListener.deleteAccount();
                                 }
                             });
@@ -254,7 +245,6 @@ public class UserProfileFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mProfileInteractionListener = null;
-//        mSignOutListener = null;
     }
 
     private void displayDetails() {
@@ -277,7 +267,6 @@ public class UserProfileFragment extends Fragment {
                             return false;
                         }
                     })
-//                    .load(mUser.getImageUrl())
                     .into(mUserImageView);
 
         }

@@ -30,7 +30,7 @@
             android:tint="@color/colorAccent"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+            app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     </LinearLayout>
 

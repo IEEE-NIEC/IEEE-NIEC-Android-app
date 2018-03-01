@@ -70,7 +70,8 @@ public class AboutAppActivity extends AppCompatActivity{
             public void onClick(View view) {
                 String appLink = "https://play.google.com/store/apps/details?id=" +
                         getApplicationContext().getPackageName();
-                String shareAppMsg = "Checkout the new IEEE-NIEC Android App\n\n" + appLink;
+                String shareAppMsg = "Checkout the new IEEE-NIEC Android App and keep yourself updated " +
+                        "with the various events and achievements of IEEE NIEC.\n\n" + appLink;
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, shareAppMsg);
