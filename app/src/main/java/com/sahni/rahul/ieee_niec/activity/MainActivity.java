@@ -15,12 +15,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.fragments.AboutIeeeFragment;
 import com.sahni.rahul.ieee_niec.fragments.ExecommFragment;
@@ -37,6 +40,7 @@ import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionList
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserProfileInteractionListener;
+import com.sahni.rahul.ieee_niec.models.Feed;
 import com.sahni.rahul.ieee_niec.models.Information;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        Log.d(TAG, "Token ="+ FirebaseInstanceId.getInstance().getToken());
 
         Intent intent = getIntent();
         String dataPayloadType = null;
@@ -461,11 +467,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onHomeSliderInteraction(View view, String imageUrl) {
+    public void onHomeSliderInteraction(View view, Feed feed) {
         Intent intent = new Intent(this, ShowFeedImageActivity.class);
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, view, ViewCompat.getTransitionName(view));
-        intent.putExtra(ContentUtils.IMAGE_URL_KEY, imageUrl);
+        intent.putExtra(ContentUtils.FEED_KEY, feed);
         startActivity(intent, options.toBundle());
     }
 
