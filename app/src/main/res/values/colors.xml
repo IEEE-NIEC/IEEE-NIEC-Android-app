@@ -14,4 +14,5 @@
     <color name="xplore_color">#f08830</color>
     <color name="transmitter_color">#4880a0</color>
     <color name="resume_lab_color">#1878a0</color>
+    <color name="transparentWhite">#80ffffff</color>
 </resources>

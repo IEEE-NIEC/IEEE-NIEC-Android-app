@@ -17,7 +17,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             applicationIdSuffix ".debug"
         }
     }
@@ -48,6 +48,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:11.6.2'
     implementation 'com.google.firebase:firebase-firestore:11.6.2'
     implementation 'com.google.firebase:firebase-messaging:11.6.2'
+
+    //QR code
+    implementation 'com.google.android.gms:play-services-vision:11.6.2'
 
     //Others
     implementation 'me.relex:circleindicator:1.2.2@aar'

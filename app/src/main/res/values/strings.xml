@@ -23,4 +23,5 @@
     <string name="shared_element_transition">image_view_transition</string>
 
     <string name="error">Please check your internet connection or try again later</string>
+    <string name="title_activity_scan_qr_code">ScanQrCodeActivity</string>
 </resources>
