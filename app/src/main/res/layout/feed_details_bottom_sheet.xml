@@ -27,6 +27,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:minHeight="125dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp"
         app:contentPadding="8dp"
@@ -66,6 +67,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/feed_title" />
 
             <TextView
+                android:visibility="visible"
                 android:id="@+id/register_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
