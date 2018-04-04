@@ -24,6 +24,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.adapter.FeedPagerAdapter;
@@ -37,6 +38,8 @@ import com.sahni.rahul.ieee_niec.models.Feed;
 import com.sahni.rahul.ieee_niec.models.HomeItems;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -153,7 +156,8 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
     }
 
     private void attachFeedSnapshotListener(){
-        mListenerRegistration = mFeedReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        mListenerRegistration = mFeedReference.orderBy("id", Query.Direction.DESCENDING).
+                addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                 if(e != null){
@@ -165,6 +169,7 @@ public class HomeFragment extends Fragment implements OnRecyclerViewItemClickLis
                             Feed feed = documentSnapshot.toObject(Feed.class);
                             mFeedArrayList.add(feed);
                         }
+//                        Collections.reverse(mFeedArrayList);
                         mFeedAdapter.notifyDataSetChanged();
                         ContentUtils.syncIndicatorWithViewPager(mFeedViewPager, mCircleIndicator);
                         mRecyclerView.setPadding(0,0,0,0);

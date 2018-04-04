@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 public class Feed implements Parcelable{
 
+    private float id;
     private String feedTitle;
     private String feedImageUrl;
     private String feedDetails;
@@ -18,6 +19,7 @@ public class Feed implements Parcelable{
     }
 
     protected Feed(Parcel in) {
+        id = in.readFloat();
         feedTitle = in.readString();
         feedImageUrl = in.readString();
         feedDetails = in.readString();
@@ -44,12 +46,20 @@ public class Feed implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeFloat(id);
         parcel.writeString(feedTitle);
         parcel.writeString(feedImageUrl);
         parcel.writeString(feedDetails);
         parcel.writeString(registerUrl);
     }
 
+    public float getId() {
+        return id;
+    }
+
+    public void setId(float id) {
+        this.id = id;
+    }
 
     public String getFeedImageUrl() {
         return feedImageUrl;
