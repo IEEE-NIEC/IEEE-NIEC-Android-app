@@ -69,7 +69,7 @@ public class ShowFeedImageActivity extends AppCompatActivity {
         TextView feedTitleTextView = findViewById(R.id.feed_title);
         TextView registerTextView = findViewById(R.id.register_text_view);
         final ImageView arrowImageView = findViewById(R.id.arrow_image_view);
-        arrowAnimator = ObjectAnimator.ofFloat(arrowImageView, "translationY", 0f, -50f);
+        arrowAnimator = ObjectAnimator.ofFloat(arrowImageView, "translationY", 0f, -50f, 0f);
         arrowAnimator.setInterpolator(new OvershootInterpolator());
         arrowAnimator.setDuration(1000);
         arrowAnimator.setRepeatCount(ValueAnimator.INFINITE);
