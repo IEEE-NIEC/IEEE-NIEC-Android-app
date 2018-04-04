@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">IEEE-NIEC</string>
+    <!--<string name="app_name">IEEE-NIEC</string>-->
+    <string name="app_name_release">IEEE-NIEC</string>
+    <string name="app_name_debug">IEEE-NIEC_DEBUG</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
