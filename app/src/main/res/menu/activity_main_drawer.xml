@@ -35,6 +35,11 @@
             android:title="Join IEEE"
             android:icon="@drawable/ic_join"
             />
+
+        <item android:id="@+id/nav_scan_qr"
+            android:title="Scan QR Code"
+            android:checkable="false"
+            android:icon="@drawable/ic_filter_center_focus"/>
         <item
             android:id="@+id/nav_contact"
             android:title="Account">

@@ -77,6 +77,7 @@ public class ContentUtils {
     public static final String TWITTER_URL = "https://www.twitter.com/ieeeniec";
     public static final String GOOGLE_PLUS_URL = "https://plus.google.com/102106854753581893748";
     public static final String JOIN_IEEE_URL = "https://goo.gl/forms/pGTEhdkBEc5ZiTgR2";
+    public static final String PRIVACY_POLICY_URL = "https://sites.google.com/view/ieeeniec-app-privacy/home";
 
 
 

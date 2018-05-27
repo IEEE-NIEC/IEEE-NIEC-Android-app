@@ -117,6 +117,14 @@ public class AboutAppActivity extends AppCompatActivity{
             }
         });
 
+        TextView privacyTextView = findViewById(R.id.privacy_text_view);
+        privacyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleUrl(ContentUtils.PRIVACY_POLICY_URL);
+            }
+        });
+
 
         final RecyclerView recyclerView = findViewById(R.id.social_recycler_view);
         final ArrayList<Social> arrayList = new ArrayList<>();

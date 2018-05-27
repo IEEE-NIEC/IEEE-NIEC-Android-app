@@ -1,5 +1,7 @@
 package com.sahni.rahul.ieee_niec.activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -8,19 +10,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.transition.TransitionInflater;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.sahni.rahul.ieee_niec.R;
 import com.sahni.rahul.ieee_niec.fragments.AboutIeeeFragment;
 import com.sahni.rahul.ieee_niec.fragments.ExecommFragment;
@@ -37,6 +45,7 @@ import com.sahni.rahul.ieee_niec.interfaces.OnInfoDetailsFragmentInteractionList
 import com.sahni.rahul.ieee_niec.interfaces.OnInfoFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnSearchUserFragmentInteractionListener;
 import com.sahni.rahul.ieee_niec.interfaces.OnUserProfileInteractionListener;
+import com.sahni.rahul.ieee_niec.models.Feed;
 import com.sahni.rahul.ieee_niec.models.Information;
 import com.sahni.rahul.ieee_niec.models.User;
 
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MY_PROFILE_RC = 100;
     private static final int SEARCH_USER_RC = 101;
     private static final int EDIT_PROFILE_RC = 200;
+    private static final int PERMISSION_CAMERA_REQUEST_CODE = 600;
     private User mUser;
 
     private boolean loadUserFragment = false;
@@ -79,6 +89,8 @@ public class MainActivity extends AppCompatActivity
 
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        Log.d(TAG, "Token ="+ FirebaseInstanceId.getInstance().getToken());
 
         Intent intent = getIntent();
         String dataPayloadType = null;
@@ -212,6 +224,8 @@ public class MainActivity extends AppCompatActivity
             } else{
                 Toast.makeText(this, "Please install browser to continue", Toast.LENGTH_SHORT).show();
             }
+        } else if(id == R.id.nav_scan_qr){
+            checkPermissionAndStartCamera();
         }
         else {
             displaySelectedFragment(id);
@@ -461,13 +475,66 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onHomeSliderInteraction(View view, String imageUrl) {
+    public void onHomeSliderInteraction(View view, Feed feed) {
         Intent intent = new Intent(this, ShowFeedImageActivity.class);
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation(this, view, ViewCompat.getTransitionName(view));
-        intent.putExtra(ContentUtils.IMAGE_URL_KEY, imageUrl);
+        intent.putExtra(ContentUtils.FEED_KEY, feed);
         startActivity(intent, options.toBundle());
     }
 
+    private void checkPermissionAndStartCamera(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
+            switch (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)){
+
+                case PackageManager.PERMISSION_DENIED:
+                    Log.i(TAG, "onCreate: requesting permission");
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.CAMERA)){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                .setTitle("Permission required")
+                                .setMessage("Camera permission is required to scan QR Code")
+                                .setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        ActivityCompat.requestPermissions(MainActivity.this,
+                                                new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
+                                    }
+                                })
+                                .setCancelable(false);
+                        builder.create().show();
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA_REQUEST_CODE);
+                    }
+                    break;
+
+
+                case PackageManager.PERMISSION_GRANTED:
+                    Log.i(TAG, "onCreate: permission granted");
+                    scanQRCode();
+                    break;
+
+            }
+        } else {
+            scanQRCode();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISSION_CAMERA_REQUEST_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                scanQRCode();
+            } else {
+                Log.i(TAG, "onRequestPermissionsResult: permission denied");
+//                Toast.makeText(this, "Please give camera permission to scan QR Code", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void scanQRCode(){
+        startActivity(new Intent(this, ScanQrCodeActivity.class));
+    }
 }

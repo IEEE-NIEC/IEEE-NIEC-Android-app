@@ -7,15 +7,20 @@ android {
         applicationId "com.sahni.rahul.ieee_niec"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
+            resValue "string", "app_name", "@string/app_name_release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "@string/app_name_debug"
         }
     }
 }
@@ -45,6 +50,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:11.6.2'
     implementation 'com.google.firebase:firebase-firestore:11.6.2'
     implementation 'com.google.firebase:firebase-messaging:11.6.2'
+
+    //QR code
+    implementation 'com.google.android.gms:play-services-vision:11.6.2'
 
     //Others
     implementation 'me.relex:circleindicator:1.2.2@aar'

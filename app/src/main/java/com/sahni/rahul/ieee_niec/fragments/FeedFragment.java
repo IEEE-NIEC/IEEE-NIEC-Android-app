@@ -2,15 +2,21 @@ package com.sahni.rahul.ieee_niec.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -76,14 +82,34 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final ImageView imageView = view.findViewById(R.id.home_slider_image_view);
         final ProgressBar progressBar = view.findViewById(R.id.home_slider_progress);
+        final TextView registerTextView = view.findViewById(R.id.register_text_view);
         final String imageUrl = mFeed.getFeedImageUrl();
+        final String registerUrl = mFeed.getRegisterUrl();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onHomeSliderInteraction(imageView, imageUrl);
+                Log.d(TAG, "Image Clicked");
+                mListener.onHomeSliderInteraction(imageView, mFeed);
             }
         });
+        registerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "button Clicked");
+                Uri registerUri = Uri.parse(registerUrl);
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, registerUri);
+                if (webIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(webIntent);
+                } else {
+                    Toast.makeText(getActivity(), "Error opening the link", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if(registerUrl == null || registerUrl.equals("")){
+            registerTextView.setVisibility(View.GONE);
+        }
 
         if(imageUrl != null) {
             RequestBuilder<Drawable> requestBuilder = Glide.with(getActivity())
